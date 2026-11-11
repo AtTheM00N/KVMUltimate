@@ -1,0 +1,18 @@
+{
+  "name": "konnect-vision-media",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/local.mjs",
+    "assets": "node scripts/assets.mjs",
+    "verify": "node scripts/verify.mjs",
+    "package": "node scripts/package.mjs"
+  },
+  "overrides": { "isomorphic-git": "1.44.12", "qs": "6.17.1" },
+  "devDependencies": {
+    "@wp-playground/cli": "3.1.64",
+    "@fontsource-variable/inter": "^5.2.8",
+    "@fontsource-variable/montserrat": "^5.2.8",
+    "gsap": "^3.14.2"
+  }
+}

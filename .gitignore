@@ -1,0 +1,8 @@
+node_modules/
+.local/
+artifacts/
+*.log
+.backups/
+.tools/
+design-source/renders/
+design-source/*.blend1

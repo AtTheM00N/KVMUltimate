@@ -1,0 +1,47 @@
+{
+  "$schema": "https://schemas.wp.org/wp/6.8/theme.json",
+  "version": 3,
+  "settings": {
+    "appearanceTools": true,
+    "layout": { "contentSize": "1320px", "wideSize": "1600px" },
+    "color": { "custom": false, "palette": [
+      { "slug": "ink", "name": "Ink", "color": "#10090c" },
+      { "slug": "wine", "name": "Wine", "color": "#3b070d" },
+      { "slug": "scarlet", "name": "Scarlet", "color": "#e9101b" },
+      { "slug": "paper", "name": "Paper", "color": "#f7f3f3" },
+      { "slug": "muted", "name": "Muted", "color": "#bdb2b5" }
+    ] },
+    "typography": {
+      "fluid": true,
+      "fontFamilies": [
+        { "slug": "display", "name": "Montserrat", "fontFamily": "Montserrat, sans-serif", "fontFace": [{ "fontFamily": "Montserrat", "fontStyle": "normal", "fontWeight": "100 900", "src": ["file:./assets/fonts/montserrat.woff2"] }] },
+        { "slug": "body", "name": "Inter", "fontFamily": "Inter, sans-serif", "fontFace": [{ "fontFamily": "Inter", "fontStyle": "normal", "fontWeight": "100 900", "src": ["file:./assets/fonts/inter.woff2"] }] }
+      ],
+      "fontSizes": [
+        { "slug": "small", "size": "0.875rem", "name": "Small" },
+        { "slug": "body", "size": "1.0625rem", "name": "Body" },
+        { "slug": "large", "size": "clamp(1.5rem,3vw,2.5rem)", "name": "Large" },
+        { "slug": "section", "size": "clamp(2.5rem,5.5vw,5rem)", "name": "Section" },
+        { "slug": "hero", "size": "clamp(3rem,9vw,8.5rem)", "name": "Hero" }
+      ]
+    },
+    "spacing": { "units": ["px", "rem", "%", "vw", "vh"], "spacingSizes": [
+      { "slug": "s", "size": "1rem", "name": "Small" },
+      { "slug": "m", "size": "2rem", "name": "Medium" },
+      { "slug": "l", "size": "4rem", "name": "Large" },
+      { "slug": "xl", "size": "clamp(5rem,10vw,9rem)", "name": "Section" }
+    ] }
+  },
+  "styles": {
+    "color": { "background": "var:preset|color|ink", "text": "var:preset|color|paper" },
+    "typography": { "fontFamily": "var:preset|font-family|body", "fontSize": "var:preset|font-size|body", "lineHeight": "1.65" },
+    "spacing": { "blockGap": "1.5rem" },
+    "elements": {
+      "heading": { "typography": { "fontFamily": "var:preset|font-family|display", "fontWeight": "650", "lineHeight": "1.06", "letterSpacing": "-0.055em" } },
+      "link": { "color": { "text": "var:preset|color|paper" } },
+      "button": { "color": { "background": "var:preset|color|scarlet", "text": "var:preset|color|paper" }, "border": { "radius": "100px" } }
+    }
+  },
+  "customTemplates": [{ "name": "campaign", "title": "Campaign landing page", "postTypes": ["page"] }],
+  "templateParts": [{ "name": "header", "title": "Header", "area": "header" }, { "name": "footer", "title": "Footer", "area": "footer" }]
+}

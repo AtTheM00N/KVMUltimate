@@ -1,0 +1,57 @@
+<?php
+require '/wordpress/wp-load.php';
+echo 'WordPress ' . $GLOBALS['wp_version'] . ' / PHP ' . PHP_VERSION . "\n";
+function check($condition, $label) { if (!$condition) throw new Exception('FAIL ' . $label); echo 'PASS ' . $label . "\n"; }
+check(wp_is_block_theme(), 'Block theme active');
+check(post_type_exists('kvm_project'), 'Project content model');
+check(!get_post_type_object('kvm_enquiry')->show_in_rest && !get_post_type_object('kvm_enquiry')->public, 'Enquiries private');
+check(count(get_posts(['post_type' => 'kvm_project'])) === 3, 'Local demo projects seeded');
+check(kvm_integration_config()['gtm'] === '' && kvm_ad_slot('services') === '', 'Local integrations disabled');
+check(str_contains(kvm_service_sections(['serviceCopy' => ['0_heading' => 'An editable headline']]), 'An editable headline'), 'Service copy editable');
+foreach (glob('/wordpress/wp-content/plugins/konnect-site/includes/*.php') as $file) { token_get_all(file_get_contents($file), TOKEN_PARSE); }
+token_get_all(file_get_contents('/wordpress/wp-content/themes/konnect/functions.php'), TOKEN_PARSE);
+check(true, 'All PHP source parses');
+$_SERVER['REMOTE_ADDR'] = '192.0.2.50';
+$valid = ['kvm_nonce' => wp_create_nonce('kvm_enquiry'), 'name' => 'Verification Person', 'email' => 'verification@example.test', 'service' => 'Graphic design', 'brief' => 'This is a local verification enquiry for the test suite.'];
+$bad = kvm_process_enquiry(array_merge($valid, ['email' => 'invalid']));
+check(is_wp_error($bad) && isset($bad->get_error_data()['fields']['email']), 'Invalid email gives field error');
+check(is_wp_error(kvm_process_enquiry(array_merge($valid, ['website' => 'spam']))), 'Honeypot rejects spam');
+check(is_wp_error(kvm_process_enquiry(array_merge($valid, ['kvm_nonce' => 'expired']))), 'Expired nonce rejected');
+check(is_wp_error(kvm_process_enquiry(array_merge($valid, ['attribution' => ['unexpected']]))), 'Malformed fields rejected');
+$good = kvm_process_enquiry($valid);
+check(!is_wp_error($good) && $good['success'], 'Valid enquiry stored');
+$enquiries = get_posts(['post_type' => 'kvm_enquiry', 'post_status' => 'private']);
+check(count($enquiries) === 1, 'Exactly one private enquiry');
+check(get_post_meta($enquiries[0]->ID, '_kvm_email', true) === $valid['email'], 'Stored enquiry fields');
+check(get_post_meta($enquiries[0]->ID, '_kvm_notification', true) === 'Needs attention: notification not sent', 'Missing email configuration flagged');
+check(is_wp_error(kvm_process_enquiry($valid)), 'Duplicate submission rejected');
+for ($i = 1; $i <= 4; $i++) kvm_process_enquiry(array_merge($valid, ['brief' => $valid['brief'] . ' #' . $i]));
+$limited = kvm_process_enquiry(array_merge($valid, ['brief' => $valid['brief'] . ' sixth']));
+check(is_wp_error($limited) && $limited->get_error_code() === 'rate_limit', 'Rate limit enforced');
+$_SERVER['REMOTE_ADDR'] = '192.0.2.51';
+update_option('kvm_notification_email', 'mail@example.test');
+add_filter('pre_wp_mail', '__return_false');
+$mail_failure = kvm_process_enquiry(array_merge($valid, ['brief' => $valid['brief'] . ' transport failure']));
+check(!is_wp_error($mail_failure), 'Mail failure does not lose enquiry');
+remove_filter('pre_wp_mail', '__return_false');
+$demo_id = get_posts(['post_type' => 'kvm_project'])[0]->ID;
+$GLOBALS['post'] = get_post($demo_id); setup_postdata($GLOBALS['post']);
+update_post_meta($demo_id, '_kvm_results', 'UNVERIFIEDRESULT');
+check(!str_contains(kvm_project_detail(), 'UNVERIFIEDRESULT'), 'Unverified results hidden');
+update_post_meta($demo_id, '_kvm_results_verified', true);
+$GLOBALS['post'] = get_post($demo_id); setup_postdata($GLOBALS['post']);
+check(str_contains(kvm_project_detail(), 'UNVERIFIEDRESULT'), 'Approved results rendered');
+wp_reset_postdata();
+$request = new WP_REST_Request('POST', '/konnect/v1/enquiries');
+$request->set_body_params(['kvm_nonce' => 'invalid']);
+check(rest_do_request($request)->get_status() === 403, 'REST endpoint validates nonce');
+check(str_contains(kvm_form(), 'admin-post.php'), 'No-JavaScript form fallback');
+wp_set_current_user(0);
+check(!current_user_can('read_post', $enquiries[0]->ID), 'Anonymous visitors cannot read enquiry');
+wp_set_current_user(1);
+check(current_user_can('read_post', $enquiries[0]->ID), 'Administrator can read enquiry');
+foreach (get_posts(['post_type' => 'page', 'posts_per_page' => -1]) as $page) {
+    $blocks = parse_blocks($page->post_content);
+    check(count($blocks) > 0, 'Editable blocks: ' . $page->post_name);
+}
+echo "ALL PHP CHECKS PASSED\n";
