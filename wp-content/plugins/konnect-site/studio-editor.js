@@ -31,7 +31,7 @@
     return e('section', useBlockProps({ className: 'kvm-editor-chapter' }),
       e(InspectorControls, {},
         e(PanelBody, { title: 'Chapter content' },
-          ...['label', 'heading', 'copy', 'linkText', 'linkUrl'].map(key => e(key === 'copy' ? TextareaControl : TextControl, {
+          ...['label', 'heading', 'copy', ...(a.chapter === 'contact' ? [] : ['linkText', 'linkUrl'])].map(key => e(key === 'copy' ? TextareaControl : TextControl, {
             key, label: ({ label: 'Chapter label', heading: 'Heading', copy: 'Description', linkText: 'Link text', linkUrl: 'Link URL' })[key],
             value: a[key] ?? defaults[key], onChange: value => setAttributes({ [key]: value })
           }))),

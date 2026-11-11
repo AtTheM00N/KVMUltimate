@@ -10,10 +10,6 @@ media.add('(prefers-reduced-motion: no-preference)', () => {
     gsap.from(element, { y: 22, opacity: 0, duration: .55, ease: 'power2.out', clearProps: 'all',
       scrollTrigger: { trigger: element, start: 'top 93%', once: true } });
   });
-  document.querySelectorAll('.story-chapter:not(.chapter-intro) .chapter-title').forEach(element => {
-    gsap.from(element, { y: 18, opacity: 0, clipPath: 'inset(100% 0 0 0)', duration: .6, ease: 'power2.out', clearProps: 'all',
-      scrollTrigger: { trigger: element, start: 'top 94%', once: true } });
-  });
 });
 if (story) {
   let generation = 0;

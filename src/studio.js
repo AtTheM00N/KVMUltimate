@@ -11,6 +11,7 @@ export function mountStudio(root, gsap, ScrollTrigger, isCurrent) {
   const controller = new AbortController();
   let timeout;
   let disposed = false, frame = 0, trigger, observer, resizeObserver, model, environment, loader;
+  const animatedCopy = new Set();
   let visible = true, inView = true, dirty = true, previousTime = 0, slowFrames = 0;
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false, powerPreference: 'default' });
   renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
@@ -48,6 +49,8 @@ export function mountStudio(root, gsap, ScrollTrigger, isCurrent) {
     if (disposed) return;
     disposed = true; clearTimeout(timeout); controller.abort(); cancelAnimationFrame(frame);
     trigger?.scrollTrigger?.kill(); trigger?.kill(); observer?.disconnect(); resizeObserver?.disconnect();
+    for (const element of animatedCopy) gsap.set(element, { clearProps: 'opacity,visibility,transform' });
+    animatedCopy.clear();
     window.removeEventListener('pointermove', move); window.removeEventListener('pointerout', leave);
     window.removeEventListener('resize', resize); document.removeEventListener('visibilitychange', visibility);
     canvas.removeEventListener('webglcontextlost', lost);
@@ -100,7 +103,9 @@ export function mountStudio(root, gsap, ScrollTrigger, isCurrent) {
     camera.updateProjectionMatrix();
     root.querySelectorAll('[data-chapter]:not(.chapter-intro):not(.chapter-services) .chapter-body').forEach(body => {
       body.classList.remove('is-tall');
-      body.classList.toggle('is-tall', body.scrollHeight > height * .72);
+      const lead = body.querySelector('.chapter-lead');
+      const enquiry = body.querySelector('.chapter-enquiry');
+      body.classList.toggle('is-tall', (lead?.scrollHeight || 0) > height * .72 || (enquiry?.scrollHeight || 0) > height * .76);
     });
     measure(); queue();
   }
@@ -171,9 +176,39 @@ export function mountStudio(root, gsap, ScrollTrigger, isCurrent) {
     await renderer.compileAsync(scene, camera);
     if (!isCurrent() || disposed) { cleanup(); return; }
     clearTimeout(timeout);
-    trigger = gsap.to(playhead, { value: 1, ease: 'none', onUpdate: queue,
+    // A single normalized GSAP timeline maps the native page scroll to the camera,
+    // portfolio hinge, chapter copy, project cards and service beats.
+    trigger = gsap.timeline({ onUpdate: queue,
       scrollTrigger: { trigger: root, start: 'top top', end: 'bottom bottom', scrub: .5, invalidateOnRefresh: true }
     });
+    trigger.to(playhead, { value: 1, duration: 1, ease: 'none' }, 0);
+    const scrollPosition = element => {
+      const top = element.getBoundingClientRect().top + scrollY - root.getBoundingClientRect().top - scrollY;
+      return THREE.MathUtils.clamp(top / distance, 0, 1);
+    };
+    const reveal = (element, start, span = .06, scale = .97) => {
+      if (!element) return;
+      const at = THREE.MathUtils.clamp(start, 0, .94);
+      const duration = THREE.MathUtils.clamp(span, .012, 1 - at);
+      animatedCopy.add(element);
+      trigger.fromTo(element, { autoAlpha: 0, y: 24, scale }, { autoAlpha: 1, y: 0, scale: 1, duration, ease: 'none' }, at);
+    };
+    for (const chapter of root.querySelectorAll('[data-chapter]')) {
+      const top = scrollPosition(chapter);
+      const bottom = THREE.MathUtils.clamp(top + chapter.offsetHeight / distance, 0, 1);
+      const lead = chapter.querySelector('.chapter-lead');
+      reveal(lead, top - .055, .09);
+      if (lead && bottom < 1) {
+        const exit = Math.max(top + .13, bottom - .10);
+        const element = lead;
+        trigger.to(element, { autoAlpha: 0, y: -18, duration: Math.min(.055, Math.max(.012, 1 - exit)), ease: 'none' }, exit);
+      }
+      chapter.querySelectorAll('.story-project').forEach((card, index) => reveal(card, top + .08 + index * .035, .065, .96));
+      chapter.querySelectorAll('.studio-services article').forEach(article => reveal(article, scrollPosition(article) - .06, .07));
+      chapter.querySelectorAll('.story-process li').forEach((step, index) => reveal(step, top + .18 + index * .065, .05));
+      const enquiry = chapter.querySelector('.chapter-enquiry');
+      if (enquiry) reveal(enquiry, top + .035, .09, .985);
+    }
     ScrollTrigger.addEventListener('refreshInit', measure);
     observer = new IntersectionObserver(entries => {
       for (const entry of entries) {

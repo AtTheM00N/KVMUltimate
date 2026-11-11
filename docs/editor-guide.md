@@ -2,7 +2,7 @@
 
 ## Homepage
 
-Open Home in Gutenberg and use List View. The **Konnect studio journey** contains six locked chapter slots: Intro, Work, Services, Process, Studio and Contact. Select a chapter to edit its sidebar controls. The canvas shows a representative still, not an active 3D scene.
+Open Home in Gutenberg and use List View. The **Konnect studio journey** contains six locked chapter slots: Intro, Work, Services, Process, Studio and Contact. Select a chapter to edit its sidebar controls. All six are beats in one home-page scroll; the menu jumps to them within that journey. The canvas shows a representative still in Gutenberg, not an active 3D scene.
 
 - Keep headings short. Unbounded is deliberately wide; sentence-length explanations belong in Description.
 - Link URL accepts a local path such as `/contact/` or a normal HTTPS URL. Link text is editable separately.

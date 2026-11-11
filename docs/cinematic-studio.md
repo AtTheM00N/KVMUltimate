@@ -2,7 +2,7 @@
 
 ## Art and narrative
 
-The approved direction is an original creative studio, a red hinged Konnect portfolio, six chapters and roughly eleven desktop viewport heights. The palette is near-black/graphite, scarlet/action red and light/secondary grey. Unbounded headings and Manrope body text replace Montserrat/Inter.
+The approved direction is an original creative studio, a red hinged Konnect portfolio, six chapters and roughly eleven desktop viewport heights. The palette is near-black/graphite, scarlet/action red and light/secondary grey. Unbounded headings and Manrope body text replace Montserrat/Inter. The homepage is one native scroll journey from studio entry through selected work, the four service beats, process, studio introduction and a working enquiry form. Main navigation jumps to those chapters; it does not take visitors into a row of separate marketing pages. Project detail, service detail, privacy and campaign URLs remain available when a visitor follows a deep link.
 
 The reference is ORYZO's continuity and camera storytelling, as described by Lusion:
 - https://blog.lusion.co/oryzo-bts-part-2-7-3d-design-and-motion-graphics
@@ -22,7 +22,7 @@ Static desk illumination and contact shading are baked in Cycles; moving objects
 
 WordPress renders all text, project links and CTAs. The decorative canvas is never the only carrier of content. Native block rendering limits portfolio data to eligible published records and adds placeholder protection explicitly for production queries.
 
-Vite builds a small base motion entry and a separate Three.js chunk. Only a homepage studio on a fine-pointer desktop at least 1024px wide, without reduced motion or Save-Data, imports the renderer. The poster and readable HTML are available before it loads. GSAP follows normal document scroll; no wheel/touch interception or snap scrolling is used.
+Vite builds a small base motion entry and a separate Three.js chunk. Only a homepage studio on a fine-pointer desktop at least 1024px wide, without reduced motion or Save-Data, imports the renderer. The poster and readable HTML are available before it loads. One normalized GSAP timeline and one ScrollTrigger scrub the entire camera, opening portfolio, chapter typography, project tiles and service beats across the homepage's single native scroll range. There are no independently restarting chapter animations, wheel/touch interception or snap scrolling.
 
 Camera waypoints are measured against chapter and service elements, so edited content affects travel distance. The portfolio hinge reverses with scroll. Camera interpolation is smooth between poses; pointer movement is capped. Tall edited copy is allowed to flow rather than remaining sticky. Rendering is demand-driven, pauses offscreen/in background tabs, and caps DPR at 1.5 with a sustained-slow-frame reduction to 1.
 

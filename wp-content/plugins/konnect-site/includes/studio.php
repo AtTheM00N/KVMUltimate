@@ -3,7 +3,7 @@ if (!defined('ABSPATH')) exit;
 
 function kvm_studio_defaults() {
     return [
-        'intro' => ['label' => 'Enter the studio', 'heading' => 'Ideas become connections.', 'copy' => 'Strategy, design and digital marketing. Connected from the first brief to the moment your brand meets the world.', 'linkText' => 'Start a project', 'linkUrl' => '/contact/', 'length' => 1.5],
+        'intro' => ['label' => 'Enter the studio', 'heading' => 'Ideas become connections.', 'copy' => 'Strategy, design and digital marketing. Connected from the first brief to the moment your brand meets the world.', 'linkText' => 'Start a project', 'linkUrl' => '/#studio-contact', 'length' => 1.5],
         'work' => ['label' => 'Open the work', 'heading' => 'A closer look.', 'copy' => 'Creative thinking, made tangible. Explore the work and the ideas behind it.', 'linkText' => 'Explore all work', 'linkUrl' => '/work/', 'length' => 2.5],
         'services' => ['label' => 'Connect the disciplines', 'heading' => 'Different disciplines. Shared direction.', 'copy' => 'Four ways to bring your brand into focus.', 'linkText' => 'Explore our services', 'linkUrl' => '/services/', 'length' => 3],
         'process' => ['label' => 'From brief to launch', 'heading' => 'Good work starts with good questions.', 'copy' => 'Understand the challenge. Give the idea a clear expression. Put it into the right places, then learn from what happens.', 'linkText' => 'Our approach', 'linkUrl' => '/about/', 'length' => 1.5],
@@ -66,6 +66,7 @@ function kvm_render_story_chapter($attributes) {
     $defaults = kvm_studio_defaults(); $key = $attributes['chapter'] ?? 'intro';
     if (!isset($defaults[$key])) return '';
     $a = array_merge($defaults[$key], $attributes); $index = array_search($key, array_keys($defaults), true) + 1;
+    if (is_front_page() && $key === 'intro' && $a['linkUrl'] === '/contact/') $a['linkUrl'] = '/#studio-contact';
     foreach (['label','heading','copy','linkText','linkUrl'] as $field) if (!is_string($a[$field])) $a[$field] = $defaults[$key][$field];
     $projects = $key === 'work' ? kvm_studio_projects($a['projectIds'] ?? []) : [];
     $length = $key === 'work' ? max(1, count($projects) * 1.25) : $a['length'];
@@ -75,10 +76,12 @@ function kvm_render_story_chapter($attributes) {
     <section id="studio-<?php echo esc_attr($key); ?>" class="story-chapter chapter-<?php echo esc_attr($key); ?>" data-chapter="<?php echo esc_attr($key); ?>" data-length="<?php echo esc_attr($length); ?>" <?php if ($key === 'work') echo 'data-projects="' . esc_attr(wp_json_encode($data)) . '"'; ?> aria-labelledby="title-<?php echo esc_attr($key); ?>" style="--chapter-length:<?php echo esc_attr($length); ?>">
       <?php echo kvm_studio_picture($key === 'services' ? 'social' : $key, absint($a['posterId'] ?? 0), absint($a['mobilePosterId'] ?? 0), $key === 'intro', 'chapter-poster'); ?>
       <div class="chapter-body">
+        <div class="chapter-lead">
         <p class="chapter-kicker"><span>0<?php echo $index; ?></span> <?php echo esc_html($a['label']); ?></p>
         <?php if ($key === 'intro') : ?><p class="studio-wordmark" aria-hidden="true">KONNECT</p><?php endif; ?>
         <<?php echo $key === 'intro' ? 'h1' : 'h2'; ?> id="title-<?php echo esc_attr($key); ?>" class="chapter-title"><?php echo esc_html($a['heading']); ?></<?php echo $key === 'intro' ? 'h1' : 'h2'; ?>>
         <p class="chapter-copy"><?php echo nl2br(esc_html($a['copy'])); ?></p>
+        </div>
         <?php if ($key === 'work') : ?><div class="story-projects">
           <?php foreach ($projects as $project) : $demo = get_post_meta($project->ID, '_kvm_placeholder', true); ?>
             <a class="story-project" href="<?php echo esc_url(get_permalink($project)); ?>"><div class="story-project-image"><?php echo has_post_thumbnail($project) ? get_the_post_thumbnail($project, 'large', ['loading' => 'lazy']) : kvm_studio_picture(get_post_meta($project->ID, '_kvm_art', true) === 'identity' ? 'identity' : 'social'); ?></div><div><h3><?php echo esc_html(get_the_title($project)); ?></h3><p><?php echo $demo ? 'Design study · Not client work' : esc_html(wp_strip_all_tags(get_the_term_list($project->ID, 'kvm_service', '', ' / '))); ?></p></div><span class="project-arrow" aria-hidden="true">↗</span></a>
@@ -90,9 +93,9 @@ function kvm_render_story_chapter($attributes) {
           <?php endforeach; ?>
         </div><?php endif; ?>
         <?php if ($key === 'process') : ?><ol class="story-process"><li>Understand</li><li>Create</li><li>Connect</li></ol><?php endif; ?>
-        <a class="<?php echo in_array($key, ['intro', 'contact'], true) ? 'button button-red' : 'text-link'; ?>" href="<?php echo esc_url(str_starts_with($a['linkUrl'], '/') ? home_url($a['linkUrl']) : $a['linkUrl']); ?>"><?php echo esc_html($a['linkText']); ?> <span aria-hidden="true">↗</span></a>
+        <?php if ($key !== 'contact') : ?><a class="<?php echo $key === 'intro' ? 'button button-red' : 'text-link'; ?>" href="<?php echo esc_url(str_starts_with($a['linkUrl'], '/') ? home_url($a['linkUrl']) : $a['linkUrl']); ?>"><?php echo esc_html($a['linkText']); ?> <span aria-hidden="true">↗</span></a><?php endif; ?>
         <?php if ($key === 'intro') : ?><a class="studio-skip" href="#studio-work">View work <span aria-hidden="true">↓</span></a><?php endif; ?>
-        <?php if ($key === 'contact') echo do_blocks('<!-- wp:konnect/business-contact /-->'); ?>
+        <?php if ($key === 'contact') : ?><div class="chapter-enquiry"><p class="eyebrow">A few details to begin</p><?php echo do_blocks('<!-- wp:konnect/enquiry /-->'); ?><?php echo do_blocks('<!-- wp:konnect/business-contact /-->'); ?></div><?php endif; ?>
       </div>
     </section>
     <?php return ob_get_clean();

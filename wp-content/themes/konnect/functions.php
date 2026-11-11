@@ -4,10 +4,12 @@ add_action('after_setup_theme', function () {
     add_theme_support('post-thumbnails');
     add_theme_support('editor-styles');
     add_editor_style('assets/studio.css');
+    add_editor_style('assets/experience.css');
 });
 add_action('wp_enqueue_scripts', function () {
     $url = get_template_directory_uri();
     wp_enqueue_style('konnect-site', $url . '/assets/studio.css', [], filemtime(__DIR__ . '/assets/studio.css'));
+    wp_enqueue_style('konnect-experience', $url . '/assets/experience.css', ['konnect-site'], filemtime(__DIR__ . '/assets/experience.css'));
     wp_enqueue_script('konnect-site', $url . '/assets/site.js', [], filemtime(__DIR__ . '/assets/site.js'), true);
     wp_add_inline_script('konnect-site', 'window.kvmConfig=' . wp_json_encode(function_exists('kvm_integration_config') ? kvm_integration_config() : []) . ';', 'before');
     $manifest_file = __DIR__ . '/assets/dist/.vite/manifest.json';
@@ -25,7 +27,8 @@ add_action('wp_head', function () {
     if (is_front_page()) echo '<meta name="description" content="Konnect Vision Media brings social media, design, SEO and lead generation together to help your brand find its voice. Let’s talk about your next project.">';
 });
 add_action('template_redirect', function () {
-    if (is_page('contact') || is_page_template('campaign') || has_block('konnect/enquiry', get_queried_object_id()) || isset($_GET['enquiry_state']) || isset($_GET['enquiry_sent'])) { nocache_headers(); if (!defined('DONOTCACHEPAGE')) define('DONOTCACHEPAGE', true); }
+    // The homepage chapter renders the enquiry form dynamically, so its nonce must not be cached.
+    if (is_front_page() || is_page('contact') || is_page_template('campaign') || has_block('konnect/enquiry', get_queried_object_id()) || isset($_GET['enquiry_state']) || isset($_GET['enquiry_sent'])) { nocache_headers(); if (!defined('DONOTCACHEPAGE')) define('DONOTCACHEPAGE', true); }
 });
 // Unknown campaign/project URLs must show the useful 404 rather than a guessed destination.
 add_filter('redirect_canonical', function ($redirect) { return is_404() ? false : $redirect; });

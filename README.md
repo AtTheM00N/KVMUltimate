@@ -1,6 +1,6 @@
 # Konnect Vision Media
 
-A custom WordPress block theme, companion plugin and original 3D studio. The current direction is **From brief to launch**: six connected chapters, Unbounded + Manrope, and a red/black/grey material palette. See `docs/cinematic-studio.md` for the scene architecture and `docs/editor-guide.md` for editing. The earlier YouTube style guide is historical reference, superseded by this redesign.
+A custom WordPress block theme, companion plugin and original 3D studio. The homepage is one **From brief to launch** scroll: six connected chapters coordinated on a single camera and type timeline. Its menu jumps to Work, Disciplines, Studio and Contact within the same page. Unbounded + Manrope and a red/black/grey material palette carry through project, service and campaign details. See `docs/cinematic-studio.md` for the scene architecture and `docs/editor-guide.md` for editing. The earlier YouTube style guide is historical reference, superseded by this redesign.
 
 ## Local preview
 

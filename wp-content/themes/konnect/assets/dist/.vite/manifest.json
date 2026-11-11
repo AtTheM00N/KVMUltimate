@@ -8,7 +8,7 @@
     "src": "node_modules/three/examples/jsm/libs/basis/basis_transcoder.wasm"
   },
   "src/main.js": {
-    "file": "main-DXV_15WX.js",
+    "file": "main-B8lvQ6g1.js",
     "name": "main",
     "src": "src/main.js",
     "isEntry": true,
@@ -17,7 +17,7 @@
     ]
   },
   "src/studio.js": {
-    "file": "studio-hrvyLkgX.js",
+    "file": "studio-CqFoIUoF.js",
     "name": "studio",
     "src": "src/studio.js",
     "isDynamicEntry": true,
