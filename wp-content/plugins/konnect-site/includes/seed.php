@@ -16,7 +16,7 @@ function kvm_cta() {
 function kvm_intro($eyebrow, $title, $copy) {
     return kvm_group(kvm_paragraph($eyebrow, 'eyebrow') . kvm_heading($title, 1) . kvm_paragraph($copy), 'page-intro');
 }
-function kvm_page_content($slug) {
+function kvm_legacy_page_content($slug) {
     if ($slug === 'home') return
         kvm_html('<section class="hero"><div class="hero-topline"><p class="eyebrow">Independent thinking. Connected creativity.</p><span>STRATEGY / DESIGN / GROWTH</span></div><div class="hero-layout"><h1>BRANDS WITH<br>SOMETHING<br>TO <em>SAY.</em></h1><div class="hero-sculpture" aria-hidden="true"><div class="sculpture-orbit"></div><div class="sculpture-disc"></div><span class="sculpture-label">CREATE A CONNECTION</span></div></div><div class="hero-bottom"><a class="scroll-cue" href="#selected-work"><span aria-hidden="true">↓</span>Scroll to connect</a><div class="hero-copy"><p>We bring strategy, design and digital marketing together to give your brand a voice that connects.</p><a class="button button-red" href="/contact/">Let’s build your next chapter <span aria-hidden="true">↗</span></a></div><span class="hero-index">KONNECT / 01</span></div></section><div class="service-ribbon"><span>Social media marketing</span><span>Graphic design</span><span>SEO</span><span>Lead generation</span></div>') .
         kvm_group(kvm_html('<div class="section-heading" id="selected-work"><div><p class="eyebrow">A look at the possibilities / 01</p><h2>Work that<br>makes a mark.</h2></div><a class="text-link" href="/work/">Explore the work ↗</a></div>') . '<!-- wp:konnect/projects {"limit":2} /-->', 'section-shell') .
@@ -53,7 +53,7 @@ function kvm_seed_site() {
     update_option('blogname', 'Konnect Vision Media'); update_option('blogdescription', 'Strategy. Design. Connection.');
     update_option('permalink_structure', '/%postname%/'); update_option('blog_public', '0');
     foreach (['home' => 'Home', 'work' => 'Work', 'services' => 'Services', 'about' => 'About', 'contact' => 'Contact', 'campaign' => 'Campaign', 'privacy' => 'Privacy', 'cookie-preferences' => 'Cookie preferences'] as $slug => $title) {
-        $id = wp_insert_post(['post_type' => 'page', 'post_status' => 'publish', 'post_title' => $title, 'post_name' => $slug, 'post_content' => kvm_page_content($slug)]);
+        $id = wp_insert_post(['post_type' => 'page', 'post_status' => 'publish', 'post_title' => $title, 'post_name' => $slug, 'post_content' => wp_slash(kvm_page_content($slug))]);
         if ($slug === 'home') { update_option('show_on_front', 'page'); update_option('page_on_front', $id); }
         if ($slug === 'privacy') update_option('wp_page_for_privacy_policy', $id);
         if ($slug === 'campaign') update_post_meta($id, '_wp_page_template', 'campaign');

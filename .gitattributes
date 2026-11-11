@@ -1,0 +1,8 @@
+* text=auto eol=lf
+*.blend binary
+*.glb binary
+*.woff2 binary
+*.png binary
+*.webp binary
+*.wasm binary
+*.zip binary

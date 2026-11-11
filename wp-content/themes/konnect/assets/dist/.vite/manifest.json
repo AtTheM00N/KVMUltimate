@@ -1,0 +1,29 @@
+{
+  "node_modules/three/examples/jsm/libs/basis/basis_transcoder.js": {
+    "file": "assets/basis_transcoder-o4Hde_L7.js",
+    "src": "node_modules/three/examples/jsm/libs/basis/basis_transcoder.js"
+  },
+  "node_modules/three/examples/jsm/libs/basis/basis_transcoder.wasm": {
+    "file": "assets/basis_transcoder-VXdx5NbI.wasm",
+    "src": "node_modules/three/examples/jsm/libs/basis/basis_transcoder.wasm"
+  },
+  "src/main.js": {
+    "file": "main-DXV_15WX.js",
+    "name": "main",
+    "src": "src/main.js",
+    "isEntry": true,
+    "dynamicImports": [
+      "src/studio.js"
+    ]
+  },
+  "src/studio.js": {
+    "file": "studio-hrvyLkgX.js",
+    "name": "studio",
+    "src": "src/studio.js",
+    "isDynamicEntry": true,
+    "assets": [
+      "assets/basis_transcoder-VXdx5NbI.wasm",
+      "assets/basis_transcoder-o4Hde_L7.js"
+    ]
+  }
+}

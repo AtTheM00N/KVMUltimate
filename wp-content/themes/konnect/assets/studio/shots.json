@@ -1,0 +1,128 @@
+[
+  {
+    "id": "intro",
+    "position": [
+      8,
+      13.5,
+      11
+    ],
+    "target": [
+      0,
+      0,
+      0
+    ],
+    "cover": 0
+  },
+  {
+    "id": "work",
+    "position": [
+      1,
+      9.2,
+      6.8
+    ],
+    "target": [
+      -0.3,
+      0.25,
+      0.65
+    ],
+    "cover": -110
+  },
+  {
+    "id": "social",
+    "position": [
+      -6.4,
+      8.3,
+      2.8
+    ],
+    "target": [
+      -4.5,
+      0.3,
+      -1.3
+    ],
+    "cover": -110
+  },
+  {
+    "id": "identity",
+    "position": [
+      5.2,
+      8.4,
+      2.2
+    ],
+    "target": [
+      3.6,
+      0.2,
+      -1.5
+    ],
+    "cover": -110
+  },
+  {
+    "id": "search",
+    "position": [
+      -5.7,
+      7.8,
+      6.5
+    ],
+    "target": [
+      -4.3,
+      0.2,
+      2.4
+    ],
+    "cover": -110
+  },
+  {
+    "id": "lead",
+    "position": [
+      6,
+      8.2,
+      6.2
+    ],
+    "target": [
+      4,
+      0.2,
+      1.9
+    ],
+    "cover": -110
+  },
+  {
+    "id": "process",
+    "position": [
+      0,
+      10.5,
+      -1.1
+    ],
+    "target": [
+      0,
+      0,
+      -1.2
+    ],
+    "cover": -110
+  },
+  {
+    "id": "studio",
+    "position": [
+      8,
+      14,
+      10
+    ],
+    "target": [
+      0,
+      0,
+      0
+    ],
+    "cover": -60
+  },
+  {
+    "id": "contact",
+    "position": [
+      4,
+      9,
+      6
+    ],
+    "target": [
+      3.7,
+      0.1,
+      1.8
+    ],
+    "cover": 0
+  }
+]

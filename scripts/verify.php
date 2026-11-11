@@ -1,7 +1,7 @@
 <?php
 require '/wordpress/wp-load.php';
 echo 'WordPress ' . $GLOBALS['wp_version'] . ' / PHP ' . PHP_VERSION . "\n";
-function check($condition, $label) { if (!$condition) throw new Exception('FAIL ' . $label); echo 'PASS ' . $label . "\n"; }
+function check($condition, $label) { if (!$condition) { echo 'FAIL ' . $label . "\n"; throw new Exception('FAIL ' . $label); } echo 'PASS ' . $label . "\n"; }
 check(wp_is_block_theme(), 'Block theme active');
 check(post_type_exists('kvm_project'), 'Project content model');
 check(!get_post_type_object('kvm_enquiry')->show_in_rest && !get_post_type_object('kvm_enquiry')->public, 'Enquiries private');
@@ -54,4 +54,38 @@ foreach (get_posts(['post_type' => 'page', 'posts_per_page' => -1]) as $page) {
     $blocks = parse_blocks($page->post_content);
     check(count($blocks) > 0, 'Editable blocks: ' . $page->post_name);
 }
+check(WP_Block_Type_Registry::get_instance()->is_registered('konnect/studio-story') && WP_Block_Type_Registry::get_instance()->is_registered('konnect/story-chapter'), 'Studio native blocks registered');
+$story = parse_blocks(kvm_studio_pattern());
+check(count($story[0]['innerBlocks']) === 6, 'Six editable chapter blocks');
+$escaped = kvm_render_story_chapter(['chapter' => 'intro', 'heading' => '<script>alert(1)</script>', 'linkUrl' => 'javascript:alert(1)']);
+check(!str_contains($escaped, '<script>') && !str_contains($escaped, 'href="javascript:'), 'Edited chapter text and links escaped');
+check(count(kvm_studio_projects()) === 2, 'Two local featured projects');
+$draft = wp_insert_post(['post_type' => 'kvm_project', 'post_status' => 'draft', 'post_title' => 'Private draft verification']);
+check(count(kvm_studio_projects([$draft])) === 0, 'Selected draft never exposed in scene');
+check(kvm_render_story_chapter(['chapter' => 'unknown']) === '', 'Invalid scene chapter omitted');
+check(!str_contains(kvm_render_story_chapter(['chapter' => 'work', 'projectIds' => [$draft]]), 'Private draft verification'), 'Empty work chapter preserves private titles');
+$home = get_page_by_path('home'); $about = get_page_by_path('about');
+wp_update_post(['ID' => $home->ID, 'post_content' => kvm_legacy_page_content('home')]);
+wp_update_post(['ID' => $about->ID, 'post_content' => '<!-- wp:paragraph --><p>Owner edited copy</p><!-- /wp:paragraph -->']);
+delete_option('kvm_studio_version');
+$migration = kvm_migrate_studio();
+check(in_array('home', $migration['updated'], true) && in_array('about', $migration['preserved'], true), 'Migration upgrades baseline and preserves owner edits');
+check(has_block('konnect/studio-story', get_post($home->ID)), 'Migration installs native studio journey');
+check(count(wp_get_post_revisions($home->ID)) > 0, 'Migration saves restorable revision');
+$edited_home = str_replace(wp_json_encode('Ideas become connections.'), wp_json_encode('An owner-written “Connect” headline.'), kvm_studio_pattern());
+wp_update_post(['ID' => $home->ID, 'post_content' => wp_slash($edited_home)]);
+$retry = kvm_migrate_studio();
+check(in_array('home', $retry['preserved'], true) && get_post($home->ID)->post_content === $edited_home, 'Partial migration retry preserves edited studio blocks');
+kvm_migrate_studio(true);
+check(kvm_migrate_studio()['status'] === 'already-current', 'Migration repeat is idempotent');
+check(str_contains(get_post($about->ID)->post_content, 'Shared direction.'), 'Explicit replacement restores redesigned about page');
+wp_update_post(['ID' => $home->ID, 'post_content' => wp_slash($edited_home)]);
+kvm_migrate_studio(true);
+check(get_post($home->ID)->post_content === kvm_studio_pattern(), 'Explicit replacement works after version marker is current');
+check(!str_contains(kvm_studio_image_block('studio', 'Studio'), 'http://'), 'Saved studio image URLs are origin-independent');
+$old_image = '<!-- wp:html --><img src="http://127.0.0.1:9402/wp-content/themes/konnect/assets/studio/studio.webp"><!-- /wp:html -->';
+wp_update_post(['ID' => $about->ID, 'post_content' => $old_image]);
+check(in_array($about->ID, kvm_normalize_studio_urls(), true), 'Maintenance-port image URLs repaired explicitly');
+check(str_contains(get_post($about->ID)->post_content, 'src="/wp-content/'), 'Repaired images use current origin');
+wp_update_post(['ID' => $about->ID, 'post_content' => kvm_page_content('about')]);
 echo "ALL PHP CHECKS PASSED\n";

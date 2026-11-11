@@ -1,15 +1,17 @@
-import { runCLI } from '@wp-playground/cli';
-import { siteOptions } from './runtime.mjs';
+import { runLocalCLI as runCLI, siteOptions } from './runtime.mjs';
 import { readFile, mkdir, writeFile } from 'node:fs/promises';
 import assert from 'node:assert/strict';
+await mkdir('artifacts', { recursive: true });
+await writeFile('artifacts/verification.txt', 'Verification in progress; this is not a passing report.\n');
 const server = await runCLI(await siteOptions(9401));
+assert.equal(server.server.address().address, '127.0.0.1', 'Test server binds loopback');
 try {
   const php = await server.playground.run({ code: await readFile('scripts/verify.php', 'utf8') });
   const output = typeof php.text === 'string' ? php.text : new TextDecoder().decode(php.bytes);
   console.log(output);
   assert.ok(output.includes('ALL PHP CHECKS PASSED'), 'PHP integration checks failed');
   const results = [];
-  const expected = { '/': 'BRANDS WITH', '/work/': 'Ideas made', '/services/': 'Every connection', '/about/': 'Different skills.', '/contact/': 'What are you', '/campaign/': 'Give your next', '/privacy/': 'Handled with care.', '/cookie-preferences/': 'A clear view', '/project/the-social-canvas/': 'The social canvas' };
+  const expected = { '/': 'Ideas become connections.', '/work/': 'Made tangible.', '/services/': 'All the right', '/about/': 'Different skills.', '/contact/': 'What are you', '/campaign/': 'Give your next', '/privacy/': 'Handled with care.', '/cookie-preferences/': 'A clear view', '/project/the-social-canvas/': 'The social canvas' };
   for (const route of ['/', '/work/', '/work/?service=graphic-design', '/services/', '/about/', '/contact/', '/campaign/', '/privacy/', '/cookie-preferences/', '/project/the-social-canvas/']) {
     const response = await fetch(`http://127.0.0.1:9401${route}`);
     const body = await response.text();
@@ -20,8 +22,22 @@ try {
     if (route.includes('service=graphic-design')) { assert.ok(body.includes('Form &amp; feeling')); assert.ok(!body.includes('The social canvas')); }
     assert.ok(!body.includes('googletagmanager.com/gtm.js'), `${route} tracking disabled locally`);
     if (route === '/campaign/') assert.ok(!body.includes('publisher-ad'), 'Campaign has no publisher ads');
+    if (route === '/') {
+      assert.equal((body.match(/data-chapter="/g) || []).length, 6, 'Six semantic chapters');
+      assert.equal((body.match(/<h1\b/g) || []).length, 1, 'One semantic page heading');
+      assert.ok(body.includes('studio.css') && !body.includes('/assets/site.css'), 'New design styles loaded');
+      assert.ok(body.includes('type="module"') && body.includes('/assets/dist/main-'), 'Built module enqueued');
+      assert.ok(body.includes('fetchpriority="high"'), 'Hero poster prioritised');
+      assert.ok(body.includes('<nav class="fallback-nav"') && !body.includes('<noscript><nav class="fallback-nav"'), 'Navigation exists even when a script fails to load');
+    } else assert.ok(!body.includes('data-studio '), `${route} has no immersive canvas`);
     results.push(`PASS ${route}`);
   }
+  for (const file of ['studio.glb', 'shots.json', 'intro.webp', 'intro-mobile.webp', 'work.webp', 'social.webp', 'identity.webp', 'search.webp', 'lead.webp', 'process.webp', 'studio.webp', 'contact.webp']) {
+    const response = await fetch(`http://127.0.0.1:9401/wp-content/themes/konnect/assets/studio/${file}`);
+    assert.equal(response.status, 200, `Scene asset ${file} served`);
+    assert.ok((await response.arrayBuffer()).byteLength > 100, `${file} nonempty`);
+  }
+  results.push('PASS all scene assets served; six accessible HTML chapters and deferred build module');
   assert.equal((await fetch('http://127.0.0.1:9401/page-that-does-not-exist/')).status, 404);
   const privateResponse = await fetch('http://127.0.0.1:9401/wp-json/wp/v2/kvm_enquiry');
   assert.equal(privateResponse.status, 404, 'Enquiries absent from REST');

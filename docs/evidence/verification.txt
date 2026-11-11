@@ -1,0 +1,80 @@
+WordPress 6.8.12 / PHP 8.3.36
+PASS Block theme active
+PASS Project content model
+PASS Enquiries private
+PASS Local demo projects seeded
+PASS Local integrations disabled
+PASS Service copy editable
+PASS All PHP source parses
+PASS Invalid email gives field error
+PASS Honeypot rejects spam
+PASS Expired nonce rejected
+PASS Malformed fields rejected
+PASS Valid enquiry stored
+PASS Exactly one private enquiry
+PASS Stored enquiry fields
+PASS Missing email configuration flagged
+PASS Duplicate submission rejected
+PASS Rate limit enforced
+PASS Mail failure does not lose enquiry
+PASS Unverified results hidden
+PASS Approved results rendered
+PASS REST endpoint validates nonce
+PASS No-JavaScript form fallback
+PASS Anonymous visitors cannot read enquiry
+PASS Administrator can read enquiry
+PASS Editable blocks: cookie-preferences
+PASS Editable blocks: privacy
+PASS Editable blocks: campaign
+PASS Editable blocks: contact
+PASS Editable blocks: about
+PASS Editable blocks: services
+PASS Editable blocks: work
+PASS Editable blocks: home
+PASS Studio native blocks registered
+PASS Six editable chapter blocks
+PASS Edited chapter text and links escaped
+PASS Two local featured projects
+PASS Selected draft never exposed in scene
+PASS Invalid scene chapter omitted
+PASS Empty work chapter preserves private titles
+PASS Migration upgrades baseline and preserves owner edits
+PASS Migration installs native studio journey
+PASS Migration saves restorable revision
+PASS Partial migration retry preserves edited studio blocks
+PASS Migration repeat is idempotent
+PASS Explicit replacement restores redesigned about page
+PASS Explicit replacement works after version marker is current
+PASS Saved studio image URLs are origin-independent
+PASS Maintenance-port image URLs repaired explicitly
+PASS Repaired images use current origin
+ALL PHP CHECKS PASSED
+
+PASS /
+PASS /work/
+PASS /work/?service=graphic-design
+PASS /services/
+PASS /about/
+PASS /contact/
+PASS /campaign/
+PASS /privacy/
+PASS /cookie-preferences/
+PASS /project/the-social-canvas/
+PASS all scene assets served; six accessible HTML chapters and deferred build module
+PASS HTTP enquiry success, minimal payload, and no-JavaScript validation fallback
+PASS 404 and private enquiry API
+
+PASS Production environment
+PASS Starter blog content removed
+PASS Demo projects absent publicly
+PASS Production scene excludes placeholder projects
+PASS Empty production portfolio collapses unused camera beats
+PASS Immersive homepage excludes publisher placements
+PASS Publishing placeholder blocked
+PASS Reviewed production integration configured
+PASS Configured publisher slot reserves space
+PASS Campaign excludes publisher ads
+PASS Unreviewed integrations disabled
+ALL PRODUCTION CHECKS PASSED
+
+PASS production demo URL returns 404

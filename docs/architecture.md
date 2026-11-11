@@ -4,7 +4,7 @@
 
 Use a Gutenberg block theme with shared `theme.json` settings and a small companion plugin. The plugin owns portfolio records, service taxonomy, private enquiries, dynamic blocks and integrations. The theme owns templates, type, layout and motion. This keeps project records portable when the visual theme changes and avoids a paid field-plugin dependency.
 
-Native blocks and layout patterns provide the content structure; dynamic blocks render project listings, case-study metadata and forms. Native WordPress media attachments supply responsive image variants. Custom HTML is used for composed decorative and marketing sections, with the editing trade-off documented in README.
+Native blocks and layout patterns provide the content structure; dynamic blocks render project listings, case-study metadata and forms. The cinematic redesign adds native studio-story and story-chapter blocks for six editable homepage slots. Native WordPress media attachments supply responsive image variants. Some supporting editorial sections retain Custom HTML, with the editing trade-off documented in README. See [cinematic-studio.md](cinematic-studio.md) for the 12 November scene, motion, build, editing and migration decisions that supersede the first visual treatment.
 
 ## Runtime
 

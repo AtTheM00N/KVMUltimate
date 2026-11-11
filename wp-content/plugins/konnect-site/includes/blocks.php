@@ -18,7 +18,7 @@ function kvm_register_blocks() {
 }
 function kvm_art($type, $large = false) {
     $type = in_array($type, ['social', 'identity', 'search'], true) ? $type : 'social';
-    return '<div class="project-art art-' . esc_attr($type) . '" aria-hidden="true"><div class="art-orbit"></div><div class="art-object"><span>' . ($type === 'social' ? 'MAKE<br>AN<br>IMPACT.' : ($type === 'identity' ? 'Form<br><i>&</i> feeling.' : 'Find your<br>next move.')) . '</span></div><div class="art-stamp">KVM / DESIGN STUDY</div><div class="art-caption">Illustrative placeholder · Not client work</div></div>';
+    return '<div class="project-art art-' . esc_attr($type) . '"><img src="' . esc_url(kvm_studio_asset($type . '.webp')) . '" alt="Original Konnect studio design study" width="1440" height="900" loading="lazy"><span class="art-caption">Illustrative placeholder · Not client work</span></div>';
 }
 function kvm_projects($attributes = []) {
     $limit = intval($attributes['limit'] ?? 0);
@@ -81,6 +81,6 @@ function kvm_service_sections($attributes = []) {
     }
     unset($item);
     ob_start(); foreach ($items as $i => $item) : ?>
-    <section class="service-row" id="<?php echo esc_attr(sanitize_title($item[0])); ?>" data-reveal><span class="service-number">0<?php echo $i + 1; ?></span><div><p class="eyebrow"><?php echo esc_html($item[0]); ?></p><h2><?php echo esc_html($item[1]); ?></h2></div><div><p><?php echo esc_html($item[2]); ?></p><p class="deliverables"><?php echo esc_html($item[3]); ?></p><a class="text-link" href="<?php echo esc_url(add_query_arg('interest', $item[0], home_url('/contact/'))); ?>">Discuss this service ↗</a></div></section>
+    <section class="service-row" id="<?php echo esc_attr(sanitize_title($item[0])); ?>" data-reveal><div class="service-visual"><?php echo kvm_studio_picture(['social','identity','search','lead'][$i]); ?></div><div><span class="service-number">0<?php echo $i + 1; ?></span><p class="eyebrow"><?php echo esc_html($item[0]); ?></p><h2><?php echo esc_html($item[1]); ?></h2></div><div><p><?php echo esc_html($item[2]); ?></p><p class="deliverables"><?php echo esc_html($item[3]); ?></p><a class="text-link" href="<?php echo esc_url(add_query_arg('interest', $item[0], home_url('/contact/'))); ?>">Discuss this service ↗</a></div></section>
     <?php endforeach; echo kvm_ad_slot('services'); return ob_get_clean();
 }

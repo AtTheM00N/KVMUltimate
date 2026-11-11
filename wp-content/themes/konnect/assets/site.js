@@ -2,25 +2,20 @@
   document.documentElement.classList.add('js');
   const config = window.kvmConfig || {};
   const toggle = document.querySelector('.menu-toggle');
-  const menu = document.querySelector('.mobile-nav');
-  const closeMenu = () => { if (!toggle || !menu) return; menu.hidden = true; toggle.setAttribute('aria-expanded', 'false'); document.body.classList.remove('menu-open'); };
+  const menu = document.querySelector('.site-menu');
+  const closeMenu = () => { if (menu?.open) menu.close(); };
   toggle?.addEventListener('click', () => {
-    const open = toggle.getAttribute('aria-expanded') !== 'true';
-    toggle.setAttribute('aria-expanded', String(open)); menu.hidden = !open; document.body.classList.toggle('menu-open', open);
-    if (open) menu.querySelector('a')?.focus();
+    if (!menu) return;
+    if (menu.open) { closeMenu(); return; }
+    menu.showModal(); toggle.setAttribute('aria-expanded', 'true'); document.body.classList.add('menu-open');
+    menu.querySelector('.menu-close')?.focus();
   });
-  document.addEventListener('keydown', event => {
-    if (!menu || menu.hidden) return;
-    if (event.key === 'Escape') { closeMenu(); toggle.focus(); }
-    if (event.key === 'Tab') {
-      const links = [...menu.querySelectorAll('a')];
-      const targets = [toggle, ...links]; const index = targets.indexOf(document.activeElement);
-      if (event.shiftKey && index === 0) { event.preventDefault(); links.at(-1).focus(); }
-      else if (!event.shiftKey && index === targets.length - 1) { event.preventDefault(); toggle.focus(); }
-    }
+  menu?.querySelector('.menu-close')?.addEventListener('click', closeMenu);
+  menu?.addEventListener('close', () => {
+    toggle?.setAttribute('aria-expanded', 'false'); document.body.classList.remove('menu-open'); toggle?.focus();
   });
   menu?.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
-  window.matchMedia('(min-width: 701px)').addEventListener('change', event => { if (event.matches) closeMenu(); });
+  if (toggle && typeof menu?.showModal === 'function') document.documentElement.classList.add('menu-ready');
   let consent = null;
   try { consent = JSON.parse(localStorage.getItem('kvm-consent-v1')); } catch {}
   if (!consent || consent.version !== 1 || Date.now() - consent.savedAt > 180 * 86400000) consent = null;
@@ -48,7 +43,7 @@
     if (revoked) { window.location.reload(); return; }
     optionalIntegrations(); captureAttribution();
   }
-  if (banner) banner.hidden = !!consent;
+  if (banner) banner.hidden = !!consent || !(config.gtm || config.adsClient);
   document.querySelector('[data-consent-reject]')?.addEventListener('click', () => saveConsent(false, false));
   document.querySelector('[data-consent-accept]')?.addEventListener('click', () => saveConsent(true, true));
   const preferences = document.querySelector('[data-consent-form]');

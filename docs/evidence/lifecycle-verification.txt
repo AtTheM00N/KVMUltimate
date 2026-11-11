@@ -1,0 +1,3 @@
+PASS Resize can dispose an in-flight mount immediately; fetches abort and cleanup is idempotent
+PASS Whole-initialisation timeout restores static content and releases the renderer
+PASS Late decoded geometry is released without changing a replacement scene
