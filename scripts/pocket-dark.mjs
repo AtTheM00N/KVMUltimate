@@ -10,14 +10,20 @@ export function darkModule(code,file){
  if(file.endsWith('/totems-6Ag_iF3F.js')){code=code.replace('vec3(0.006, 0.006, 0.008)','vec3(0.0, 0.0, 0.0)').replace('vec3(0.085, 0.062, 0.028)','vec3(0.12, 0.0, 0.0)').replace('vec3(0.015, 0.020, 0.040)','vec3(0.0, 0.0, 0.0)').replace('vec3(0.20, 0.135, 0.06)','vec3(0.3, 0.0, 0.0)');}
  if(file.endsWith('/HomePage-SelUD7Yz.js')){
   code=code.replace(/it=T\(`#[a-f0-9]+`\),at=T\(`#[a-f0-9]+`\),ot=T\(`#[a-f0-9]+`\)/,'it=T(`#000000`),at=T(`#8f0000`),ot=T(`#8f0000`)');
-  code="import {KonnectSlideshow} from 'grail/konnect-slides.js';\n"+code;
+  code="import {KonnectSlideshow,KonnectConnection} from 'grail/konnect-slides.js';\n"+code;
+  // The reveal settles into blood red; collapse reverses it before the deck.
+  code=code.replace('let t=lt(.5,.96,e);n.draw','let t=0;n.draw');
   if(!code.includes('(0,W.jsx)(Tt,{embedded:!0})'))throw Error('Slideshow source boundary changed');
   code=code.replace('(0,W.jsx)(Tt,{embedded:!0})','(0,W.jsx)(KonnectSlideshow,{})');
   // Retain the authored reveal variable, replace the timer digits with a connection graphic.
   const a=code.indexOf('(0,W.jsx)(`div`,{className:Q.clock,');
   const b=code.indexOf('(0,W.jsx)(`img`,{className:Q.phone',a);
   if(a<0||b<0)throw Error('Connection source boundary changed');
-  code=code.slice(0,a)+'(0,W.jsx)(`div`,{className:Q.clock,style:{visibility:V?`visible`:`hidden`},children:(0,W.jsx)(`div`,{className:`konnect-connection`,"aria-hidden":!0,children:[(0,W.jsx)(`i`,{className:`connection-left`}),(0,W.jsx)(`span`,{className:`connection-line`}),(0,W.jsx)(`i`,{className:`connection-right`})]})}),'+code.slice(b);
+  code=code.slice(0,a)+'(0,W.jsx)(`div`,{className:Q.clock,style:{visibility:V?`visible`:`hidden`},children:(0,W.jsx)(KonnectConnection,{})}),'+code.slice(b);
+ }
+ if(file.endsWith('/pocket-content.js')){
+  code=code.replace("className:'pq-preview-grid','aria-hidden':true","className:'pq-preview-grid','aria-label':'Interactive Konnect studies'");
+  code=code.replace("h('div',{className:'pq-preview-card '","h('button',{type:'button','aria-label':'Turn Konnect study '+(i+1),'aria-pressed':false,onClick:e=>{const b=e.currentTarget;b.classList.toggle('is-turned');b.setAttribute('aria-pressed',String(b.classList.contains('is-turned')))},className:'pq-preview-card '");
  }
  return code;
 }
@@ -35,6 +41,7 @@ export function mapColor(hex){
 export function darkPack(pack){
  pack.css=pack.css.replace(/#[0-9a-fA-F]{3,8}\b/g,mapColor).replace(/\bwhite\b/g,'#f7f7f2').replace(/\bblack\b/g,'#000000');
  pack.assets['/accept-phone.webp']='/wp-content/themes/konnect/assets/pocket/konnect-phone.svg';
+ pack.assets['/grail-mark.svg']='/wp-content/themes/konnect/assets/studio/mark.svg';
  pack.modules['grail/konnect-slides.js']='/wp-content/themes/konnect/assets/pocket/konnect-slides.js';
  return pack;
 }

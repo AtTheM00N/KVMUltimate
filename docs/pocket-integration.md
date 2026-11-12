@@ -31,3 +31,11 @@ The old click-driven full-screen service selector is replaced by `src/pocket-sli
 The decorative timer is replaced with two square junctions joined by a simple repeating line animation. The mobile phone overlay's inherited game copy is hidden and replaced by the process mark; the underlying phone frame has no text, timer or game menu. A crisp square pointer with a red center is enabled only for fine pointers; text inputs retain the native text cursor, and keyboard focus outlines remain available.
 
 The pre-change snapshot was pushed to GitHub master as `192d37b` before this update. Browser review covers pinned track movement, release back to vertical content, mobile fitting, phone cleanup and palette dominance. PHP/HTTP/production privacy and enquiry checks passed.
+
+## Motion and finish refinement
+
+The service sequence now uses inset cards with adjacent edges, alternating red/black surfaces and restrained perspective tied to scroll position. The original K outline is drawn on hero card backs. The logo retains KONNECT while increasing the Vision Media descriptor. The connection artwork is a pair of curved SVG signal paths with opposing pulses; reduced motion disables the pulses.
+
+The ink shader now settles into blood red instead of fading back to black. An additional desktop viewport of scroll runway holds this composition before the black idea sheet arrives. The Clear Ideas phone keeps the red surface; its exit wipe is anchored to the end of the enclosing peel section. Timing remains proportional to the visitor's native scrolling speed rather than forcing a timed pause.
+
+Phone study tiles are labelled buttons with hover lift, keyboard focus, and reversible click/Enter turning feedback. Browser checks verified activation, opposing signal animation, desktop pinning, and no horizontal overflow at 320px, 768px and 1440px. No new library was required; the implementation uses the existing React, Three.js and GSAP stack.

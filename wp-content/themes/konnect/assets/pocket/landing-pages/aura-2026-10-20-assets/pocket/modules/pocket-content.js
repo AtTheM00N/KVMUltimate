@@ -17,7 +17,7 @@ function Phone(){return hs('div',{className:'pq-phone','aria-label':"Konnect des
   hs('div',{className:'pq-phone-heading',children:[h('span',{children:"KONNECT"}),h('span',{children:'✧'})]}),
   h('p',{className:'pq-phone-title',children:"Konnect studies"}),
   hs('div',{className:'pq-phone-hud',children:[hs('span',{children:[h('small',{children:"FORMAT"}),'00:30']}),hs('span',{children:[h('small',{children:'SCORE'}),'1,250']}),hs('span',{children:[h('small',{children:"STUDIO"}),"K"]})]}),
-  h('div',{className:'pq-preview-grid','aria-hidden':true,children:[0,1,2,3,4,5,4,2,1,0,5,3].map((id,i)=>h('div',{className:'pq-preview-card '+([0,4,8,10].includes(i)?'is-back':''),children:[0,4,8,10].includes(i)?h('img',{src:asset('/grail-mark.svg'),alt:''}):h('img',{src:asset('/heroes/'+heroes[id]+'.webp'),alt:''})},i))}),
+  h('div',{className:'pq-preview-grid','aria-label':'Interactive Konnect studies',children:[0,1,2,3,4,5,4,2,1,0,5,3].map((id,i)=>h('button',{type:'button','aria-label':'Turn Konnect study '+(i+1),'aria-pressed':false,onClick:e=>{const b=e.currentTarget;b.classList.toggle('is-turned');b.setAttribute('aria-pressed',String(b.classList.contains('is-turned')))},className:'pq-preview-card '+([0,4,8,10].includes(i)?'is-back':''),children:[0,4,8,10].includes(i)?h('img',{src:asset('/grail-mark.svg'),alt:''}):h('img',{src:asset('/heroes/'+heroes[id]+'.webp'),alt:''})},i))}),
   h('p',{className:'pq-phone-tip',children:'Your next match is a little bit of magic.'}),
   h(Button,{label:"Explore our work"}),h('div',{className:'pq-home-bar','aria-hidden':true})
 ]})}

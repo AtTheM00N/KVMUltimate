@@ -15,4 +15,4 @@ export function loadGameHeroes(progress){
 }
 function setup(canvas,color){canvas.width=690;canvas.height=980;const c=canvas.getContext('2d');c.scale(2,2);c.clearRect(0,0,345,490);c.fillStyle=color;c.beginPath();c.roundRect(0,0,345,490,14);c.fill();c.strokeStyle='#666370';c.lineWidth=1;c.beginPath();c.roundRect(12,12,321,466,8);c.stroke();return c}
 export function drawGameCardFront(canvas,q,heroes){const d=GAME_CARDS[((q.id||1)-1)%6],c=setup(canvas,'#000000');c.drawImage(heroes[d.id-1],22,94,301,301)}
-export function drawGameCardBack(canvas,q){const c=setup(canvas,'#8f0000');c.strokeStyle='#f7f7f2';c.lineWidth=8;c.beginPath();c.moveTo(83,155);c.lineTo(262,335);c.moveTo(262,155);c.lineTo(83,335);c.moveTo(83,245);c.lineTo(262,245);c.stroke();c.fillStyle='#8f0000';c.beginPath();c.arc(172.5,245,12,0,Math.PI*2);c.fill()}
+export function drawGameCardBack(canvas,q){const c=setup(canvas,'#8f0000');c.save();c.translate(88,135);c.scale(.225,.225);c.translate(-130.2,-20);c.fillStyle='#f7f7f2';c.fill(new Path2D('M309.40 20L309.40 1000L130.20 1000L130.20 20ZM676.20 20L873.60 20L365.40 692L365.40 423.20ZM883.40 1000L662.20 1000L434 689.20L544.60 533.80Z'));c.restore()}

@@ -155,7 +155,7 @@ for(const f of bundle.files){
  const p=path.join(out,f.path.replace(/^public\//,''));await fs.mkdir(path.dirname(p),{recursive:true});await fs.writeFile(p,code);
 }
 for(const a of bundle.assets){const b=await fs.readFile('design-source/threeui/'+a.path);if(crypto.createHash('sha256').update(b).digest('hex')!==a.sha256)throw Error(a.path);const p=path.join(out,a.path.replace(/^public\//,''));await fs.mkdir(path.dirname(p),{recursive:true});await fs.writeFile(p,b)}
-await fs.writeFile(out+'/konnect-logo.svg','<svg xmlns="http://www.w3.org/2000/svg" width="330" height="60" viewBox="0 0 330 60"><text x="0" y="43" fill="#f7f7f2" font-family="Arial,sans-serif" font-weight="700" font-size="43" letter-spacing="-2">KONNECT</text><text x="248" y="25" fill="#f7f7f2" font-family="Arial,sans-serif" font-size="10">VISION</text><text x="248" y="40" fill="#f7f7f2" font-family="Arial,sans-serif" font-size="10">MEDIA</text></svg>');
+await fs.writeFile(out+'/konnect-logo.svg','<svg xmlns="http://www.w3.org/2000/svg" width="330" height="60" viewBox="0 0 330 60"><text x="0" y="43" fill="#f7f7f2" font-family="Arial,sans-serif" font-weight="700" font-size="43" letter-spacing="-2">KONNECT</text><path d="M238 13V47" stroke="#666370"/><text x="250" y="27" fill="#f7f7f2" font-family="Arial,sans-serif" font-weight="500" font-size="15" letter-spacing="1">VISION</text><text x="250" y="45" fill="#f7f7f2" font-family="Arial,sans-serif" font-weight="500" font-size="15" letter-spacing="1">MEDIA</text></svg>');
 let html=await fs.readFile(out+'/landing-pages/pocket-quest.html','utf8');
 html=html.replace(/<head>[\s\S]*?<meta charset/, '<head><meta charset');
 html=html.replace(/<script>document.addEventListener\('click',[\s\S]*?<\/script>/g,'');

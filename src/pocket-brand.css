@@ -57,3 +57,40 @@ html,body{background:#000000!important;color:#f7f7f2!important}
 #root [class*='_inkStatic_']{background:#000000!important}#root [class*='_acceptOverlay_'],#root [class*='_s4mHead_'],#root [class*='_s4mBody_'],#root [class*='_s4mBody_'] p{color:#f7f7f2!important}#root [class*='_s4mCard_']{background:#000000!important;border:1px solid #666370;aspect-ratio:1;padding:0!important;box-shadow:none!important}#root [class*='_s4mCard_']>*{display:none!important}#root [class*='_s4mCard_']::after{content:'';position:absolute;inset:0;background:url('/wp-content/themes/konnect/assets/studio/process.svg') center/85% no-repeat}
 #root .pq-round-button{display:inline-flex!important;align-items:center;justify-content:center;gap:0!important;min-width:0!important;max-width:100%;box-sizing:border-box}#root .pq-round-label{display:block;white-space:normal}#root .pq-world-controls button{background:#8f0000!important;color:#f7f7f2!important;border-radius:0!important}
 #root [class*='_section5_'] h2,#root [class*='_section5_'] h3,#root [class*='_section5_'] p,#root [class*='_s5inner_'] h2,#root [class*='_s5inner_'] h3,#root [class*='_s5inner_'] p{color:#f7f7f2!important}
+/* A quiet signal: two curved paths exchange light in opposite directions. */
+.konnect-signal{width:min(88vw,1280px);height:auto;overflow:visible;opacity:.85}
+.signal-rail{stroke:#eff2f1;stroke-opacity:.18;stroke-width:1}
+.signal-pulse{stroke:#f7f7f2;stroke-width:2;stroke-linecap:round;stroke-dasharray:8 92;filter:drop-shadow(0 0 6px #f7f7f240)}
+.signal-out{animation:signal-out 4.8s linear infinite}.signal-in{animation:signal-in 4.8s linear infinite}
+.signal-ring{stroke:#eff2f1;stroke-opacity:.4;stroke-width:1}.signal-node{fill:#f7f7f2}
+@keyframes signal-out{from{stroke-dashoffset:100}to{stroke-dashoffset:0}}@keyframes signal-in{from{stroke-dashoffset:0}to{stroke-dashoffset:100}}
+/* Additional native scroll runway holds the red reveal before the black sheet. */
+@media(min-width:769px){#root [class*='_section4_']{min-height:200svh}}
+#root [class*='_inkStatic_']{background:#8f0000!important}
+#root [class*='_section5_']{border-radius:4px;border:1px solid #666370;box-shadow:0 -24px 80px #00000040}
+#root .pq-feature{position:relative;isolation:isolate}
+#root .pq-feature::after{content:'';position:absolute;inset:0;z-index:8;background:#000000;pointer-events:none;clip-path:ellipse(calc(var(--red-exit,0) * 150%) calc(var(--red-exit,0) * 150%) at 50% 100%)}
+/* An offset card deck makes its horizontal direction visible before scrolling. */
+.konnect-slideshow{perspective:1600px}
+.konnect-slide-header{top:32px;left:4vw;right:4vw;padding-bottom:24px}
+.konnect-slide-header h2{max-width:38ch;font-size:clamp(20px,2.3vw,32px)!important}
+.konnect-slide-track{padding:120px 8vw 80px;box-sizing:border-box;gap:3vw;perspective:1600px;align-items:center}
+.konnect-slide{flex:0 0 78vw;width:78vw;min-height:0;height:calc(100svh - 200px);max-height:720px;padding:clamp(24px,4vw,64px);gap:5vw;border:1px solid #666370;background:#000000;box-shadow:12px 16px 0 #66637020;transform-origin:center;backface-visibility:hidden;will-change:transform}
+.konnect-slide:nth-child(odd){background:#8f0000;border-color:#8f0000;box-shadow:12px 16px 0 #8f000030}
+.konnect-slide-symbol{width:100%;max-width:380px;background:transparent!important;outline:0!important}
+.konnect-slide-copy h3{font-size:clamp(40px,5.4vw,80px)!important;overflow-wrap:anywhere}
+.konnect-slide-copy p{font-size:clamp(16px,1.35vw,20px);line-height:1.55;max-width:26ch}
+.pq-preview-grid{perspective:700px!important}
+#root .pq-preview-card{appearance:none;padding:0;position:relative;cursor:pointer;transition:transform .45s cubic-bezier(.2,.7,.2,1),border-color .3s,box-shadow .3s;transform-style:preserve-3d;overflow:hidden}
+#root .pq-preview-card img{pointer-events:none;transition:transform .45s,opacity .3s}
+#root .pq-preview-card.is-back img{filter:none!important}
+#root .pq-preview-card::after{content:'';position:absolute;inset:14%;background:url('/wp-content/themes/konnect/assets/studio/mark.svg') center/contain no-repeat;opacity:0;transform:rotateY(180deg);transition:opacity .3s}
+#root .pq-preview-card.is-turned{transform:rotateY(180deg);background:#8f0000!important}
+#root .pq-preview-card.is-turned img{opacity:0}#root .pq-preview-card.is-turned::after{opacity:1}
+#root .pq-preview-card:focus-visible{outline:2px solid #f7f7f2;outline-offset:3px;z-index:2}
+@media(hover:hover) and (pointer:fine){#root .pq-preview-card:hover{transform:translateY(-5px) rotateX(7deg) rotateY(-7deg);border-color:#f7f7f2;box-shadow:0 8px 16px #00000060;z-index:2}#root .pq-preview-card:hover img{transform:scale(1.08)}#root .pq-preview-card.is-turned:hover{transform:translateY(-5px) rotateY(173deg)}}
+#root [class*='_logo_']{min-width:200px!important;width:clamp(200px,18vw,280px)!important;height:auto!important}
+.brand-sub{font-size:12px!important;letter-spacing:.16em!important;opacity:1!important}
+@media(max-width:768px){#root [class*='_section4_']{padding-bottom:40vh}.konnect-slide-track{padding:112px 6vw 140px;gap:5vw}.konnect-slide{flex-basis:84vw;width:84vw;height:calc(100svh - 252px);min-height:430px;padding:24px;grid-template-columns:1fr;align-content:center;gap:16px}.konnect-slide-symbol{width:min(42vw,230px);justify-self:center}.konnect-slide-copy{text-align:center}.konnect-slide-copy h3{font-size:clamp(32px,8vw,48px)!important;margin-bottom:12px!important}.konnect-slide-copy p{font-size:15px;margin:auto}.konnect-slide-header h2{max-width:24ch}.konnect-signal{width:94vw}}
+.konnect-slideshow:not(.is-scroll-driven) .konnect-slide-track{padding:100px 6vw 40px}.konnect-slideshow:not(.is-scroll-driven) .konnect-slide{width:100%;height:auto;min-height:60svh;margin:0 0 32px;transform:none!important}
+@media(prefers-reduced-motion:reduce){.signal-pulse{animation:none;stroke-dasharray:none;opacity:.35}.pq-preview-card,.pq-preview-card img{transition:none!important}.konnect-slide{transform:none!important}}
