@@ -1,3 +1,4 @@
+import {KonnectAtmosphere} from 'grail/konnect-slides.js';
 import {GAME_CARDS,drawGameCardFront,drawGameCardBack,loadGameHeroes} from 'grail/pocket-card-art.js';
 import {n as makeReact,t as makeJSX} from 'grail/jsx-runtime-B4RpOl0S.js';
 const {jsx:h,jsxs:hs}=makeJSX();
@@ -21,7 +22,7 @@ function Phone(){return hs('div',{className:'pq-phone','aria-label':"Konnect des
   h('p',{className:'pq-phone-tip',children:'Your next match is a little bit of magic.'}),
   h(Button,{label:"Explore our work"}),h('div',{className:'pq-home-bar','aria-hidden':true})
 ]})}
-export function PocketFeature(){return hs('section',{className:'_voice_bknov_3 pq-feature',children:[
+export function PocketFeature(){return hs('section',{className:'_voice_bknov_3 pq-feature',children:[h(KonnectAtmosphere,{}),
   hs('div',{className:'pq-chapter',children:[h('span',{children:"Made for your brand"}),h('span',{children:""})]}),
   hs('div',{className:'pq-feature-grid',children:[hs('h2',{className:'pq-feature-title',children:["Clear ",h('br',{}),"ideas."]}),h(Phone,{}),hs('p',{className:'pq-feature-title pq-feature-right',children:["Bold",h('br',{}),"design."]})]}),
   hs('div',{className:'pq-feature-bottom',children:[hs('div',{children:[h('span',{className:'pq-eyebrow',children:"ONE IDEA. A CLEAR DIRECTION."}),h('p',{children:"We connect your message, identity and digital presence around a shared creative direction."})]}),hs('div',{children:[h('span',{className:'pq-eyebrow',children:"MAKE YOUR NEXT CONNECTION."}),h('p',{children:"Tell us what you have in mind. We will help shape the brief and explore how Konnect can support your brand."})]})]})

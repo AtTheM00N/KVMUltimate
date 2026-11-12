@@ -39,3 +39,9 @@ The service sequence now uses inset cards with adjacent edges, alternating red/b
 The ink shader now settles into blood red instead of fading back to black. An additional desktop viewport of scroll runway holds this composition before the black idea sheet arrives. The Clear Ideas phone keeps the red surface; its exit wipe is anchored to the end of the enclosing peel section. Timing remains proportional to the visitor's native scrolling speed rather than forcing a timed pause.
 
 Phone study tiles are labelled buttons with hover lift, keyboard focus, and reversible click/Enter turning feedback. Browser checks verified activation, opposing signal animation, desktop pinning, and no horizontal overflow at 320px, 768px and 1440px. No new library was required; the implementation uses the existing React, Three.js and GSAP stack.
+
+### Atmosphere and deck correction
+
+Clear Ideas now reuses the verified ThreeUI `warpFill` renderer at its settled state, with the same red/black/red field as the preceding phone scene and no connection graphic. A CSS gradient remains behind it if WebGL is unavailable. The circular exit wipe and inherited forge backdrop have been removed; the black deck enters through ordinary vertical scrolling. Explicit light text colors correct the phone scene's lead, paragraph and label contrast.
+
+The pinned sequence now deals cards left from one overlapping stack, with individual translation, rotation and depth rather than moving a horizontal track. Static mode remains a readable vertical list. Desktop visual review and 320px geometry checks passed without overflow or console errors. No ThreeUI connector was returned by plugin discovery; this implementation uses the original ThreeUI source already registered in this repository.

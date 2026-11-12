@@ -22,6 +22,10 @@ export function darkModule(code,file){
   code=code.slice(0,a)+'(0,W.jsx)(`div`,{className:Q.clock,style:{visibility:V?`visible`:`hidden`},children:(0,W.jsx)(KonnectConnection,{})}),'+code.slice(b);
  }
  if(file.endsWith('/pocket-content.js')){
+  code="import {KonnectAtmosphere} from 'grail/konnect-slides.js';\n"+code;
+  const feature="className:'_voice_bknov_3 pq-feature',children:[";
+  if(!code.includes(feature))throw Error('ThreeUI feature boundary changed');
+  code=code.replace(feature,feature+"h(KonnectAtmosphere,{}),");
   code=code.replace("className:'pq-preview-grid','aria-hidden':true","className:'pq-preview-grid','aria-label':'Interactive Konnect studies'");
   code=code.replace("h('div',{className:'pq-preview-card '","h('button',{type:'button','aria-label':'Turn Konnect study '+(i+1),'aria-pressed':false,onClick:e=>{const b=e.currentTarget;b.classList.toggle('is-turned');b.setAttribute('aria-pressed',String(b.classList.contains('is-turned')))},className:'pq-preview-card '");
  }
