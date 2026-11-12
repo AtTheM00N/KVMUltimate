@@ -3,7 +3,8 @@ import {createHash} from 'node:crypto';
 import sharp from 'sharp';
 const output='wp-content/themes/konnect/assets/studio',source='design-source/artwork';
 await mkdir(source,{recursive:true});
-const ink='#242429',red='#e9101b';
+const palette=JSON.parse(await readFile('design-source/palette.json','utf8'));
+const ink=palette.porcelain,red=palette.bloodRed;
 const line=d=>`<path d="${d}"/>`,dot=(x,y)=>`<circle cx="${x}" cy="${y}" r="16" fill="${red}" stroke="none"/>`;
 const marks={
  social:line('M80 80H256C344 80 344 432 432 432M80 432H256C168 432 168 80 432 80')+dot(80,80)+dot(432,432),
@@ -22,7 +23,7 @@ for(const [name,symbol] of Object.entries(aliases)){
  const webp=await sharp(Buffer.from(data)).webp({lossless:true}).toBuffer();await record(name+'.webp',webp);
  if(['intro','work','process','studio','contact'].includes(name)){await writeFile(`${source}/${name}-mobile.svg`,data);await record(name+'-mobile.webp',webp)}
 }
-for(const name of Object.keys(marks))await record(name+'.svg',Buffer.from(svg(name)));
-await record('mark.svg',await readFile(`${source}/mark.svg`));
+for(const name of Object.keys(marks)){await record(name+'.svg',Buffer.from(svg(name)));await record(name+'-on-red.svg',Buffer.from(svg(name).replaceAll('fill="'+red+'"','fill="#000000"')));}
+await record('mark.svg',Buffer.from((await readFile(`${source}/mark.svg`,'utf8')).replace('#242429','#f7f7f2')));
 await writeFile(`${output}/manifest.json`,JSON.stringify({version:6,kind:'2d-artwork',symbolCount:6,totalBytes:files.reduce((n,f)=>n+f.bytes,0),files},null,2));
 console.log('Six original connection symbols generated on a shared 512-unit grid.');

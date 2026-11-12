@@ -13,3 +13,6 @@ for (const name of ['manrope']) {
 console.log('Local font and motion assets prepared.');
 
 for (const name of ['clash-grotesk','general-sans']) await copyFile(`design-source/fonts/${name}.woff2`,`${root}/fonts/${name}.woff2`);
+
+await copyFile('src/brutalist-pointer.js',`${root}/brutalist-pointer.js`);
+await copyFile('src/brutalist-pointer.css',`${root}/brutalist-pointer.css`);

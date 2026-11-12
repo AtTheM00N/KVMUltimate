@@ -13,32 +13,32 @@
         {
           "slug": "ink",
           "name": "Near black",
-          "color": "#0B0B0D"
+          "color": "#000000"
         },
         {
           "slug": "surface",
           "name": "Graphite",
-          "color": "#242429"
+          "color": "#000000"
         },
         {
           "slug": "scarlet",
           "name": "Scarlet",
-          "color": "#E9101B"
+          "color": "#8f0000"
         },
         {
           "slug": "action",
           "name": "Action red",
-          "color": "#B4121B"
+          "color": "#8f0000"
         },
         {
           "slug": "paper",
           "name": "Light grey",
-          "color": "#D6D6D8"
+          "color": "#f7f7f2"
         },
         {
           "slug": "muted",
           "name": "Secondary grey",
-          "color": "#A3A3AB"
+          "color": "#666370"
         }
       ]
     },

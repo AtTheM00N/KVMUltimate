@@ -116,10 +116,10 @@ export function PocketWorld(){
 }
 
 const MAGIC=[
- {label:'Social',value:'S',unit:'SOCIAL MEDIA',hero:'knight',symbol:'✧',color:'#e9101b',line:'Find your voice.',body:'Social strategy and content with a point of view.'},
- {label:'Design',value:'D',unit:'GRAPHIC DESIGN',hero:'ranger',symbol:'ϟ',color:'#d6d6d8',line:'Make a mark.',body:'Identities and visual worlds built around your brand.'},
- {label:'Search',value:'S',unit:'SEARCH STRATEGY',hero:'mage',symbol:'◎',color:'#a3a3ab',line:'Be found.',body:'Help the right people find your brand.'},
- {label:'Campaigns',value:'C',unit:'LEAD GENERATION',hero:'bard',symbol:'✦',color:'#e9101b',line:'Start a conversation.',body:'Campaign messaging, creative and landing pages.'}];
+ {label:'Social',value:'S',unit:'SOCIAL MEDIA',hero:'knight',symbol:'✧',color:'#8f0000',line:'Find your voice.',body:'Social strategy and content with a point of view.'},
+ {label:'Design',value:'D',unit:'GRAPHIC DESIGN',hero:'ranger',symbol:'ϟ',color:'#eff2f1',line:'Make a mark.',body:'Identities and visual worlds built around your brand.'},
+ {label:'Search',value:'S',unit:'SEARCH STRATEGY',hero:'mage',symbol:'◎',color:'#eff2f1',line:'Be found.',body:'Help the right people find your brand.'},
+ {label:'Campaigns',value:'C',unit:'LEAD GENERATION',hero:'bard',symbol:'✦',color:'#8f0000',line:'Start a conversation.',body:'Campaign messaging, creative and landing pages.'}];
 MAGIC.forEach((m,i)=>{const a=window.konnectContent?.services?.serviceCopy||{};m.line=a[i+'_heading']||m.line;m.body=a[i+'_copy']||m.body});
 export function PocketMagic(){
  const root=useRef(null);

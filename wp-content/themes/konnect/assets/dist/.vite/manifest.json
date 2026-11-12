@@ -1,11 +1,27 @@
 {
+  "_ScrollTrigger-BZVPcu9T.js": {
+    "file": "ScrollTrigger-BZVPcu9T.js",
+    "name": "ScrollTrigger"
+  },
   "src/main.js": {
-    "file": "main-DJ6ZgMg-.js",
+    "file": "main-CA22qc4Q.js",
     "name": "main",
     "src": "src/main.js",
     "isEntry": true,
+    "imports": [
+      "_ScrollTrigger-BZVPcu9T.js"
+    ],
     "dynamicImports": [
       "src/scroll.js"
+    ]
+  },
+  "src/pocket-motion.js": {
+    "file": "pocket-motion-CY7yWRPe.js",
+    "name": "pocket-motion",
+    "src": "src/pocket-motion.js",
+    "isEntry": true,
+    "imports": [
+      "_ScrollTrigger-BZVPcu9T.js"
     ]
   },
   "src/scroll.js": {

@@ -8,7 +8,11 @@ add_action('after_setup_theme', function () {
 });
 add_action('wp_enqueue_scripts', function () {
     $url = get_template_directory_uri();
+    wp_enqueue_style('konnect-pointer', $url . '/assets/brutalist-pointer.css', [], filemtime(__DIR__ . '/assets/brutalist-pointer.css'));
+    wp_enqueue_script('konnect-pointer', $url . '/assets/brutalist-pointer.js', [], filemtime(__DIR__ . '/assets/brutalist-pointer.js'), true);
     if (is_front_page()) {
+        $motion_manifest = json_decode(file_get_contents(__DIR__ . '/assets/dist/.vite/manifest.json'), true);
+        if (!empty($motion_manifest['src/pocket-motion.js']['file'])) wp_enqueue_script_module('konnect-slideshow', $url . '/assets/dist/' . $motion_manifest['src/pocket-motion.js']['file'], [], null);
         wp_enqueue_script('konnect-site', $url . '/assets/site.js', [], filemtime(__DIR__ . '/assets/site.js'), true);
         wp_add_inline_script('konnect-site', 'window.kvmConfig=' . wp_json_encode(function_exists('kvm_integration_config') ? kvm_integration_config() : []) . ';', 'before');
         return;
@@ -27,7 +31,7 @@ add_action('wp_head', function () {
     echo '<script>document.documentElement.classList.add("js");</script>';
 }, 0);
 add_action('wp_head', function () {
-    echo '<meta name="theme-color" content="#0b0b0d">';
+    echo '<meta name="theme-color" content="#000000">';
     if (is_singular('kvm_project') && get_post_meta(get_the_ID(), '_kvm_placeholder', true)) echo '<meta name="robots" content="noindex,nofollow">';
     if (is_front_page()) echo '<meta name="description" content="Konnect Vision Media brings social media, design, SEO and lead generation together to help your brand find its voice. Let’s talk about your next project.">';
 });

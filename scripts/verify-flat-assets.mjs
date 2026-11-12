@@ -22,13 +22,13 @@ for(const name of ['bespoke-stencil','clash-grotesk','general-sans'])assert.ok((
 pass('Self-hosted fonts and Gutenberg typography agree');
 const build=JSON.parse(await readFile(`${base}/dist/.vite/manifest.json`,'utf8'));
 assert.ok(build['src/main.js'].dynamicImports.includes('src/scroll.js'));
-assert.equal(Object.keys(build).length,2);
+assert.ok(build['src/pocket-motion.js']?.isEntry,'Homepage GSAP slideshow entry exists');
 let total=0;
 for(const entry of Object.values(build)){
  const bytes=await readFile(`${base}/dist/${entry.file}`); total+=gzipSync(bytes).length;
  assert.ok(!/WebGLRenderer|GLTFLoader|KTX2Loader|three\/addons|studio\.glb|\.wasm/.test(bytes.toString()));
 }
-assert.ok(total<55000);
+assert.ok(total<65000);
 assert.ok(!manifest.files.some(({file})=>/\.glb$|\.ktx2$|shots\.json/.test(file)));
 pass(`Supporting Vite bundle: no WebGL, model or decoder; ${total} bytes combined gzip`);
 await mkdir('artifacts',{recursive:true});

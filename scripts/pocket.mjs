@@ -1,3 +1,4 @@
+import {darkModule,darkPack} from './pocket-dark.mjs';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import crypto from 'node:crypto';
@@ -123,6 +124,7 @@ for(const f of bundle.files){
  pack.assets['/Logo.svg']=root+'/konnect-logo.svg';pack.assets['/Fav.svg']='/wp-content/themes/konnect/assets/studio/mark.svg';
  pack.assets['/fonts/Switzer-Variable.woff2']='/wp-content/themes/konnect/assets/fonts/general-sans.woff2';
  pack.assets['/fonts/PPPangaia-Light.woff2']='/wp-content/themes/konnect/assets/fonts/clash-grotesk.woff2';
+ darkPack(pack);
  code='export default '+JSON.stringify(pack)+';';
  }else code=local(code);
  if(f.path.endsWith('/HomePage-SelUD7Yz.js')){
@@ -149,10 +151,11 @@ for(const f of bundle.files){
  code=code.replace('text:"Different skills."','text:window.konnectContent?.studio?.heading||"Different skills. One studio."').replace('text:"One studio."','text:""');
  code=code.replace(JSON.stringify('KONNECT VISION MEDIA\nCreative direction. Digital presence.'),'("KONNECT VISION MEDIA\\n"+(window.konnectContent?.intro?.copy||"Creative direction. Digital presence."))');
  }
+ code=darkModule(code,f.path);
  const p=path.join(out,f.path.replace(/^public\//,''));await fs.mkdir(path.dirname(p),{recursive:true});await fs.writeFile(p,code);
 }
 for(const a of bundle.assets){const b=await fs.readFile('design-source/threeui/'+a.path);if(crypto.createHash('sha256').update(b).digest('hex')!==a.sha256)throw Error(a.path);const p=path.join(out,a.path.replace(/^public\//,''));await fs.mkdir(path.dirname(p),{recursive:true});await fs.writeFile(p,b)}
-await fs.writeFile(out+'/konnect-logo.svg','<svg xmlns="http://www.w3.org/2000/svg" width="330" height="60" viewBox="0 0 330 60"><text x="0" y="43" fill="#d6d6d8" font-family="Arial,sans-serif" font-weight="700" font-size="43" letter-spacing="-2">KONNECT</text><text x="248" y="25" fill="#d6d6d8" font-family="Arial,sans-serif" font-size="10">VISION</text><text x="248" y="40" fill="#d6d6d8" font-family="Arial,sans-serif" font-size="10">MEDIA</text></svg>');
+await fs.writeFile(out+'/konnect-logo.svg','<svg xmlns="http://www.w3.org/2000/svg" width="330" height="60" viewBox="0 0 330 60"><text x="0" y="43" fill="#f7f7f2" font-family="Arial,sans-serif" font-weight="700" font-size="43" letter-spacing="-2">KONNECT</text><text x="248" y="25" fill="#f7f7f2" font-family="Arial,sans-serif" font-size="10">VISION</text><text x="248" y="40" fill="#f7f7f2" font-family="Arial,sans-serif" font-size="10">MEDIA</text></svg>');
 let html=await fs.readFile(out+'/landing-pages/pocket-quest.html','utf8');
 html=html.replace(/<head>[\s\S]*?<meta charset/, '<head><meta charset');
 html=html.replace(/<script>document.addEventListener\('click',[\s\S]*?<\/script>/g,'');
@@ -171,3 +174,6 @@ console.log('Built Konnect adaptation from 30 verified source files and 41 verif
 
 await fs.copyFile('src/pocket-brand.css',out+'/brand.css');
 await fs.copyFile('src/pocket-brand.js',out+'/brand.js');
+
+await fs.copyFile('src/pocket-slides.js',out+'/konnect-slides.js');
+await fs.copyFile('src/konnect-phone.svg',out+'/konnect-phone.svg');
