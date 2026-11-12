@@ -11,13 +11,15 @@ try {
   console.log(output);
   assert.ok(output.includes('ALL PHP CHECKS PASSED'), 'PHP integration checks failed');
   const results = [];
-  const expected = { '/': 'Ideas become connections.', '/work/': 'Made tangible.', '/services/': 'All the right', '/about/': 'Different skills.', '/contact/': 'What are you', '/campaign/': 'Give your next', '/privacy/': 'Handled with care.', '/cookie-preferences/': 'A clear view', '/project/the-social-canvas/': 'The social canvas' };
+  const expected = { '/': 'KONNECT', '/work/': 'Selected work', '/services/': 'What we do', '/about/': 'One connected studio', '/contact/': 'Make contact', '/campaign/': 'Give your next', '/privacy/': 'Handled with care.', '/cookie-preferences/': 'A clear view', '/project/the-social-canvas/': 'The social canvas' };
   for (const route of ['/', '/work/', '/work/?service=graphic-design', '/services/', '/about/', '/contact/', '/campaign/', '/privacy/', '/cookie-preferences/', '/project/the-social-canvas/']) {
     const response = await fetch(`http://127.0.0.1:9401${route}`);
     const body = await response.text();
     assert.equal(response.status, 200, `${route} status: ${body.slice(-1200)}`);
     assert.ok(!/Fatal error|Warning:|There has been a critical error/.test(body), `${route} PHP errors`);
     assert.ok(body.includes('<main'), `${route} main landmark`);
+    assert.ok(!/[↗↓→↑←↘]/u.test(body), `${route} no arrow UI`);
+    assert.ok(!body.includes('chapter-kicker') && !body.includes('chapter-nav'), `${route} no chapter numbering or progress rail`);
     if (expected[route]) assert.ok(body.includes(expected[route]), `${route} correct content`);
     if (route.includes('service=graphic-design')) { assert.ok(body.includes('Form &amp; feeling')); assert.ok(!body.includes('The social canvas')); }
     assert.ok(!body.includes('googletagmanager.com/gtm.js'), `${route} tracking disabled locally`);
@@ -28,16 +30,17 @@ try {
       assert.ok(body.includes('studio.css') && !body.includes('/assets/site.css'), 'New design styles loaded');
       assert.ok(body.includes('type="module"') && body.includes('/assets/dist/main-'), 'Built module enqueued');
       assert.ok(body.includes('fetchpriority="high"'), 'Hero poster prioritised');
+      assert.ok(!body.includes('<canvas') && body.includes('scroll-stage') && body.includes('scroll.css'), 'Entirely 2D homepage');
       assert.ok(body.includes('<nav class="fallback-nav"') && !body.includes('<noscript><nav class="fallback-nav"'), 'Navigation exists even when a script fails to load');
     } else assert.ok(!body.includes('data-studio '), `${route} has no immersive canvas`);
     results.push(`PASS ${route}`);
   }
-  for (const file of ['studio.glb', 'shots.json', 'intro.webp', 'intro-mobile.webp', 'work.webp', 'social.webp', 'identity.webp', 'search.webp', 'lead.webp', 'process.webp', 'studio.webp', 'contact.webp']) {
+  for (const file of ['mark.svg', 'intro.webp', 'intro-mobile.webp', 'work.webp', 'social.webp', 'identity.webp', 'search.webp', 'lead.webp', 'process.webp', 'studio.webp', 'contact.webp']) {
     const response = await fetch(`http://127.0.0.1:9401/wp-content/themes/konnect/assets/studio/${file}`);
     assert.equal(response.status, 200, `Scene asset ${file} served`);
     assert.ok((await response.arrayBuffer()).byteLength > 100, `${file} nonempty`);
   }
-  results.push('PASS all scene assets served; six accessible HTML chapters and deferred build module');
+  results.push('PASS all 2D artwork served; six accessible HTML chapters, no canvas, deferred motion module');
   assert.equal((await fetch('http://127.0.0.1:9401/page-that-does-not-exist/')).status, 404);
   const privateResponse = await fetch('http://127.0.0.1:9401/wp-json/wp/v2/kvm_enquiry');
   assert.equal(privateResponse.status, 404, 'Enquiries absent from REST');

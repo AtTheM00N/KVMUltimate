@@ -9,8 +9,9 @@
 - Invalid email, expired nonce, malformed fields, honeypot, duplicate detection and rate limits.
 - Successful storage despite missing mail settings or failed mail transport; minimal HTTP success payload, native form-post validation and value restoration.
 - Unverified results hidden and verified results rendered.
-- Six native chapter blocks, escaped edited text/links, selected-project visibility and draft exclusion.
+- Six native chapter blocks, escaped edited text/links, selected-project visibility and draft exclusion. Edited process headings drive the visible words; malformed service overrides fall back safely.
 - Explicit migration, saved revisions, preservation of owner-written copy (including edits between partial migration attempts), repeat-run idempotence, explicit replacement and maintenance-port image URL repair.
+- Generated version-2 homepage recognition and migration to version 3, plus rejected arrow/numbered navigation UI absent from rendered HTML responses.
 - Correct HTTP content for all eight pages, a project detail, URL-based work filtering, scene asset responses and useful 404 behavior.
 - Production demo publishing protection, private placeholder URLs, collapsed empty portfolio chapter, disabled unreviewed integrations, configured ad slots and campaign/homepage exclusions.
 
@@ -18,14 +19,14 @@ These checks inspect server output and data behavior. They do not establish rend
 
 ## Asset and build checks
 
-`npm run build`, `npm run verify:assets` and JavaScript syntax checks passed. The locked dependency installation reported zero known vulnerabilities. `npm run package` generates and checks the installable theme/plugin packages and source archive, verifying required paths and excluding private data. Copies of the test reports are included in the source archive under `docs/evidence/`.
+`npm run build`, `npm run verify:assets` and JavaScript syntax checks passed. `npm run package` generates and checks the installable theme/plugin packages and source archive, verifying required paths and excluding private data. Copies of the test reports are included in the source archive under `docs/evidence/`.
 
-- Compressed GLB: **884,216 bytes** (about 863 KiB).
-- Referenced studio model, fourteen WebP posters and camera definitions: **1,336,112 bytes** (about 1.27 MiB), excluding project media and JavaScript/decoder bundles.
-- Initial motion module: **45,390 bytes gzip**; Three.js lives in a separate dynamic import for eligible homepage desktops.
+- Compressed GLB: **349,424 bytes** (about 341 KiB).
+- Referenced studio model, fourteen WebP posters and camera definitions: **818,080 bytes** (about 0.78 MiB), excluding project media and JavaScript/decoder bundles.
+- Initial motion module: **45,404 bytes gzip**; Three.js lives in a separate dynamic import for eligible homepage desktops.
 - Asset hashes, poster dimensions and scene budgets pass.
 - glTF validator reports zero errors. It does not understand the Meshopt/Basis extensions and reports KTX2-related format warnings. Meshopt is decoded separately using its reference decoder; KTX2 container presence and texture MIME types are checked. Browser GPU transcoding remains unverified.
-- Named portfolio hinge, artwork planes and camera definitions survive compression. Font files and Gutenberg settings agree on Unbounded/Manrope.
+- Named portfolio hinge, artwork planes and camera definitions survive compression. Font files and Gutenberg settings agree on Bespoke Stencil/Manrope.
 
 Evidence: `artifacts/asset-verification.txt`; file hashes and dimensions: `wp-content/themes/konnect/assets/studio/manifest.json`.
 
@@ -33,7 +34,7 @@ Evidence: `artifacts/asset-verification.txt`; file hashes and dimensions: `wp-co
 
 `npm run verify:lifecycle` executes the actual scene module with renderer/network test doubles. It verifies immediate disposal during loading, aborted requests, idempotent cleanup, the initialisation timeout restoring static content, and late decoded geometry being released without changing a replacement scene. Evidence: `artifacts/lifecycle-verification.txt`. These are lifecycle unit checks, not WebGL rendering tests.
 
-Blender completed the original geometry, packed scene, lighting bake, nine desktop renders and five mobile renders. Desktop hero/work and mobile contact posters were visually inspected as offline image assets. The final renders correct the original cover clearance and overly pale paper materials. This review does not establish the browser's lighting, camera framing or poster-to-canvas match.
+Blender completed the original geometry, packed scene, lighting bake, nine desktop renders and five mobile renders. The final desktop hero/work/social and mobile hero posters were visually inspected as offline image assets. The red lacquer monogram was built through Higgsfield 3D Jutsu and imported into the local Blender scene. The opening camera was raised to show the complete monogram. All fourteen final posters have been regenerated and compressed. This review does not establish the browser's lighting, camera framing or poster-to-canvas match.
 
 ## Pending browser and deployment acceptance
 

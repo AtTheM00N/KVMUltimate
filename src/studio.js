@@ -18,6 +18,10 @@ export function mountStudio(root, gsap, ScrollTrigger, isCurrent) {
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.AgXToneMapping;
   renderer.toneMappingExposure = 1.05;
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFShadowMap;
+  // Furniture is static: cache its shadow pass while the camera travels.
+  renderer.shadowMap.autoUpdate = false;
   const scene = new THREE.Scene();
   scene.background = new THREE.Color('#0b0b0d');
   const camera = new THREE.PerspectiveCamera(27, 1, .1, 100);
@@ -36,6 +40,7 @@ export function mountStudio(root, gsap, ScrollTrigger, isCurrent) {
   };
   function disposeGraph(graph) {
     graph.traverse(object => {
+      object.shadow?.dispose();
       if (object.geometry) disposables.add(object.geometry);
       for (const material of (Array.isArray(object.material) ? object.material : [object.material]).filter(Boolean)) {
         for (const value of Object.values(material)) if (value?.isTexture) disposables.add(value);
@@ -68,8 +73,16 @@ export function mountStudio(root, gsap, ScrollTrigger, isCurrent) {
   function leave(event) { if (!event.relatedTarget) { pointer.set(0, 0); queue(); } }
   function visibility() { visible = !document.hidden; previousTime = 0; if (visible) queue(); }
   function focusChapter(event) {
-    const chapter = event.target.closest('[data-chapter]');
-    if (chapter && event.target.getBoundingClientRect().top < 0) chapter.scrollIntoView({ block: 'start', behavior: 'instant' });
+    const chapter=event.target.closest('[data-chapter]');
+    if(!chapter)return;
+    const project=event.target.closest('[data-project-beat]');
+    const service=event.target.closest('[data-service-beat]');
+    // Keyboard focus follows the matching camera beat, including hidden later copy.
+    const lead=event.target.closest('.story-project,.service-words,.chapter-enquiry,.chapter-lead,.hero-actions');
+    if(lead && Number(getComputedStyle(lead).opacity)<.95){
+      const offset=project ? Number(project.dataset.projectBeat)*chapter.offsetHeight*.43+innerHeight*.65 : innerHeight*.25;
+      window.scrollTo({top:(service||chapter).getBoundingClientRect().top+scrollY+offset,behavior:'instant'});
+    }
   }
   let shots;
   function measure() {
@@ -83,16 +96,16 @@ export function mountStudio(root, gsap, ScrollTrigger, isCurrent) {
       knots.push({ at: THREE.MathUtils.clamp(at, 0, distance), position: new THREE.Vector3(...s.position).add(new THREE.Vector3(dx, 0, 0)), target: new THREE.Vector3(...s.target), cover: s.cover, framing });
     };
     knots = [];
-    add(0, 'intro'); add(innerHeight * .35, 'intro');
+    add(0, 'intro'); add(innerHeight * .22, 'intro');
     const work = find('work');
-    if (work) { add(absolute(work) - innerHeight * .3, 'work', .16); add(absolute(work) + work.offsetHeight * .55, 'work', .14, 1.2); }
-    root.querySelectorAll('[data-service-beat]').forEach(el => add(absolute(el) - innerHeight * .25, el.dataset.serviceBeat, .16));
-    for (const [id, framing] of [['process', -.12], ['studio', -.16], ['contact', -.17]]) {
-      const el = find(id); if (el) add(absolute(el) - innerHeight * .1, id, framing);
+    if (work) { add(absolute(work), 'work'); if(work.querySelectorAll('[data-project-beat]').length>1)add(absolute(work) + work.offsetHeight * .58, 'work', 0, .8); }
+    root.querySelectorAll('[data-service-beat]').forEach(el => add(absolute(el), el.dataset.serviceBeat, 0));
+    for (const [id, framing] of [['process', 0], ['studio', 0], ['contact', -.20]]) {
+      const el = find(id); if (el) add(absolute(el), id, framing);
     }
-    add(distance, 'contact', -.17);
+    add(distance, 'contact', -.20);
     knots.sort((a, b) => a.at - b.at);
-    queue();
+    choreograph(); queue();
   }
   function resize() {
     if (disposed) return;
@@ -121,8 +134,15 @@ export function mountStudio(root, gsap, ScrollTrigger, isCurrent) {
     const a = knots[i], b = knots[i + 1];
     const progress = THREE.MathUtils.clamp((at - a.at) / Math.max(1, b.at - a.at), 0, 1);
     const t = progress * progress * (3 - 2 * progress);
-    position.lerpVectors(a.position, b.position, t);
-    target.lerpVectors(a.target, b.target, t);
+    // Hermite interpolation keeps velocity continuous across connected camera shots.
+    const prev = knots[Math.max(0, i - 1)], next = knots[Math.min(knots.length - 1, i + 2)];
+    const interpolate = (out, key) => {
+      const u = progress, u2 = u*u, u3 = u2*u, span = b.at-a.at;
+      const m0 = b[key].clone().sub(prev[key]).multiplyScalar(.7 * span / Math.max(1,b.at-prev.at));
+      const m1 = next[key].clone().sub(a[key]).multiplyScalar(.7 * span / Math.max(1,next.at-a.at));
+      out.copy(a[key]).multiplyScalar(2*u3-3*u2+1).addScaledVector(m0,u3-2*u2+u).addScaledVector(b[key],-2*u3+3*u2).addScaledVector(m1,u3-u2);
+    };
+    interpolate(position,'position'); interpolate(target,'target');
     camera.position.copy(position); camera.position.x += currentPointer.x * .09; camera.position.y -= currentPointer.y * .07;
     camera.lookAt(target);
     const framing = THREE.MathUtils.lerp(a.framing, b.framing, t);
@@ -132,6 +152,52 @@ export function mountStudio(root, gsap, ScrollTrigger, isCurrent) {
     if (!root.classList.contains('is-painted')) { root.classList.add('is-painted'); root.dataset.sceneState = 'ready'; }
     dirty = false;
     if (currentPointer.distanceToSquared(pointer) > .00001) queue();
+  }
+  function choreograph() {
+    if(!trigger)return;
+    const progress=trigger.progress();
+    trigger.clear();
+    for(const element of animatedCopy)gsap.set(element,{clearProps:'opacity,visibility,transform'});
+    animatedCopy.clear();
+    trigger.fromTo(playhead, { value: 0 }, { value: 1, duration: 1, ease: 'none' }, 0);
+    const scrollPosition = element => {
+      const top = element.getBoundingClientRect().top + scrollY - root.getBoundingClientRect().top - scrollY;
+      return THREE.MathUtils.clamp(top / distance, 0, 1);
+    };
+    const reveal = (element, start, span = .06, scale = .97) => {
+      if (!element) return;
+      const at = THREE.MathUtils.clamp(start, 0, .94);
+      const duration = THREE.MathUtils.clamp(span, .012, 1 - at);
+      animatedCopy.add(element);
+      trigger.fromTo(element, { opacity: 0, y: 24, scale }, { opacity: 1, y: 0, scale: 1, duration, ease: 'none' }, at);
+    };
+    for (const chapter of root.querySelectorAll('[data-chapter]')) {
+      const top = scrollPosition(chapter);
+      const span = chapter.offsetHeight / distance;
+      const lead = chapter.querySelector('.chapter-lead:not(.screen-reader-text)');
+      if (chapter.dataset.chapter === 'intro') {
+        if (lead) { animatedCopy.add(lead); trigger.to(lead,{opacity:0,y:-80,scale:1.08,duration:.07,ease:'none'},.012); }
+        const actions=chapter.querySelector('.hero-actions');
+        if(actions){animatedCopy.add(actions);trigger.to(actions,{opacity:0,duration:.035},.035);}
+      } else if (lead) {
+        reveal(lead, Math.max(0,top-.045), .045, 1);
+        if(chapter.dataset.chapter !== 'contact')trigger.to(lead,{opacity:0,y:-40,duration:.035,ease:'none'},Math.min(.94,top+span-.075));
+      }
+      chapter.querySelectorAll('.story-project').forEach((project,index)=>{
+        const at=top+.02+index*span*.43;
+        reveal(project,at,.045,1);
+        trigger.to(project,{opacity:0,y:-25,duration:.025,ease:'none'},at+span*.36);
+      });
+      chapter.querySelectorAll('[data-service-beat]').forEach(article=>{
+        const words=article.querySelector('.service-words'); const at=scrollPosition(article);
+        reveal(words,at-.035,.045,1);
+        trigger.to(words,{opacity:0,y:-35,duration:.025,ease:'none'},at+innerHeight/distance-.055);
+      });
+      chapter.querySelectorAll('.story-process span').forEach((step,index)=>{reveal(step,top-.03+index*.024,.045,1);trigger.to(step,{opacity:0,y:-30,duration:.035,ease:'none'},top+span-.055);});
+      const enquiry=chapter.querySelector('.chapter-enquiry');
+      if(enquiry)reveal(enquiry,top-.035,.045,1);
+    }
+    trigger.progress(progress, true);
   }
   async function initialise() {
     const [sceneResponse, shotsResponse] = await Promise.all([
@@ -148,12 +214,27 @@ export function mountStudio(root, gsap, ScrollTrigger, isCurrent) {
     if (disposed || !isCurrent()) { disposeGraph(gltf.scene); cleanup(); return; }
     model = gltf.scene; scene.add(model);
     hinge = model.getObjectByName('CoverHinge');
+    const movingCover = new Set();
+    hinge?.traverse(object => movingCover.add(object));
+    const anisotropy = Math.min(4, renderer.capabilities.getMaxAnisotropy());
+    model.traverse(object => {
+      if (!object.isMesh) return;
+      object.castShadow = !movingCover.has(object);
+      object.receiveShadow = true;
+      for (const material of (Array.isArray(object.material) ? object.material : [object.material])) {
+        if (material.map) material.map.anisotropy = anisotropy;
+      }
+    });
     const room = new RoomEnvironment();
     const pmrem = new THREE.PMREMGenerator(renderer);
     environment = pmrem.fromScene(room, .04); scene.environment = environment.texture;
-    scene.environmentIntensity = .7; room.dispose(); pmrem.dispose();
-    scene.add(new THREE.HemisphereLight(0xdce5f5, 0x393338, 1.1));
-    const key = new THREE.DirectionalLight(0xe9edf5, 3.2); key.position.set(-4, 9, 3); scene.add(key);
+    scene.environmentIntensity = .38; room.dispose(); pmrem.dispose();
+    scene.add(new THREE.HemisphereLight(0xdce5f5, 0x17171c, .5));
+    const key = new THREE.DirectionalLight(0xe9edf5, 3.4); key.position.set(-6, 11, 5);
+    key.castShadow = true; key.shadow.mapSize.set(2048, 2048);
+    Object.assign(key.shadow.camera, { left: -16, right: 16, top: 16, bottom: -16, near: .5, far: 45 });
+    key.shadow.camera.updateProjectionMatrix(); key.shadow.normalBias = .008; key.shadow.bias = -.0001;
+    scene.add(key); renderer.shadowMap.needsUpdate = true;
     const rim = new THREE.DirectionalLight(0xf0d2cc, 1.6); rim.position.set(5, 7, -5); scene.add(rim);
     let projects = [];
     try { projects = JSON.parse(root.querySelector('[data-projects]')?.dataset.projects || '[]'); } catch {}
@@ -181,34 +262,7 @@ export function mountStudio(root, gsap, ScrollTrigger, isCurrent) {
     trigger = gsap.timeline({ onUpdate: queue,
       scrollTrigger: { trigger: root, start: 'top top', end: 'bottom bottom', scrub: .5, invalidateOnRefresh: true }
     });
-    trigger.to(playhead, { value: 1, duration: 1, ease: 'none' }, 0);
-    const scrollPosition = element => {
-      const top = element.getBoundingClientRect().top + scrollY - root.getBoundingClientRect().top - scrollY;
-      return THREE.MathUtils.clamp(top / distance, 0, 1);
-    };
-    const reveal = (element, start, span = .06, scale = .97) => {
-      if (!element) return;
-      const at = THREE.MathUtils.clamp(start, 0, .94);
-      const duration = THREE.MathUtils.clamp(span, .012, 1 - at);
-      animatedCopy.add(element);
-      trigger.fromTo(element, { autoAlpha: 0, y: 24, scale }, { autoAlpha: 1, y: 0, scale: 1, duration, ease: 'none' }, at);
-    };
-    for (const chapter of root.querySelectorAll('[data-chapter]')) {
-      const top = scrollPosition(chapter);
-      const bottom = THREE.MathUtils.clamp(top + chapter.offsetHeight / distance, 0, 1);
-      const lead = chapter.querySelector('.chapter-lead');
-      reveal(lead, top - .055, .09);
-      if (lead && bottom < 1) {
-        const exit = Math.max(top + .13, bottom - .10);
-        const element = lead;
-        trigger.to(element, { autoAlpha: 0, y: -18, duration: Math.min(.055, Math.max(.012, 1 - exit)), ease: 'none' }, exit);
-      }
-      chapter.querySelectorAll('.story-project').forEach((card, index) => reveal(card, top + .08 + index * .035, .065, .96));
-      chapter.querySelectorAll('.studio-services article').forEach(article => reveal(article, scrollPosition(article) - .06, .07));
-      chapter.querySelectorAll('.story-process li').forEach((step, index) => reveal(step, top + .18 + index * .065, .05));
-      const enquiry = chapter.querySelector('.chapter-enquiry');
-      if (enquiry) reveal(enquiry, top + .035, .09, .985);
-    }
+    choreograph();
     ScrollTrigger.addEventListener('refreshInit', measure);
     observer = new IntersectionObserver(entries => {
       for (const entry of entries) {
@@ -223,7 +277,10 @@ export function mountStudio(root, gsap, ScrollTrigger, isCurrent) {
     window.addEventListener('pointermove', move, { passive: true }); window.addEventListener('pointerout', leave);
     window.addEventListener('resize', resize); document.addEventListener('visibilitychange', visibility);
     canvas.addEventListener('webglcontextlost', lost); root.addEventListener('focusin', focusChapter);
-    ScrollTrigger.refresh(); queue();
+    ScrollTrigger.refresh();
+    const destination=location.hash && document.getElementById(location.hash.slice(1));
+    if(destination && root.contains(destination)) destination.scrollIntoView({behavior:'instant',block:'start'});
+    queue();
   }
   timeout = setTimeout(() => { fallback(); cleanup(); }, 15000);
   initialise().catch(error => {

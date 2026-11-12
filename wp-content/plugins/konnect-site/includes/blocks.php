@@ -11,7 +11,7 @@ function kvm_register_blocks() {
                     case 'services': return kvm_service_sections($attributes);
                     case 'project-detail': return kvm_project_detail();
                     case 'business-contact': $email = get_option('kvm_public_email'); return is_email($email) ? '<a class="text-link" href="mailto:' . esc_attr($email) . '">' . esc_html($email) . '</a>' : '';
-                    case 'cookie-preferences': return '<div class="consent-panel"><h2>Your cookie preferences</h2><p>Essential functions keep this site and its enquiry form working. Optional analytics and advertising remain off until you choose to enable them.</p><form data-consent-form><label><input type="checkbox" checked disabled> Essential functions (always active)</label><label><input type="checkbox" name="analytics"> Analytics and campaign measurement</label><label><input type="checkbox" name="advertising"> Publisher advertising</label><button class="button button-red" type="submit">Save preferences ↗</button><p role="status" data-consent-status></p></form><noscript>Optional analytics and advertising are disabled because JavaScript is unavailable.</noscript></div>';
+                    case 'cookie-preferences': return '<div class="consent-panel"><h2>Your cookie preferences</h2><p>Essential functions keep this site and its enquiry form working. Optional analytics and advertising remain off until you choose to enable them.</p><form data-consent-form><label><input type="checkbox" checked disabled> Essential functions (always active)</label><label><input type="checkbox" name="analytics"> Analytics and campaign measurement</label><label><input type="checkbox" name="advertising"> Publisher advertising</label><button class="button button-red" type="submit">Save preferences </button><p role="status" data-consent-status></p></form><noscript>Optional analytics and advertising are disabled because JavaScript is unavailable.</noscript></div>';
                 }
             }]);
     }
@@ -35,7 +35,7 @@ function kvm_projects($attributes = []) {
     while ($query->have_posts()) { $query->the_post(); $id = get_the_ID(); ?>
       <article class="project-card" data-reveal><a href="<?php the_permalink(); ?>" class="project-link">
         <div class="project-media"><?php if (has_post_thumbnail()) the_post_thumbnail('large', ['loading' => 'lazy']); else echo kvm_art(get_post_meta($id, '_kvm_art', true)); ?></div>
-        <div class="project-meta"><div><p class="eyebrow"><?php echo esc_html(strip_tags(get_the_term_list($id, 'kvm_service', '', ' / ')) ?: 'Selected project'); ?></p><h3><?php the_title(); ?></h3></div><span class="project-arrow" aria-hidden="true">↗</span></div>
+        <div class="project-meta"><div><p class="eyebrow"><?php echo esc_html(strip_tags(get_the_term_list($id, 'kvm_service', '', ' · ')) ?: 'Selected project'); ?></p><h3><?php the_title(); ?></h3></div></div>
         <?php if (get_post_meta($id, '_kvm_placeholder', true)) echo '<p class="preview-label">Preview placeholder</p>'; ?>
       </a></article>
     <?php }
@@ -57,11 +57,11 @@ function kvm_project_detail() {
     foreach (array_filter(array_map('absint', explode(',', get_post_meta($id, '_kvm_gallery', true)))) as $image) echo wp_get_attachment_image($image, 'large', false, ['loading' => 'lazy']);
     echo '</div>';
     if (!get_post_meta($id, '_kvm_placeholder', true)) echo kvm_ad_slot('project');
-    echo '<div class="section-heading"><h2>More to explore.</h2><a class="text-link" href="' . esc_url(home_url('/work/')) . '">All work ↗</a></div>';
+    echo '<div class="section-heading"><h2>More to explore.</h2><a class="text-link" href="' . esc_url(home_url('/work/')) . '">All work </a></div>';
     // Related projects exclude the current entry and respect public placeholder protection.
     $related = new WP_Query(['post_type' => 'kvm_project', 'post__not_in' => [$id], 'posts_per_page' => 2, 'orderby' => 'menu_order', 'order' => 'ASC']);
     echo '<div class="related-projects">';
-    while ($related->have_posts()) { $related->the_post(); echo '<a class="text-link" href="' . esc_url(get_permalink()) . '">' . esc_html(get_the_title()) . ' ↗</a>'; }
+    while ($related->have_posts()) { $related->the_post(); echo '<a class="text-link" href="' . esc_url(get_permalink()) . '">' . esc_html(get_the_title()) . ' </a>'; }
     if (!$related->post_count) echo '<p>More projects will be shared here as they are published.</p>';
     echo '</div>'; wp_reset_postdata(); return ob_get_clean();
 }
@@ -81,6 +81,6 @@ function kvm_service_sections($attributes = []) {
     }
     unset($item);
     ob_start(); foreach ($items as $i => $item) : ?>
-    <section class="service-row" id="<?php echo esc_attr(sanitize_title($item[0])); ?>" data-reveal><div class="service-visual"><?php echo kvm_studio_picture(['social','identity','search','lead'][$i]); ?></div><div><span class="service-number">0<?php echo $i + 1; ?></span><p class="eyebrow"><?php echo esc_html($item[0]); ?></p><h2><?php echo esc_html($item[1]); ?></h2></div><div><p><?php echo esc_html($item[2]); ?></p><p class="deliverables"><?php echo esc_html($item[3]); ?></p><a class="text-link" href="<?php echo esc_url(add_query_arg('interest', $item[0], home_url('/contact/'))); ?>">Discuss this service ↗</a></div></section>
+    <section class="service-row" id="<?php echo esc_attr(sanitize_title($item[0])); ?>" data-reveal><div class="service-visual"><?php echo kvm_studio_picture(['social','identity','search','lead'][$i]); ?></div><div><p class="eyebrow"><?php echo esc_html($item[0]); ?></p><h2><?php echo esc_html($item[1]); ?></h2></div><div><p><?php echo esc_html($item[2]); ?></p><p class="deliverables"><?php echo esc_html($item[3]); ?></p><a class="text-link" href="<?php echo esc_url(add_query_arg('interest', $item[0], home_url('/contact/'))); ?>">Discuss this service </a></div></section>
     <?php endforeach; echo kvm_ad_slot('services'); return ob_get_clean();
 }

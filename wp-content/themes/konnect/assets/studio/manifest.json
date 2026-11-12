@@ -1,87 +1,82 @@
 {
-  "version": 2,
-  "sceneBytes": 884216,
-  "totalBytes": 1336112,
+  "version": 4,
+  "kind": "2d-artwork",
+  "totalBytes": 291747,
   "files": [
     {
-      "file": "contact-mobile.webp",
-      "bytes": 20980,
-      "sha256": "d18d2fd2c031548a788108682a2ee43d2707111909cc5fb4ebd714f0784313a6"
-    },
-    {
-      "file": "contact.webp",
-      "bytes": 29224,
-      "sha256": "699412f6794dc43d71cc067d72f759daa8c7d3f228e520549e65e34a61c2b48a"
-    },
-    {
-      "file": "identity.webp",
-      "bytes": 25708,
-      "sha256": "4c30a2e099ccc97d1fd0c68dfb8363f25d4a70b241a0d0615103eda9b7da6e79"
+      "file": "intro.webp",
+      "bytes": 6830,
+      "sha256": "3e22666f7f350b5f6e4371f76f2f6fd021288d80c8815d878b13b1278ad25299"
     },
     {
       "file": "intro-mobile.webp",
-      "bytes": 22728,
-      "sha256": "310331b97d3fc71e03b48f4cedda6682932edda69429f8527b7168d918595a5d"
-    },
-    {
-      "file": "intro.webp",
-      "bytes": 40344,
-      "sha256": "3f753883c106711b87a8fcbf31170a9bc0ade3535ead46afc6f7f1f86e16c03b"
-    },
-    {
-      "file": "lead.webp",
-      "bytes": 34880,
-      "sha256": "aa5cecf0a1840752e6620d25bf8732c230ddbbbe948700b196f05a6ea9115406"
-    },
-    {
-      "file": "process-mobile.webp",
-      "bytes": 29400,
-      "sha256": "dff5c145192dfd4aea935f02ce0bd54155765d97eb092557127e0fe24967b170"
-    },
-    {
-      "file": "process.webp",
-      "bytes": 41230,
-      "sha256": "0df92bd895dd34f636bcee5f1c5e0f90f9827e8a458ca1b143e22b1e2854fe62"
-    },
-    {
-      "file": "search.webp",
-      "bytes": 28108,
-      "sha256": "9580156ac439f94194fc8a0e7b812e6bebefff160a6b60bf9e1d26814f371a29"
-    },
-    {
-      "file": "shots.json",
-      "bytes": 1528,
-      "sha256": "b29ac510597d36081e6165e1f3aa159db85284ff68ce678843f79cf591474d1d"
-    },
-    {
-      "file": "social.webp",
-      "bytes": 35804,
-      "sha256": "275f2cb03112158700733e9a7f1c342938b2ad797b2e6d00f1eeb7313315119f"
-    },
-    {
-      "file": "studio-mobile.webp",
-      "bytes": 24020,
-      "sha256": "f2e7f1c8b9c95c43afffa54ddefea10a5d60e3e67b670b6559c14b97df8ef473"
-    },
-    {
-      "file": "studio.glb",
-      "bytes": 884216,
-      "sha256": "45a7ab911267c7321f3d886960831ea0bc0929288c301b5962a554624ebd2962"
-    },
-    {
-      "file": "studio.webp",
-      "bytes": 43030,
-      "sha256": "0f9329a8c39d7736f44cea5ff5262f6e77f79f7f7aa995b13868a41721ede306"
-    },
-    {
-      "file": "work-mobile.webp",
-      "bytes": 29936,
-      "sha256": "156a52fa9ad4ca45e5795b8b88f3928cce6199622c9387a1fc4fc55375f0e6de"
+      "bytes": 3532,
+      "sha256": "af13a15b76e3e7e76f2ad216a4e7f8c7cbef85fb8cc3bf8d1b95cb9d3d615e39"
     },
     {
       "file": "work.webp",
-      "bytes": 44976,
-      "sha256": "e4647f397b29ae1a18e89937fd1a1aa1d70dc6f232a9fd7be704731164aea0e2"
+      "bytes": 47066,
+      "sha256": "dd4184212f50f7ad095691afc3c122cb3b2e2e8de317fe0796ee41e8841d3d61"
+    },
+    {
+      "file": "work-mobile.webp",
+      "bytes": 27234,
+      "sha256": "68c96d91d7b324a1c77d59799cdcf93d5e91a479b6c809278174fc6fb21c241a"
+    },
+    {
+      "file": "social.webp",
+      "bytes": 39914,
+      "sha256": "9df0cd2596ba81d6837ef5a5660540e62ca66117aab81a67c7eaf2084c27a84c"
+    },
+    {
+      "file": "identity.webp",
+      "bytes": 18918,
+      "sha256": "c4254e393b5afb14619786a57922e8f51a6da19af68475ef55cbf158788f9af4"
+    },
+    {
+      "file": "search.webp",
+      "bytes": 22028,
+      "sha256": "8f92bbd0eb96f6c3fc6f83a802781c920ea679669bc66cdcfa21731d75a3b376"
+    },
+    {
+      "file": "lead.webp",
+      "bytes": 27738,
+      "sha256": "9335fd97954f0ebc1b87b0f71f54d5016d2ce4901c3ede8041d594e91f9f8058"
+    },
+    {
+      "file": "process.webp",
+      "bytes": 26806,
+      "sha256": "a9b1d858ef656c190566273a2f568c11bf04ee2446acfce69de3339654d6dba1"
+    },
+    {
+      "file": "process-mobile.webp",
+      "bytes": 14722,
+      "sha256": "bb3b3e67e9daca2abb51a387fe11f8873a739271bb21e11336685de840246001"
+    },
+    {
+      "file": "studio.webp",
+      "bytes": 26198,
+      "sha256": "74773eca1aaaee956c6e3e9d3d5c707e375741e05f3c3d01e11d4664a3d1fef3"
+    },
+    {
+      "file": "studio-mobile.webp",
+      "bytes": 12664,
+      "sha256": "28e245b9ce350c759e3438b0e76c77cc68eca8de9c4c16ecc1c69d4451ac33fe"
+    },
+    {
+      "file": "contact.webp",
+      "bytes": 13590,
+      "sha256": "f7c4456843c8b0a5deaa2b83f2816cbc844b348051a684b4701cc98bc0d5a2ca"
+    },
+    {
+      "file": "contact-mobile.webp",
+      "bytes": 4168,
+      "sha256": "2182dda04df8e65c64da15db42d2552375badd719de1ce58acb5b8e02ab4e917"
+    },
+    {
+      "file": "mark.svg",
+      "bytes": 339,
+      "sha256": "eddff8b8a793f6904a26924edd74be8a5b55834711c4c4cce083262b520acd07"
     }
   ]
 }

@@ -20,9 +20,10 @@ let index = 0;
 for (const texture of document.getRoot().listTextures()) {
   const input = path.resolve(scratch, `texture-${index}.png`);
   const output = path.resolve(scratch, `texture-${index}.ktx2`);
-  await sharp(Buffer.from(texture.getImage())).resize({ width: 1024, height: 1024, fit: 'inside' }).png().toFile(input);
+  const size = /DeskLightBake/i.test(texture.getName()) ? 2048 : 1024;
+  await sharp(Buffer.from(texture.getImage())).resize({ width: size, height: size, fit: 'inside', withoutEnlargement: true }).png().toFile(input);
   execFileSync(binary, ['-file', input, '-output_file', output, '-ktx2', '-mipmap', '-q', '200', '-comp_level', '2'], { windowsHide: true, stdio: 'pipe' });
-  texture.setImage(new Uint8Array(await readFile(output))).setMimeType('image/ktx2').setURI(`desk-${index}.ktx2`);
+  texture.setImage(new Uint8Array(await readFile(output))).setMimeType('image/ktx2').setURI(`studio-material-${index}.ktx2`);
   index++;
 }
 if (index) document.createExtension(KHRTextureBasisu).setRequired(true);
@@ -42,5 +43,5 @@ const sceneBytes = (await stat(`${root}/studio.glb`)).size;
 if (sceneBytes > 4 * 1024 * 1024) throw new Error('Scene exceeds 4MB budget');
 const totalBytes = files.reduce((sum, file) => sum + file.bytes, 0);
 if (totalBytes > 10 * 1024 * 1024) throw new Error('Studio assets exceed 10MB budget');
-await writeFile(`${root}/manifest.json`, JSON.stringify({ version: 2, sceneBytes, totalBytes, files }, null, 2));
+await writeFile(`${root}/manifest.json`, JSON.stringify({ version: 3, sceneBytes, totalBytes, files }, null, 2));
 console.log(`Studio ready: ${(sceneBytes / 1024).toFixed(0)} KB GLB; ${(totalBytes / 1024 / 1024).toFixed(2)} MB with posters.`);

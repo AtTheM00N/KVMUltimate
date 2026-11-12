@@ -4,12 +4,12 @@ add_action('after_setup_theme', function () {
     add_theme_support('post-thumbnails');
     add_theme_support('editor-styles');
     add_editor_style('assets/studio.css');
-    add_editor_style('assets/experience.css');
+    add_editor_style('assets/scroll.css');
 });
 add_action('wp_enqueue_scripts', function () {
     $url = get_template_directory_uri();
     wp_enqueue_style('konnect-site', $url . '/assets/studio.css', [], filemtime(__DIR__ . '/assets/studio.css'));
-    wp_enqueue_style('konnect-experience', $url . '/assets/experience.css', ['konnect-site'], filemtime(__DIR__ . '/assets/experience.css'));
+    wp_enqueue_style('konnect-experience', $url . '/assets/scroll.css', ['konnect-site'], filemtime(__DIR__ . '/assets/scroll.css'));
     wp_enqueue_script('konnect-site', $url . '/assets/site.js', [], filemtime(__DIR__ . '/assets/site.js'), true);
     wp_add_inline_script('konnect-site', 'window.kvmConfig=' . wp_json_encode(function_exists('kvm_integration_config') ? kvm_integration_config() : []) . ';', 'before');
     $manifest_file = __DIR__ . '/assets/dist/.vite/manifest.json';

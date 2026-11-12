@@ -1,29 +1,17 @@
 {
-  "node_modules/three/examples/jsm/libs/basis/basis_transcoder.js": {
-    "file": "assets/basis_transcoder-o4Hde_L7.js",
-    "src": "node_modules/three/examples/jsm/libs/basis/basis_transcoder.js"
-  },
-  "node_modules/three/examples/jsm/libs/basis/basis_transcoder.wasm": {
-    "file": "assets/basis_transcoder-VXdx5NbI.wasm",
-    "src": "node_modules/three/examples/jsm/libs/basis/basis_transcoder.wasm"
-  },
   "src/main.js": {
-    "file": "main-B8lvQ6g1.js",
+    "file": "main-CuR8WWU6.js",
     "name": "main",
     "src": "src/main.js",
     "isEntry": true,
     "dynamicImports": [
-      "src/studio.js"
+      "src/scroll.js"
     ]
   },
-  "src/studio.js": {
-    "file": "studio-CqFoIUoF.js",
-    "name": "studio",
-    "src": "src/studio.js",
-    "isDynamicEntry": true,
-    "assets": [
-      "assets/basis_transcoder-VXdx5NbI.wasm",
-      "assets/basis_transcoder-o4Hde_L7.js"
-    ]
+  "src/scroll.js": {
+    "file": "scroll-D4Wz8Xbd.js",
+    "name": "scroll",
+    "src": "src/scroll.js",
+    "isDynamicEntry": true
   }
 }

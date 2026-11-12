@@ -13,19 +13,20 @@ media.add('(prefers-reduced-motion: no-preference)', () => {
 });
 if (story) {
   let generation = 0;
-  const eligible = matchMedia('(min-width:1024px) and (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference)');
+  const eligible = matchMedia('(min-width:1024px) and (prefers-reduced-motion:no-preference)');
   let dispose = () => {};
   async function update() {
     const token = ++generation;
+    const anchor=[...story.querySelectorAll('[data-chapter]')].find(el=>el.getBoundingClientRect().bottom>innerHeight*.4);
+    const wasImmersive=story.classList.contains('is-scroll');
     dispose(); dispose = () => {};
-    story.classList.remove('is-immersive', 'is-painted', 'is-in-view');
-    if (!eligible.matches || navigator.connection?.saveData) { story.classList.add('is-static'); return; }
+    story.classList.remove('is-scroll');
+    if (!eligible.matches || navigator.connection?.saveData) { story.classList.add('is-static'); if(wasImmersive && anchor && scrollY>0)anchor.scrollIntoView({behavior:'instant',block:'start'}); return; }
     story.classList.remove('is-static');
     try {
-      const { mountStudio } = await import('./studio.js');
+      const { mountScroll } = await import('./scroll.js');
       if (token !== generation) return;
-      // Mount returns its disposer immediately, including while assets are loading.
-      dispose = mountStudio(story, gsap, ScrollTrigger, () => token === generation && eligible.matches);
+      dispose = mountScroll(story, gsap, ScrollTrigger);
     } catch (error) {
       if (token !== generation) return;
       story.classList.add('is-static');

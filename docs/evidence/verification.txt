@@ -37,6 +37,8 @@ PASS Edited chapter text and links escaped
 PASS Two local featured projects
 PASS Selected draft never exposed in scene
 PASS Invalid scene chapter omitted
+PASS Edited process heading drives visible scene copy
+PASS Malformed service overrides safely use defaults
 PASS Empty work chapter preserves private titles
 PASS Migration upgrades baseline and preserves owner edits
 PASS Migration installs native studio journey
@@ -48,6 +50,7 @@ PASS Explicit replacement works after version marker is current
 PASS Saved studio image URLs are origin-independent
 PASS Maintenance-port image URLs repaired explicitly
 PASS Repaired images use current origin
+PASS Version 2 generated home upgrades to sculptural design
 ALL PHP CHECKS PASSED
 
 PASS /

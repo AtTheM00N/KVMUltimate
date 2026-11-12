@@ -11,7 +11,7 @@ const flush = () => new Promise(resolve => setImmediate(resolve));
 async function fixture({ decoding = false } = {}) {
   const timers = new Map(), requests = [], parsed = [];
   let rendererDisposals = 0, decoderDisposals = 0, nextTimer = 0;
-  class Renderer { setPixelRatio() {} dispose() { rendererDisposals++; } }
+  class Renderer { shadowMap = {}; setPixelRatio() {} dispose() { rendererDisposals++; } }
   class Scene {
     constructor() { this.children = []; }
     add(child) { this.children.push(child); }

@@ -26,7 +26,7 @@ function kvm_form($values = [], $errors = [], $success = false) {
       <div class="form-field"><label for="<?php echo esc_attr($id); ?>service">What can we help with?</label><select name="service" id="<?php echo esc_attr($id); ?>service" required aria-describedby="<?php echo esc_attr($id); ?>service-error" <?php echo isset($errors['service']) ? 'aria-invalid="true"' : ''; ?>><option value="">Choose a service</option><?php foreach (kvm_services() as $service) : ?><option <?php selected($values['service'] ?? '', $service); ?>><?php echo esc_html($service); ?></option><?php endforeach; ?></select><span class="field-error" id="<?php echo esc_attr($id); ?>service-error"><?php echo esc_html($errors['service'] ?? ''); ?></span></div>
       <div class="form-field field-wide"><label for="<?php echo esc_attr($id); ?>brief">Tell us about your project</label><textarea id="<?php echo esc_attr($id); ?>brief" name="brief" rows="4" minlength="20" maxlength="5000" required aria-describedby="<?php echo esc_attr($id); ?>brief-error" <?php echo isset($errors['brief']) ? 'aria-invalid="true"' : ''; ?>><?php echo esc_textarea($values['brief'] ?? ''); ?></textarea><span class="field-error" id="<?php echo esc_attr($id); ?>brief-error"><?php echo esc_html($errors['brief'] ?? ''); ?></span></div>
       <p class="form-note field-wide">We’ll use these details to respond to your enquiry. <a href="<?php echo esc_url(home_url('/privacy/')); ?>">Read our privacy notice</a>.</p>
-      <button class="button button-red field-wide" type="submit">Send your enquiry <span aria-hidden="true">↗</span></button>
+      <button class="button button-red field-wide" type="submit">Send your enquiry <span aria-hidden="true"></span></button>
     </form>
     <?php return ob_get_clean();
 }

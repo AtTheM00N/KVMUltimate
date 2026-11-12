@@ -3,20 +3,20 @@ if (!defined('ABSPATH')) exit;
 
 function kvm_studio_defaults() {
     return [
-        'intro' => ['label' => 'Enter the studio', 'heading' => 'Ideas become connections.', 'copy' => 'Strategy, design and digital marketing. Connected from the first brief to the moment your brand meets the world.', 'linkText' => 'Start a project', 'linkUrl' => '/#studio-contact', 'length' => 1.5],
-        'work' => ['label' => 'Open the work', 'heading' => 'A closer look.', 'copy' => 'Creative thinking, made tangible. Explore the work and the ideas behind it.', 'linkText' => 'Explore all work', 'linkUrl' => '/work/', 'length' => 2.5],
-        'services' => ['label' => 'Connect the disciplines', 'heading' => 'Different disciplines. Shared direction.', 'copy' => 'Four ways to bring your brand into focus.', 'linkText' => 'Explore our services', 'linkUrl' => '/services/', 'length' => 3],
-        'process' => ['label' => 'From brief to launch', 'heading' => 'Good work starts with good questions.', 'copy' => 'Understand the challenge. Give the idea a clear expression. Put it into the right places, then learn from what happens.', 'linkText' => 'Our approach', 'linkUrl' => '/about/', 'length' => 1.5],
-        'studio' => ['label' => 'Meet Konnect', 'heading' => 'One connected studio.', 'copy' => 'We bring social media, design, SEO and lead generation into one conversation. For Indian businesses and creative teams ready to take their next step.', 'linkText' => 'Get to know us', 'linkUrl' => '/about/', 'length' => 1],
-        'contact' => ['label' => 'Your next chapter', 'heading' => 'What could we make together?', 'copy' => 'A new identity. A better presence. A campaign with a clear purpose. Bring us your brief.', 'linkText' => 'Start a conversation', 'linkUrl' => '/contact/', 'length' => 1.5],
+        'intro' => ['label' => 'Konnect', 'heading' => 'KONNECT', 'copy' => 'Creative direction. Digital presence.', 'linkText' => 'Start a project', 'linkUrl' => '/#studio-contact', 'length' => 1.5],
+        'work' => ['label' => 'Work', 'heading' => 'Made to connect', 'copy' => '', 'linkText' => 'All work', 'linkUrl' => '/work/', 'length' => 2.5],
+        'services' => ['label' => 'Services', 'heading' => 'What we do', 'copy' => '', 'linkText' => '', 'linkUrl' => '/services/', 'length' => 4],
+        'process' => ['label' => 'Process', 'heading' => 'Understand. Create. Connect.', 'copy' => '', 'linkText' => '', 'linkUrl' => '/about/', 'length' => 1.5],
+        'studio' => ['label' => 'Studio', 'heading' => 'Different skills. One studio.', 'copy' => 'A creative and digital marketing partner for Indian businesses.', 'linkText' => 'Meet Konnect', 'linkUrl' => '/about/', 'length' => 1.5],
+        'contact' => ['label' => 'Contact', 'heading' => 'Make contact', 'copy' => '', 'linkText' => '', 'linkUrl' => '/contact/', 'length' => 1.5],
     ];
 }
 function kvm_studio_services() {
     return [
-        ['title' => 'Social media marketing', 'copy' => 'A presence with a point of view. Content strategy, social creative and campaign planning.', 'slug' => 'social-media-marketing', 'image' => 'social'],
-        ['title' => 'Graphic design', 'copy' => 'Shape, colour and character. Visual identity, digital design and marketing materials.', 'slug' => 'graphic-design', 'image' => 'identity'],
-        ['title' => 'SEO', 'copy' => 'A clearer digital foundation. Search audits, on-page SEO and considered content.', 'slug' => 'seo', 'image' => 'search'],
-        ['title' => 'Lead generation', 'copy' => 'Turn interest into a conversation. Campaign strategy, paid creative and focused landing pages.', 'slug' => 'lead-generation', 'image' => 'lead'],
+        ['title' => 'Social', 'copy' => 'Social strategy and content with a point of view.', 'slug' => 'social-media-marketing', 'image' => 'social'],
+        ['title' => 'Design', 'copy' => 'Identities and visual worlds built around your brand.', 'slug' => 'graphic-design', 'image' => 'identity'],
+        ['title' => 'Search', 'copy' => 'Search strategy that helps the right people find you.', 'slug' => 'seo', 'image' => 'search'],
+        ['title' => 'Campaigns', 'copy' => 'Paid creative and landing pages that invite a conversation.', 'slug' => 'lead-generation', 'image' => 'lead'],
     ];
 }
 function kvm_studio_asset($file) { return get_theme_file_uri('/assets/studio/' . $file); }
@@ -57,47 +57,37 @@ add_action('init', function () {
     ], 'render_callback' => 'kvm_render_story_chapter']);
 });
 function kvm_render_studio($attributes, $content) {
-    $nav = '';
-    foreach (kvm_studio_defaults() as $key => $item) $nav .= '<a href="#studio-' . $key . '" data-chapter-link="' . $key . '"><span>' . esc_html($item['label']) . '</span></a>';
     $interactive = is_front_page();
-    return '<div class="studio-story' . ($interactive ? '' : ' is-static') . '" ' . ($interactive ? 'data-studio' : 'data-studio-static') . ' data-assets="' . esc_url(kvm_studio_asset('')) . '"><div class="studio-stage" aria-hidden="true"><canvas class="studio-canvas" tabindex="-1"></canvas></div><nav class="chapter-nav" aria-label="Studio chapters">' . $nav . '</nav>' . $content . '</div>';
+    return '<div class="studio-story' . ($interactive ? '' : ' is-static') . '" ' . ($interactive ? 'data-studio' : 'data-studio-static') . '><div class="scroll-stage" aria-hidden="true"><div class="scroll-field"></div><img class="scroll-mark" src="' . esc_url(kvm_studio_asset('mark.svg')) . '" alt="" width="900" height="1100"></div>' . $content . '</div>';
 }
 function kvm_render_story_chapter($attributes) {
-    $defaults = kvm_studio_defaults(); $key = $attributes['chapter'] ?? 'intro';
-    if (!isset($defaults[$key])) return '';
-    $a = array_merge($defaults[$key], $attributes); $index = array_search($key, array_keys($defaults), true) + 1;
-    if (is_front_page() && $key === 'intro' && $a['linkUrl'] === '/contact/') $a['linkUrl'] = '/#studio-contact';
-    foreach (['label','heading','copy','linkText','linkUrl'] as $field) if (!is_string($a[$field])) $a[$field] = $defaults[$key][$field];
-    $projects = $key === 'work' ? kvm_studio_projects($a['projectIds'] ?? []) : [];
-    $length = $key === 'work' ? max(1, count($projects) * 1.25) : $a['length'];
-    $data = [];
-    foreach ($projects as $project) $data[] = ['image' => get_the_post_thumbnail_url($project, 'large') ?: '', 'title' => get_the_title($project), 'url' => get_permalink($project)];
+    $defaults=kvm_studio_defaults(); $key=$attributes['chapter']??'intro';
+    if(!isset($defaults[$key]))return '';
+    $a=array_merge($defaults[$key],$attributes);
+    foreach(['heading','copy','linkText','linkUrl'] as $field)if(!is_string($a[$field]))$a[$field]=$defaults[$key][$field];
+    $projects=$key==='work'?kvm_studio_projects($a['projectIds']??[]):[];
+    $data=[]; foreach($projects as $project)$data[]=['image'=>get_the_post_thumbnail_url($project,'large')?:'','title'=>get_the_title($project),'url'=>get_permalink($project)];
+    $length=$key==='work'?max(1,count($projects)*1.25):$a['length'];
     ob_start(); ?>
-    <section id="studio-<?php echo esc_attr($key); ?>" class="story-chapter chapter-<?php echo esc_attr($key); ?>" data-chapter="<?php echo esc_attr($key); ?>" data-length="<?php echo esc_attr($length); ?>" <?php if ($key === 'work') echo 'data-projects="' . esc_attr(wp_json_encode($data)) . '"'; ?> aria-labelledby="title-<?php echo esc_attr($key); ?>" style="--chapter-length:<?php echo esc_attr($length); ?>">
-      <?php echo kvm_studio_picture($key === 'services' ? 'social' : $key, absint($a['posterId'] ?? 0), absint($a['mobilePosterId'] ?? 0), $key === 'intro', 'chapter-poster'); ?>
-      <div class="chapter-body">
-        <div class="chapter-lead">
-        <p class="chapter-kicker"><span>0<?php echo $index; ?></span> <?php echo esc_html($a['label']); ?></p>
-        <?php if ($key === 'intro') : ?><p class="studio-wordmark" aria-hidden="true">KONNECT</p><?php endif; ?>
-        <<?php echo $key === 'intro' ? 'h1' : 'h2'; ?> id="title-<?php echo esc_attr($key); ?>" class="chapter-title"><?php echo esc_html($a['heading']); ?></<?php echo $key === 'intro' ? 'h1' : 'h2'; ?>>
-        <p class="chapter-copy"><?php echo nl2br(esc_html($a['copy'])); ?></p>
-        </div>
-        <?php if ($key === 'work') : ?><div class="story-projects">
-          <?php foreach ($projects as $project) : $demo = get_post_meta($project->ID, '_kvm_placeholder', true); ?>
-            <a class="story-project" href="<?php echo esc_url(get_permalink($project)); ?>"><div class="story-project-image"><?php echo has_post_thumbnail($project) ? get_the_post_thumbnail($project, 'large', ['loading' => 'lazy']) : kvm_studio_picture(get_post_meta($project->ID, '_kvm_art', true) === 'identity' ? 'identity' : 'social'); ?></div><div><h3><?php echo esc_html(get_the_title($project)); ?></h3><p><?php echo $demo ? 'Design study · Not client work' : esc_html(wp_strip_all_tags(get_the_term_list($project->ID, 'kvm_service', '', ' / '))); ?></p></div><span class="project-arrow" aria-hidden="true">↗</span></a>
-          <?php endforeach; if (!$projects) : ?><p class="empty-state">Our portfolio is being prepared. Let’s talk about what we could create for your business.</p><?php endif; ?>
-        </div><?php endif; ?>
-        <?php if ($key === 'services') : ?><div class="studio-services">
-          <?php foreach (kvm_studio_services() as $i => $service) : $overrides = (array) ($a['serviceCopy'] ?? []); ?>
-            <article data-service-beat="<?php echo esc_attr($service['image']); ?>"><?php echo kvm_studio_picture($service['image'], 0, 0, false, 'service-poster'); ?><p class="eyebrow">0<?php echo $i + 1; ?> / <?php echo esc_html($service['title']); ?></p><h3><?php echo esc_html($overrides[$i . '_heading'] ?? $service['title']); ?></h3><p><?php echo esc_html($overrides[$i . '_copy'] ?? $service['copy']); ?></p><a class="text-link" href="<?php echo esc_url(home_url('/services/#' . $service['slug'])); ?>">Explore the service <span aria-hidden="true">↗</span></a></article>
-          <?php endforeach; ?>
-        </div><?php endif; ?>
-        <?php if ($key === 'process') : ?><ol class="story-process"><li>Understand</li><li>Create</li><li>Connect</li></ol><?php endif; ?>
-        <?php if ($key !== 'contact') : ?><a class="<?php echo $key === 'intro' ? 'button button-red' : 'text-link'; ?>" href="<?php echo esc_url(str_starts_with($a['linkUrl'], '/') ? home_url($a['linkUrl']) : $a['linkUrl']); ?>"><?php echo esc_html($a['linkText']); ?> <span aria-hidden="true">↗</span></a><?php endif; ?>
-        <?php if ($key === 'intro') : ?><a class="studio-skip" href="#studio-work">View work <span aria-hidden="true">↓</span></a><?php endif; ?>
-        <?php if ($key === 'contact') : ?><div class="chapter-enquiry"><p class="eyebrow">A few details to begin</p><?php echo do_blocks('<!-- wp:konnect/enquiry /-->'); ?><?php echo do_blocks('<!-- wp:konnect/business-contact /-->'); ?></div><?php endif; ?>
+    <section id="studio-<?php echo esc_attr($key); ?>" class="story-chapter chapter-<?php echo esc_attr($key); ?>" data-chapter="<?php echo esc_attr($key); ?>" data-length="<?php echo esc_attr($length); ?>" <?php if($key==='work')echo 'data-projects="'.esc_attr(wp_json_encode($data)).'"'; ?> aria-labelledby="title-<?php echo esc_attr($key); ?>" style="--chapter-length:<?php echo esc_attr($length); ?>">
+    <?php echo kvm_studio_picture($key==='services'?'social':$key,absint($a['posterId']??0),absint($a['mobilePosterId']??0),$key==='intro','chapter-poster'); ?>
+    <div class="chapter-body">
+      <div class="chapter-lead<?php echo in_array($key,['services','process'])?' screen-reader-text':''; ?>">
+      <<?php echo $key==='intro'?'h1':'h2'; ?> id="title-<?php echo esc_attr($key); ?>" class="chapter-title"><?php echo esc_html($a['heading']); ?></<?php echo $key==='intro'?'h1':'h2'; ?>>
+      <?php if(trim($a['copy'])): ?><p class="chapter-copy"><?php echo nl2br(esc_html($a['copy'])); ?></p><?php endif; ?>
       </div>
-    </section>
+      <?php if($key==='intro'): ?><div class="hero-actions"><a href="#studio-work">Work</a><a class="button button-red" href="<?php echo esc_url($a['linkUrl']); ?>"><?php echo esc_html($a['linkText']); ?></a></div><?php endif; ?>
+      <?php if($key==='work'): ?><div class="story-projects">
+        <?php foreach($projects as $i=>$project): ?><a class="story-project" data-project-beat="<?php echo $i; ?>" href="<?php echo esc_url(get_permalink($project)); ?>"><div class="story-project-image"><?php echo has_post_thumbnail($project)?get_the_post_thumbnail($project,'large',['loading'=>'lazy']):kvm_studio_picture($i?'identity':'social'); ?></div><div class="project-caption"><h3><?php echo esc_html(get_the_title($project)); ?></h3><?php if(get_post_meta($project->ID,'_kvm_placeholder',true)): ?><p>Konnect design study · Not client work</p><?php endif; ?></div></a><?php endforeach; ?>
+        <?php if(!$projects): ?><div class="work-art"><?php echo kvm_studio_picture('work'); ?></div><p class="empty-state">Konnect visual studies. Client portfolio coming soon.</p><?php endif; ?>
+      </div><?php if($a['linkText']): ?><a class="work-index-link" href="<?php echo esc_url($a['linkUrl']); ?>"><?php echo esc_html($a['linkText']); ?></a><?php endif; ?><?php endif; ?>
+      <?php if($key==='services'): ?><div class="studio-services">
+        <?php foreach(kvm_studio_services() as $i=>$service): $overrides=(array)($a['serviceCopy']??[]); foreach(['heading'=>'title','copy'=>'copy'] as $field=>$fallback) if(!isset($overrides[$i.'_'.$field]) || !is_string($overrides[$i.'_'.$field])) $overrides[$i.'_'.$field]=$service[$fallback]; ?><article data-service-beat="<?php echo esc_attr($service['image']); ?>"><?php echo kvm_studio_picture($service['image'],0,0,false,'service-poster'); ?><div class="service-words"><h3><a href="<?php echo esc_url(home_url('/services/#'.$service['slug'])); ?>"><?php echo esc_html($overrides[$i.'_heading']??$service['title']); ?></a></h3><p><?php echo esc_html($overrides[$i.'_copy']??$service['copy']); ?></p></div></article><?php endforeach; ?>
+      </div><?php endif; ?>
+      <?php if($key==='process'): ?><div class="story-process" aria-hidden="true"><?php foreach(preg_split('/(?<=[.!?])\s+/u',trim($a['heading'])) as $word) echo '<span>'.esc_html($word).'</span>'; ?></div><?php endif; ?>
+      <?php if($key==='studio' && $a['linkText']): ?><a class="button" href="<?php echo esc_url($a['linkUrl']); ?>"><?php echo esc_html($a['linkText']); ?></a><?php endif; ?>
+      <?php if($key==='contact'): ?><div class="chapter-enquiry"><?php echo do_blocks('<!-- wp:konnect/enquiry /--><!-- wp:konnect/business-contact /-->'); ?></div><?php endif; ?>
+    </div></section>
     <?php return ob_get_clean();
 }
 
@@ -110,20 +100,33 @@ function kvm_normalize_studio_urls() {
     }
     return $updated;
 }
+function kvm_remove_legacy_arrows() {
+    $updated = [];
+    foreach (get_posts(['post_type'=>'page','post_status'=>'any','posts_per_page'=>-1]) as $page) {
+        $content = str_replace(['↗','↓','→','↑','←','↘'], '', $page->post_content);
+        if ($content !== $page->post_content) {
+            wp_save_post_revision($page->ID);
+            wp_update_post(['ID'=>$page->ID,'post_content'=>wp_slash($content)]);
+            $updated[]=$page->post_name;
+        }
+    }
+    return $updated;
+}
 function kvm_migrate_studio($replace = false) {
-    if (!$replace && get_option('kvm_studio_version') === '2') return ['status' => 'already-current'];
+    if (!$replace && get_option('kvm_studio_version') === '3') return ['status' => 'already-current', 'cleaned' => kvm_remove_legacy_arrows()];
     $updated = []; $preserved = [];
+    $previous = json_decode(file_get_contents(__DIR__ . '/studio-defaults-v2.json'), true) ?: [];
     foreach (['home','work','services','about','contact','campaign'] as $slug) {
         $page = get_page_by_path($slug);
         if (!$page) continue;
         if (trim($page->post_content) === trim(kvm_page_content($slug))) continue;
         $old = kvm_legacy_page_content($slug);
-        if (!$replace && trim($page->post_content) !== trim($old)) { $preserved[] = $slug; continue; }
+        if (!$replace && trim($page->post_content) !== trim($old) && !in_array(trim($page->post_content), array_map('trim', $previous[$slug] ?? []), true)) { $preserved[] = $slug; continue; }
         wp_save_post_revision($page->ID);
         $result = wp_update_post(['ID' => $page->ID, 'post_content' => wp_slash(kvm_page_content($slug))], true);
         if (is_wp_error($result)) return $result;
         $updated[] = $slug;
     }
-    if (!$preserved) update_option('kvm_studio_version', '2');
-    return ['status' => $preserved ? 'custom-content-preserved' : 'migrated', 'updated' => $updated, 'preserved' => $preserved];
+    if (!$preserved) update_option('kvm_studio_version', '3');
+    return ['cleaned' => kvm_remove_legacy_arrows(), 'status' => $preserved ? 'custom-content-preserved' : 'migrated', 'updated' => $updated, 'preserved' => $preserved];
 }

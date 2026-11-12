@@ -6,7 +6,7 @@ check(count(get_posts(['post_type' => 'post', 'name' => 'hello-world'])) === 0, 
 check(count(get_posts(['post_type' => 'kvm_project'])) === 0, 'Demo projects absent publicly');
 check(count(kvm_studio_projects()) === 0, 'Production scene excludes placeholder projects');
 $empty_story = kvm_render_story_chapter(['chapter' => 'work']);
-check(str_contains($empty_story, 'Our portfolio is being prepared.') && str_contains($empty_story, 'data-length="1"'), 'Empty production portfolio collapses unused camera beats');
+check(str_contains($empty_story, 'Konnect visual studies. Client portfolio coming soon.') && str_contains($empty_story, 'data-length="1"'), 'Empty production portfolio shows honest original artwork without unused beats');
 check(!str_contains(kvm_render_studio([], do_blocks(kvm_studio_pattern())), 'publisher-ad'), 'Immersive homepage excludes publisher placements');
 $demo = get_posts(['post_type' => 'kvm_project', 'post_status' => 'draft', 'meta_query' => [], 'suppress_filters' => true]);
 // Query via SQL because the public placeholder guard also protects ordinary WP_Query calls.

@@ -27,7 +27,7 @@ const packages = [];
 for (const [file, required] of [
   ['konnect-theme.zip', ['konnect/style.css', 'konnect/theme.json', 'konnect/assets/studio/studio.glb', 'konnect/assets/dist/.vite/manifest.json']],
   ['konnect-site-plugin.zip', ['konnect-site/konnect-site.php', 'konnect-site/includes/studio.php', 'konnect-site/studio-editor.js']],
-  ['konnect-studio-source.zip', ['design-source/konnect-studio.blend', 'design-source/build_studio.py', 'src/studio.js', 'scripts/verify-lifecycle.mjs', 'docs/evidence/verification.txt', 'package-lock.json']]
+  ['konnect-studio-source.zip', ['design-source/konnect-studio.blend', 'design-source/build_studio.py', 'design-source/detail_studio.py', 'src/studio.js', 'scripts/verify-lifecycle.mjs', 'docs/evidence/verification.txt', 'package-lock.json']]
 ]) {
   const entries = execFileSync('tar', ['-tf', `artifacts/${file}`], { encoding: 'utf8', windowsHide: true }).trim().split(/\r?\n/).map(entry => entry.replaceAll('\\', '/'));
   for (const entry of required) assert.ok(entries.includes(entry), `${file} missing ${entry}`);

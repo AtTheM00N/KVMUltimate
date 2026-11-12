@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Konnect Site
  * Description: Portfolio content, enquiries, native blocks and consent-aware integrations for Konnect Vision Media.
- * Version: 2.0.0
+ * Version: 4.0.0
  * Requires PHP: 8.1
  */
 if (!defined('ABSPATH')) exit;

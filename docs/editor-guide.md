@@ -4,8 +4,9 @@
 
 Open Home in Gutenberg and use List View. The **Konnect studio journey** contains six locked chapter slots: Intro, Work, Services, Process, Studio and Contact. Select a chapter to edit its sidebar controls. All six are beats in one home-page scroll; the menu jumps to them within that journey. The canvas shows a representative still in Gutenberg, not an active 3D scene.
 
-- Keep headings short. Unbounded is deliberately wide; sentence-length explanations belong in Description.
-- Link URL accepts a local path such as `/contact/` or a normal HTTPS URL. Link text is editable separately.
+- Keep headings short. Bespoke Stencil is expressive. Omit the Description when the heading or artwork already communicates the point. Do not add numbered kickers, arrow controls, slash labels or progress ticks.
+- The process heading is split at sentence boundaries into its visible words.
+- Link controls are available for Intro, Work and Studio. Link URL accepts a local path such as `/contact/` or a normal HTTPS URL. Link text is editable separately.
 - Fallback images can be replaced independently for desktop and mobile. Resetting a selection restores the original studio render. Posters are decorative because the nearby HTML supplies the information.
 - Work can select up to two published projects. With both selectors on Automatic, portfolio Order determines the selection. Explicit selections are limited to those selected published records. Draft and private entries are never exposed. Production also excludes preview placeholders.
 - Service chapter panels edit each service heading and description. An empty override uses the default copy. The dedicated Services page has its own service-copy controls.

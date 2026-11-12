@@ -14,7 +14,7 @@
     apiVersion: 3, title: 'Konnect studio journey', category: 'design', icon: 'format-video',
     supports: { html: false, multiple: false },
     edit: () => e('div', useBlockProps({ className: 'kvm-editor-story' }),
-      e('p', { className: 'kvm-editor-note' }, 'Six connected chapters. Edit the content here; the camera and scene are managed by the theme.'),
+      e('p', { className: 'kvm-editor-note' }, 'One continuous 2D scroll. Edit copy, artwork and project selections here; motion is managed by the theme.'),
       e(InnerBlocks, { allowedBlocks: ['konnect/story-chapter'], templateLock: 'all',
         template: Object.entries(config.defaults).map(([chapter, defaults]) => ['konnect/story-chapter', { ...defaults, chapter }]) })),
     save: () => e(InnerBlocks.Content)
@@ -26,12 +26,12 @@
     const mediaControl = (key, label) => e(MediaUploadCheck, { key }, e(MediaUpload, {
       allowedTypes: ['image'], value: a[key], onSelect: image => setAttributes({ [key]: image.id }),
       render: ({ open }) => e('div', { className: 'kvm-editor-media' }, e(Button, { variant: 'secondary', onClick: open }, label),
-        !!a[key] && e(Button, { variant: 'tertiary', onClick: () => setAttributes({ [key]: 0 }) }, 'Use studio render'))
+        !!a[key] && e(Button, { variant: 'tertiary', onClick: () => setAttributes({ [key]: 0 }) }, 'Use Konnect artwork'))
     }));
     return e('section', useBlockProps({ className: 'kvm-editor-chapter' }),
       e(InspectorControls, {},
         e(PanelBody, { title: 'Chapter content' },
-          ...['label', 'heading', 'copy', ...(a.chapter === 'contact' ? [] : ['linkText', 'linkUrl'])].map(key => e(key === 'copy' ? TextareaControl : TextControl, {
+          ...['heading', 'copy', ...(['intro','work','studio'].includes(a.chapter) ? ['linkText', 'linkUrl'] : [])].map(key => e(key === 'copy' ? TextareaControl : TextControl, {
             key, label: ({ label: 'Chapter label', heading: 'Heading', copy: 'Description', linkText: 'Link text', linkUrl: 'Link URL' })[key],
             value: a[key] ?? defaults[key], onChange: value => setAttributes({ [key]: value })
           }))),
@@ -47,7 +47,7 @@
             onChange: value => { const serviceCopy = { ...a.serviceCopy }; if (value.trim()) serviceCopy[`${i}_${key}`] = value; else delete serviceCopy[`${i}_${key}`]; setAttributes({ serviceCopy }); }
           })) ))),
       e('img', { src: poster?.source_url || `${config.assetBase}${a.chapter === 'services' ? 'social' : a.chapter}.webp`, alt: '' }),
-      e('div', {}, e('small', {}, a.label ?? defaults.label), e('h2', {}, a.heading ?? defaults.heading), e('p', {}, a.copy ?? defaults.copy), e('span', {}, `${a.linkText ?? defaults.linkText} ↗`))
+      e('div', {}, e('h2', {}, a.heading ?? defaults.heading), e('p', {}, a.copy ?? defaults.copy), e('span', {}, `${a.linkText ?? defaults.linkText} `))
     );
   }
   wp.blocks.registerBlockType('konnect/story-chapter', {

@@ -11,10 +11,10 @@ function kvm_group($content, $class) {
     return '<!-- wp:group ' . wp_json_encode(['className' => $class]) . ' --><div class="wp-block-group ' . esc_attr($class) . '">' . $content . '</div><!-- /wp:group -->';
 }
 function kvm_cta() {
-    return kvm_html('<section class="cta-section"><p class="eyebrow">Your next chapter starts here</p><h2>Let’s make<br>an impact.</h2><a href="/contact/" aria-label="Start a project enquiry">↗</a></section>');
+ return kvm_html('<section class="cta-section"><h2>Have something<br>in mind?</h2><a class="button button-red" href="/#studio-contact">Let’s talk</a></section>');
 }
 function kvm_intro($eyebrow, $title, $copy) {
-    return kvm_group(kvm_paragraph($eyebrow, 'eyebrow') . kvm_heading($title, 1) . kvm_paragraph($copy), 'page-intro');
+ return kvm_group(kvm_heading($title,1).($copy?kvm_paragraph($copy):''),'page-intro');
 }
 function kvm_legacy_page_content($slug) {
     if ($slug === 'home') return
@@ -33,7 +33,7 @@ function kvm_legacy_page_content($slug) {
     if ($slug === 'campaign') return kvm_intro('Creative campaigns. Clear next steps.', 'Give your next<br>campaign direction.', 'Connect the message, the creative and the landing page around one clear goal: a conversation with the right people.') .
         kvm_html('<div class="campaign-benefits"><section><h2>Start with the audience.</h2><p>Define who you want to reach and what matters to them.</p></section><section><h2>Connect the message.</h2><p>Bring campaign copy and creative into a shared direction.</p></section><section><h2>Make the next step clear.</h2><p>Give interested visitors a focused way to enquire.</p></section></div>') . kvm_heading('Explore the creative direction.') . '<!-- wp:konnect/projects {"limit":2} /-->' . kvm_heading('Tell us what you have in mind.') . '<!-- wp:konnect/enquiry /-->';
     if ($slug === 'privacy') return kvm_intro('Privacy', 'Your details.<br>Handled with care.', 'Preview notice — business details, retention periods and service providers must be confirmed before launch.') .
-        kvm_group(kvm_heading('When you contact us') . kvm_paragraph('The enquiry form collects your name, email, optional phone number, service interest and project brief so the business can respond. Submissions are stored privately in WordPress and a notification is sent to the configured business inbox.') . kvm_heading('Optional measurement and advertising') . kvm_paragraph('Optional analytics and publisher advertising are disabled in this local preview. When configured for launch, they load only after the corresponding cookie preference is enabled. You can change your choice on the cookie preferences page.') . kvm_heading('Before this site goes live') . kvm_paragraph('The business must publish its legal identity and privacy contact, the applicable retention schedule, the actual hosting, email, analytics and advertising providers, and information about requests concerning personal data.') . kvm_html('<a class="text-link" href="/cookie-preferences/">Manage cookie preferences ↗</a>'), 'legal-copy');
+        kvm_group(kvm_heading('When you contact us') . kvm_paragraph('The enquiry form collects your name, email, optional phone number, service interest and project brief so the business can respond. Submissions are stored privately in WordPress and a notification is sent to the configured business inbox.') . kvm_heading('Optional measurement and advertising') . kvm_paragraph('Optional analytics and publisher advertising are disabled in this local preview. When configured for launch, they load only after the corresponding cookie preference is enabled. You can change your choice on the cookie preferences page.') . kvm_heading('Before this site goes live') . kvm_paragraph('The business must publish its legal identity and privacy contact, the applicable retention schedule, the actual hosting, email, analytics and advertising providers, and information about requests concerning personal data.') . kvm_html('<a class="text-link" href="/cookie-preferences/">Manage cookie preferences</a>'), 'legal-copy');
     if ($slug === 'cookie-preferences') return kvm_intro('Your choice', 'A clear view<br>of your cookies.', 'Choose which optional functions you want to allow.') . '<!-- wp:konnect/cookie-preferences /-->';
     return '';
 }

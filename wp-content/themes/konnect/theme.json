@@ -47,15 +47,15 @@
       "fontFamilies": [
         {
           "slug": "display",
-          "name": "Unbounded",
-          "fontFamily": "Unbounded, sans-serif",
+          "name": "Bespoke Stencil",
+          "fontFamily": "\"Bespoke Stencil\", sans-serif",
           "fontFace": [
             {
-              "fontFamily": "Unbounded",
+              "fontFamily": "Bespoke Stencil",
               "fontStyle": "normal",
-              "fontWeight": "200 900",
+              "fontWeight": "500",
               "src": [
-                "file:./assets/fonts/unbounded.woff2"
+                "file:./assets/fonts/bespoke-stencil.woff2"
               ]
             }
           ]
@@ -155,7 +155,7 @@
           "fontFamily": "var:preset|font-family|display",
           "fontWeight": "500",
           "lineHeight": "1.15",
-          "letterSpacing": "-0.045em"
+          "letterSpacing": "-0.025em"
         }
       },
       "link": {
