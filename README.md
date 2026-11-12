@@ -1,10 +1,18 @@
 # Konnect Vision Media
 
-A custom WordPress block theme, companion plugin and original 3D studio. The homepage is one **From brief to launch** scroll: six connected chapters coordinated on a single camera and type timeline. Its menu jumps to Work, Services, Studio and Contact within the same page. Bespoke Stencil + Manrope and a red/black/grey material palette carry through project, service and campaign details. See `docs/cinematic-studio.md` for the scene architecture and `docs/editor-guide.md` for editing. The earlier YouTube style guide is historical reference, superseded by this redesign.
+## Current design
+
+The homepage now uses the [Pocket Quest source adaptation](docs/pocket-integration.md), with Konnect branding and the existing WordPress enquiry flow. `npm run build` verifies and regenerates it from the registered source bundle.
+
+## Previous editorial foundation
+
+A custom WordPress block theme and companion plugin. The homepage connects six editable chapters through an editorial 2D layout: an original campaign poster, selected work, four service compositions, process, studio, and enquiries. Bespoke Stencil, Manrope, scarlet, ink and grey provide the identity. The K is a signature within artwork; there is no travelling watermark, canvas or WebGL dependency in the active build.
+
+The desktop GSAP timeline gently reframes artwork as the visitor scrolls. Text, links and forms remain visible, with normal document flow at every width. Phone layouts and reduced-motion preferences receive complete static artwork. See [the current design notes](docs/editorial-2d.md), [editor guide](docs/editor-guide.md) and [verification](docs/verification.md).
 
 ## Local preview
 
-Use Node.js 24. Production WordPress does not require Node or Blender.
+Use Node.js 24. Production WordPress does not need Node or Blender.
 
 ```powershell
 npm ci --ignore-scripts
@@ -12,59 +20,42 @@ npm run build
 npm run dev
 ```
 
-Open **http://127.0.0.1:9400/**. WordPress Playground downloads WordPress and PHP on its first run. The local site persists in `.local/`, which contains private database data and must never be published or committed. The preview uses SQLite; production should use the database provided by the managed WordPress host. Bind the preview to loopback only and do not expose it to the internet.
+Open http://127.0.0.1:9400/. WordPress Playground downloads WordPress/PHP on first boot and stores private development data in ignored `.local/`. The server binds to loopback. The local defaults are `admin` / `password`; never use those credentials publicly. The preview seeds eight editable pages and three clearly labelled original design studies. They are excluded from production listings and publishing.
 
-The blueprint activates the theme/plugin and seeds eight editable pages and three illustrative demo projects once. It sets `WP_ENVIRONMENT_TYPE=local`. Local demo entries are labelled and excluded from production queries. Keep this environment setting out of production. Existing installations are mounted without replacing their WordPress core files. The CLI listener is restricted to loopback.
+Start preview and isolated verification sequentially on a fresh machine so their first downloads do not compete for the same Playground cache archive.
 
-For an existing earlier-version preview, stop the preview server and run `npm run migrate:studio` once, then restart `npm run dev`. The migration saves revisions and preserves customised content; it reports any pages it leaves alone. `npm run migrate:studio -- --replace` explicitly replaces customised page content after a backup. Alternatively, `npm run dev -- --migrate` explicitly applies that migration and keeps the preview running. Normal page requests never run migrations. Theme-owned image URLs are relative to the current origin, so the temporary maintenance port does not leak into saved content.
-
-Open `/wp-admin/` and sign in with Playground's local development defaults: username `admin`, password `password`. These credentials must never be reused in production or exposed publicly.
-
-## Verification and installable ZIPs
+## Build and packages
 
 ```powershell
+npm run build
 npm run verify
 npm run verify:assets
 npm run verify:lifecycle
 npm run package
 ```
 
-Verification runs isolated WordPress instances on port 9401, tests enquiries, content, migration and production visibility, then checks HTTP responses. Test data is never written to the persistent preview. The asset check validates the GLB, decodes its Meshopt geometry, checks KTX2 textures and verifies hashes and budgets. Lifecycle unit checks exercise aborted loads, timeouts and stale decoded geometry using test doubles; they do not render WebGL. Results are in `artifacts/verification.txt`, `artifacts/asset-verification.txt` and `artifacts/lifecycle-verification.txt`. Browser acceptance checks and their current limitations are documented in `docs/verification.md`.
+Build copies the self-hosted Manrope font, regenerates original editorial SVG/WebP artwork and its hash manifest, then builds the main motion module and deferred scroll module. All fonts and notices are local. Bespoke Stencil is used unchanged under its accompanying Fontshare notice; outside collaborators should obtain their own licensed copy.
 
-Install `artifacts/konnect-site-plugin.zip` under Plugins → Add Plugin → Upload, then `artifacts/konnect-theme.zip` under Appearance → Themes → Add Theme → Upload. Activate the plugin and theme. On a fresh installation, run `wp eval 'kvm_seed_site();'` once, or insert the Konnect layout patterns into newly created pages and configure a static home page. The seed command creates draft demo projects outside local/development environments. It deliberately leaves search indexing disabled until launch review.
+Verification uses isolated WordPress instances on port 9401 and never mounts the persistent preview. Asset checks inspect the active 2D build. Lifecycle checks exercise the current scroll module with DOM/GSAP test doubles; they are not a substitute for browser inspection. Results go to ignored `artifacts/`; packaging copies reports to `docs/evidence/`.
 
-The third package, `artifacts/konnect-studio-source.zip`, contains the complete project archive for Konnect plus the editable Blender scene and reproducible asset pipeline. It excludes private WordPress data, backups, local tools and dependencies. Keep the site at the root of its domain: navigation and layout pattern links use root-relative URLs. Subdirectory installations require updating those links in the Site Editor and page content.
+Install `artifacts/konnect-site-plugin.zip` and `artifacts/konnect-theme.zip` in WordPress and activate both. On a fresh site, run `wp eval 'kvm_seed_site();'` once, or insert the Konnect layout patterns and configure a static home page. The source archive includes original editable artwork and legacy Blender source; it is not a WordPress upload. Installable packages exclude the legacy model, decoder and 3D-only stylesheet.
 
-## Rebuilding the original studio
+## Editing and compatibility
 
-Prebuilt models and posters are included; this is only needed to change the 3D art.
+The six Gutenberg chapter slots, copy, links, desktop/mobile posters, service overrides and project selections keep their existing interfaces. Pages retain normal WordPress content. No migration is needed for this presentation update. Owner-written content and image selections are preserved.
 
-```powershell
-npm run studio:setup
-npm run assets
-npm run studio:render
-npm run studio:optimize
-npm run build
-```
+Projects use Featured image, Services, Order and the Project details sidebar. Results appear only when both supporting text and approval are set. Original studies are visibly identified as non-client work; never invent clients, testimonials or results.
 
-The setup script downloads and checksum-verifies portable Blender 4.5.16 LTS from Blender's official release server into ignored `.tools/`. The current helper targets Windows x64. Other platforms can run the Blender Python script with a local Blender installation. Rendering writes the editable `.blend`, uncompressed GLB, lighting bake and camera definitions. Optimisation uses the packaged Basis Universal encoder directly (no native CPU-detection build needed), Meshopt geometry compression and WebP posters. Manrope and its notice are copied from the locked npm dependency. Bespoke Stencil Medium is an unchanged official Fontshare download; its provenance and usage notice are in assets/licenses/Bespoke-Stencil-NOTICE.md. External collaborators should obtain their own copy from Fontshare.
+For an installation predating the six chapter blocks, stop preview and use `npm run migrate:studio`, or review `kvm_migrate_studio()` on staging. Explicit migration saves revisions and preserves customised pages. `--replace` deliberately replaces customised content; back up and review before using it. Normal requests do not migrate content.
 
-## Editing
+## Enquiries and release
 
-- **Pages:** edit copy in Gutenberg. Native heading/paragraph/group blocks cover page introductions and editorial copy. Composed visual sections also use Custom HTML blocks; edit their text carefully while preserving markup. Konnect layouts are available in the pattern inserter.
-- **Homepage:** use List View → Konnect studio journey → a Studio chapter. Sidebar controls edit headlines, descriptions, links, fallback posters and featured projects. The six chapter slots stay in their intended order; camera geometry is theme-owned. The editor displays still previews and does not run WebGL.
-- **Projects:** add title, excerpt, featured image and Services. The Project details sidebar provides brief, scope, approach, gallery selection, verified results and a local placeholder toggle. Order controls sorting. Results display only when both text and the verification switch are set. Use approved images with meaningful media-library alt text.
-- **Work grid:** the block settings control the maximum number of projects and service filters. Filters use ordinary URLs and work without JavaScript.
-- **Services:** select the Service sections block and use its sidebar panels to edit each service headline, description and deliverables. Blank fields use the defaults; page introductions are editable in Gutenberg.
-- **Enquiries:** administrator-only records appear in the Enquiries menu. Review email notification status as well as the stored message. Delete records according to the business's approved retention policy.
-- **Settings → Konnect:** set public email, notification recipient and optional integration identifiers. Configure authenticated mail delivery through your host or a maintained SMTP plugin. A transport accepting a message does not guarantee delivery; send and receive a real staging enquiry before launch.
-- **Campaign page:** use the Campaign landing page template. It excludes publisher ads and uses a simplified header. Duplicate the page for new campaigns and edit its content.
-- **Consent:** cookie preferences are stored on the visitor's device for 180 days. Optional integrations load only when configured, approved for launch and consented to. Disabling a previously enabled category reloads the page to stop its scripts. Deploy provider-specific cookie removal and retention rules alongside the final consent configuration if required.
+The existing REST endpoint and native POST fallback store enquiries privately, independently of email delivery. Configure Settings → Konnect and authenticated email delivery on the chosen host. Confirm an actual staging enquiry arrives. Forms and state-token URLs must bypass host/CDN caching. Optional analytics and ads stay off locally and require reviewed configuration and visitor consent in production.
 
-The enquiry endpoint is `POST /wp-json/konnect/v1/enquiries`. It requires the form nonce, name, email, service and a 20–5,000 character brief. Phone and consented campaign attribution are optional. Successful responses contain only `success` and a message. Validation failures identify fields. The native POST fallback uses `admin-post.php` and returns errors through a short-lived, one-use server-side state token. Exclude form pages and form state URLs from all host/CDN caching.
+Follow [the launch checklist](docs/launch-checklist.md). Keep the site at the root of its domain because navigation uses root-relative links. Keep `.local/`, `.backups/`, `.tools/`, credentials and dependencies out of deployments. No external deployment is performed by the build.
 
-## Deployment
+The earlier [cinematic studio document](docs/cinematic-studio.md) describes the retained historical 3D source, not the current runtime. The YouTube guide is also historical reference.
 
-Follow `docs/launch-checklist.md`. Production deployment requires the chosen host, domain and access; no external deployment is performed by the local build. Runtime dependencies in `node_modules` belong to local development and must not be uploaded. Install only the theme/plugin ZIPs and approved media. Fonts, compiled animation modules, scene assets and texture decoders are self-hosted inside the theme; notices are in `assets/licenses/`.
+## ThreeUI homepage adaptation
 
-For an existing production site, back up its database/uploads and install the packages on staging first. Run `wp eval 'kvm_normalize_studio_urls(); print_r(kvm_migrate_studio());'` there, inspect the report, and retain owner-written copy when a page is reported as preserved. Deploy only after visual and enquiry checks. The pre-redesign source baseline is tagged `before-sculptural-redesign-20261112` in the local repository; private full-site and source snapshots are in `.backups/`. Do not deploy or share these private backups as public website assets.
+The homepage now uses the Pocket Quest source adaptation described in [Pocket Quest integration](docs/pocket-integration.md). This supersedes the earlier description of the active homepage timeline above. Supporting pages retain the editorial Konnect styling. The source build verifies the original text and binary hashes before applying Konnect branding.

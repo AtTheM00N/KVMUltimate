@@ -27,11 +27,12 @@ try {
     if (route === '/') {
       assert.equal((body.match(/data-chapter="/g) || []).length, 6, 'Six semantic chapters');
       assert.equal((body.match(/<h1\b/g) || []).length, 1, 'One semantic page heading');
-      assert.ok(body.includes('studio.css') && !body.includes('/assets/site.css'), 'New design styles loaded');
-      assert.ok(body.includes('type="module"') && body.includes('/assets/dist/main-'), 'Built module enqueued');
-      assert.ok(body.includes('fetchpriority="high"'), 'Hero poster prioritised');
-      assert.ok(!body.includes('<canvas') && body.includes('scroll-stage') && body.includes('scroll.css'), 'Entirely 2D homepage');
-      assert.ok(body.includes('<nav class="fallback-nav"') && !body.includes('<noscript><nav class="fallback-nav"'), 'Navigation exists even when a script fails to load');
+      assert.ok(body.includes('/assets/pocket/brand.css'), 'Konnect template styling loaded');
+      assert.ok(body.includes('grail/index-qyEp212_.js'), 'Registered template bootstrap loaded');
+      assert.ok(body.includes('window.konnectContent='), 'Editable chapter data supplied');
+      assert.ok(body.includes('id="konnect-contact"') && body.includes('id="konnect-fallback"'), 'Native enquiry dialog and static content rendered');
+      assert.ok(!body.includes('<iframe'), 'Template renders directly in WordPress');
+
     } else assert.ok(!body.includes('data-studio '), `${route} has no immersive canvas`);
     results.push(`PASS ${route}`);
   }
@@ -40,7 +41,7 @@ try {
     assert.equal(response.status, 200, `Scene asset ${file} served`);
     assert.ok((await response.arrayBuffer()).byteLength > 100, `${file} nonempty`);
   }
-  results.push('PASS all 2D artwork served; six accessible HTML chapters, no canvas, deferred motion module');
+  results.push('PASS Konnect artwork served; six static HTML chapters, native enquiry dialog and registered template bootstrap');
   assert.equal((await fetch('http://127.0.0.1:9401/page-that-does-not-exist/')).status, 404);
   const privateResponse = await fetch('http://127.0.0.1:9401/wp-json/wp/v2/kvm_enquiry');
   assert.equal(privateResponse.status, 404, 'Enquiries absent from REST');

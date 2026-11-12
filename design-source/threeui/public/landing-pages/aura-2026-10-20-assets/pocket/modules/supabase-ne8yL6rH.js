@@ -1,0 +1,1 @@
+const c={submitWaitlist:async()=>({error:null})};export{c};

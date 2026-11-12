@@ -1,8 +1,10 @@
 # Editing the cinematic studio
 
+> Current presentation: chapters use an editorial 2D layout with original Konnect poster artwork and subtle image framing. The six chapter controls described here are unchanged. Camera and 3D references below apply only to historical source. See [editorial-2d.md](editorial-2d.md).
+
 ## Homepage
 
-Open Home in Gutenberg and use List View. The **Konnect studio journey** contains six locked chapter slots: Intro, Work, Services, Process, Studio and Contact. Select a chapter to edit its sidebar controls. All six are beats in one home-page scroll; the menu jumps to them within that journey. The canvas shows a representative still in Gutenberg, not an active 3D scene.
+Open Home in Gutenberg and use List View. The **Konnect studio journey** contains six locked chapter slots: Intro, Work, Services, Process, Studio and Contact. Select a chapter to edit its sidebar controls. All six are beats in one home-page scroll; the menu jumps to them within that journey. The editor shows a representative still; it does not run the scroll animation.
 
 - Keep headings short. Bespoke Stencil is expressive. Omit the Description when the heading or artwork already communicates the point. Do not add numbered kickers, arrow controls, slash labels or progress ticks.
 - The process heading is split at sentence boundaries into its visible words.
@@ -11,7 +13,7 @@ Open Home in Gutenberg and use List View. The **Konnect studio journey** contain
 - Work can select up to two published projects. With both selectors on Automatic, portfolio Order determines the selection. Explicit selections are limited to those selected published records. Draft and private entries are never exposed. Production also excludes preview placeholders.
 - Service chapter panels edit each service heading and description. An empty override uses the default copy. The dedicated Services page has its own service-copy controls.
 
-Camera positions, portfolio opening and physical objects are defined in the scene source, not through page editing. Changing a poster does not alter the 3D model. Add real project Featured images to populate its two portfolio surfaces; retain readable project titles, service terms and alt text on the normal Work pages.
+Artwork framing and layout are theme-owned. Desktop and mobile posters can be selected independently. Featured images populate project cards; retain readable project titles, service terms and meaningful image alt text on Work and project pages.
 
 ## Work and project pages
 

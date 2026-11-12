@@ -18,7 +18,7 @@ function kvm_register_blocks() {
 }
 function kvm_art($type, $large = false) {
     $type = in_array($type, ['social', 'identity', 'search'], true) ? $type : 'social';
-    return '<div class="project-art art-' . esc_attr($type) . '"><img src="' . esc_url(kvm_studio_asset($type . '.webp')) . '" alt="Original Konnect studio design study" width="1440" height="900" loading="lazy"><span class="art-caption">Illustrative placeholder · Not client work</span></div>';
+    return '<div class="project-art art-' . esc_attr($type) . '"><img src="' . esc_url(kvm_studio_asset($type . '.webp')) . '" alt="Original Konnect studio design study" width="1440" height="900" loading="lazy"></div>';
 }
 function kvm_projects($attributes = []) {
     $limit = intval($attributes['limit'] ?? 0);
@@ -36,7 +36,7 @@ function kvm_projects($attributes = []) {
       <article class="project-card" data-reveal><a href="<?php the_permalink(); ?>" class="project-link">
         <div class="project-media"><?php if (has_post_thumbnail()) the_post_thumbnail('large', ['loading' => 'lazy']); else echo kvm_art(get_post_meta($id, '_kvm_art', true)); ?></div>
         <div class="project-meta"><div><p class="eyebrow"><?php echo esc_html(strip_tags(get_the_term_list($id, 'kvm_service', '', ' · ')) ?: 'Selected project'); ?></p><h3><?php the_title(); ?></h3></div></div>
-        <?php if (get_post_meta($id, '_kvm_placeholder', true)) echo '<p class="preview-label">Preview placeholder</p>'; ?>
+        <?php if (get_post_meta($id, '_kvm_placeholder', true)) echo '<p class="preview-label">Konnect design study · Not client work</p>'; ?>
       </a></article>
     <?php }
     if (!$query->post_count) echo '<p class="empty-state">New work is being prepared. <a href="' . esc_url(home_url('/contact/')) . '">Tell us about your project</a>.</p>';
@@ -44,7 +44,7 @@ function kvm_projects($attributes = []) {
 }
 function kvm_project_detail() {
     $id = get_the_ID(); ob_start();
-    if (get_post_meta($id, '_kvm_placeholder', true)) echo '<p class="preview-notice">Preview placeholder — an illustrative layout, awaiting approved portfolio material.</p>';
+    if (get_post_meta($id, '_kvm_placeholder', true)) echo '<p class="preview-notice">Original Konnect design study. Illustrative work, not a client commission.</p>';
     echo '<div class="project-cover">';
     if (has_post_thumbnail($id)) echo get_the_post_thumbnail($id, 'full'); else echo kvm_art(get_post_meta($id, '_kvm_art', true), true);
     echo '</div><div class="project-story">';

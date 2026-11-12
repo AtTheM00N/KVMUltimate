@@ -58,7 +58,7 @@ add_action('init', function () {
 });
 function kvm_render_studio($attributes, $content) {
     $interactive = is_front_page();
-    return '<div class="studio-story' . ($interactive ? '' : ' is-static') . '" ' . ($interactive ? 'data-studio' : 'data-studio-static') . '><div class="scroll-stage" aria-hidden="true"><div class="scroll-field"></div><img class="scroll-mark" src="' . esc_url(kvm_studio_asset('mark.svg')) . '" alt="" width="900" height="1100"></div>' . $content . '</div>';
+    return '<div class="studio-story' . ($interactive ? '' : ' is-static') . '" ' . ($interactive ? 'data-studio' : 'data-studio-static') . '>' . $content . '</div>';
 }
 function kvm_render_story_chapter($attributes) {
     $defaults=kvm_studio_defaults(); $key=$attributes['chapter']??'intro';

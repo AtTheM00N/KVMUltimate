@@ -1,3 +1,3 @@
-PASS Resize can dispose an in-flight mount immediately; fetches abort and cleanup is idempotent
-PASS Whole-initialisation timeout restores static content and releases the renderer
-PASS Late decoded geometry is released without changing a replacement scene
+PASS 2D cleanup restores author styles, cancels refreshes and removes observers/listeners idempotently
+PASS 2D setup failure releases partial resources and restores static presentation
+PASS Reduced-motion and Save-Data preferences keep the real base module static

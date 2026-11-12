@@ -8,6 +8,11 @@ add_action('after_setup_theme', function () {
 });
 add_action('wp_enqueue_scripts', function () {
     $url = get_template_directory_uri();
+    if (is_front_page()) {
+        wp_enqueue_script('konnect-site', $url . '/assets/site.js', [], filemtime(__DIR__ . '/assets/site.js'), true);
+        wp_add_inline_script('konnect-site', 'window.kvmConfig=' . wp_json_encode(function_exists('kvm_integration_config') ? kvm_integration_config() : []) . ';', 'before');
+        return;
+    }
     wp_enqueue_style('konnect-site', $url . '/assets/studio.css', [], filemtime(__DIR__ . '/assets/studio.css'));
     wp_enqueue_style('konnect-experience', $url . '/assets/scroll.css', ['konnect-site'], filemtime(__DIR__ . '/assets/scroll.css'));
     wp_enqueue_script('konnect-site', $url . '/assets/site.js', [], filemtime(__DIR__ . '/assets/site.js'), true);
@@ -32,6 +37,9 @@ add_action('template_redirect', function () {
 });
 // Unknown campaign/project URLs must show the useful 404 rather than a guessed destination.
 add_filter('redirect_canonical', function ($redirect) { return is_404() ? false : $redirect; });
+add_filter('template_include', function ($template) {
+    return is_front_page() && function_exists('kvm_studio_defaults') ? __DIR__ . '/pocket.php' : $template;
+}, 99);
 add_action('parse_request', function ($wp) {
     if ($wp->request !== '' && empty($wp->query_vars)) $wp->query_vars['error'] = '404';
 }, 99);

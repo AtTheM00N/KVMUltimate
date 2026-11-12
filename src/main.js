@@ -7,7 +7,7 @@ const story = document.querySelector('[data-studio]');
 const media = gsap.matchMedia();
 media.add('(prefers-reduced-motion: no-preference)', () => {
   document.querySelectorAll('[data-reveal], .page-intro, .studio-still, .about-principles section').forEach(element => {
-    gsap.from(element, { y: 22, opacity: 0, duration: .55, ease: 'power2.out', clearProps: 'all',
+    gsap.from(element, { y: 22, opacity: .65, duration: .55, ease: 'power2.out', clearProps: 'all',
       scrollTrigger: { trigger: element, start: 'top 93%', once: true } });
   });
 });
@@ -17,11 +17,9 @@ if (story) {
   let dispose = () => {};
   async function update() {
     const token = ++generation;
-    const anchor=[...story.querySelectorAll('[data-chapter]')].find(el=>el.getBoundingClientRect().bottom>innerHeight*.4);
-    const wasImmersive=story.classList.contains('is-scroll');
     dispose(); dispose = () => {};
     story.classList.remove('is-scroll');
-    if (!eligible.matches || navigator.connection?.saveData) { story.classList.add('is-static'); if(wasImmersive && anchor && scrollY>0)anchor.scrollIntoView({behavior:'instant',block:'start'}); return; }
+    if (!eligible.matches || navigator.connection?.saveData) { story.classList.add('is-static'); return; }
     story.classList.remove('is-static');
     try {
       const { mountScroll } = await import('./scroll.js');

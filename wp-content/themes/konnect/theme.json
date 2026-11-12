@@ -47,30 +47,45 @@
       "fontFamilies": [
         {
           "slug": "display",
-          "name": "Bespoke Stencil",
-          "fontFamily": "\"Bespoke Stencil\", sans-serif",
+          "name": "Clash Grotesk",
+          "fontFamily": "\"Clash Grotesk\",sans-serif",
           "fontFace": [
             {
-              "fontFamily": "Bespoke Stencil",
+              "fontFamily": "Clash Grotesk",
               "fontStyle": "normal",
-              "fontWeight": "500",
+              "fontWeight": "200 700",
               "src": [
-                "file:./assets/fonts/bespoke-stencil.woff2"
+                "file:./assets/fonts/clash-grotesk.woff2"
               ]
             }
           ]
         },
         {
           "slug": "body",
-          "name": "Manrope",
-          "fontFamily": "Manrope, sans-serif",
+          "name": "General Sans",
+          "fontFamily": "\"General Sans\",sans-serif",
           "fontFace": [
             {
-              "fontFamily": "Manrope",
+              "fontFamily": "General Sans",
               "fontStyle": "normal",
-              "fontWeight": "200 800",
+              "fontWeight": "200 700",
               "src": [
-                "file:./assets/fonts/manrope.woff2"
+                "file:./assets/fonts/general-sans.woff2"
+              ]
+            }
+          ]
+        },
+        {
+          "slug": "wordmark",
+          "name": "Bespoke Stencil",
+          "fontFamily": "\"Bespoke Stencil\",sans-serif",
+          "fontFace": [
+            {
+              "fontFamily": "Bespoke Stencil",
+              "fontWeight": "500",
+              "fontStyle": "normal",
+              "src": [
+                "file:./assets/fonts/bespoke-stencil.woff2"
               ]
             }
           ]

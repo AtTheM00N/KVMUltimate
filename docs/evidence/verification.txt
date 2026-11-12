@@ -63,7 +63,7 @@ PASS /campaign/
 PASS /privacy/
 PASS /cookie-preferences/
 PASS /project/the-social-canvas/
-PASS all scene assets served; six accessible HTML chapters and deferred build module
+PASS Konnect artwork served; six static HTML chapters, native enquiry dialog and registered template bootstrap
 PASS HTTP enquiry success, minimal payload, and no-JavaScript validation fallback
 PASS 404 and private enquiry API
 
@@ -71,7 +71,7 @@ PASS Production environment
 PASS Starter blog content removed
 PASS Demo projects absent publicly
 PASS Production scene excludes placeholder projects
-PASS Empty production portfolio collapses unused camera beats
+PASS Empty production portfolio shows honest original artwork without unused beats
 PASS Immersive homepage excludes publisher placements
 PASS Publishing placeholder blocked
 PASS Reviewed production integration configured

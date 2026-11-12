@@ -1,5 +1,7 @@
 # Architecture decision — 2026-11-11
 
+> Current design update (13 November 2026): WordPress ownership and content interfaces below remain current; the homepage runtime is now editorial 2D, described in [editorial-2d.md](editorial-2d.md). The cinematic studio document is historical.
+
 ## WordPress owns the full page response
 
 Use a Gutenberg block theme with shared `theme.json` settings and a small companion plugin. The plugin owns portfolio records, service taxonomy, private enquiries, dynamic blocks and integrations. The theme owns templates, type, layout and motion. This keeps project records portable when the visual theme changes and avoids a paid field-plugin dependency.

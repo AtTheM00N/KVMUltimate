@@ -1,0 +1,1 @@
+function preload(load){return load()} export {preload as t};

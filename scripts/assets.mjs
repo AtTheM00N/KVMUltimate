@@ -11,3 +11,5 @@ for (const name of ['manrope']) {
   await copyFile(`node_modules/@fontsource-variable/${name}/LICENSE`, `design-source/fonts/${title}-OFL.txt`);
 }
 console.log('Local font and motion assets prepared.');
+
+for (const name of ['clash-grotesk','general-sans']) await copyFile(`design-source/fonts/${name}.woff2`,`${root}/fonts/${name}.woff2`);

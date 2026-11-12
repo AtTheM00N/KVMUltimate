@@ -6,14 +6,16 @@
     "dev": "node scripts/local.mjs",
     "assets": "node scripts/assets.mjs",
     "verify": "node scripts/verify.mjs",
-    "verify:assets": "node scripts/verify-assets.mjs",
+    "verify:assets": "node scripts/verify-flat-assets.mjs",
     "verify:lifecycle": "node --experimental-vm-modules scripts/verify-lifecycle.mjs",
     "package": "node scripts/package.mjs",
-    "build": "node scripts/assets.mjs && vite build",
+    "build": "node scripts/assets.mjs && node scripts/artwork.mjs && node scripts/pocket.mjs && vite build",
     "studio:setup": "node scripts/setup-studio-tools.mjs",
     "studio:render": "node scripts/render-studio.mjs",
     "studio:optimize": "node scripts/optimize-studio.mjs",
-    "migrate:studio": "node scripts/migrate-studio.mjs"
+    "migrate:studio": "node scripts/migrate-studio.mjs",
+    "artwork": "node scripts/artwork.mjs",
+    "pocket:build": "node scripts/pocket.mjs"
   },
   "overrides": {
     "isomorphic-git": "1.44.12",

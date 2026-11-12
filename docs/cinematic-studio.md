@@ -1,5 +1,7 @@
 # Cinematic studio architecture — 12 November 2026
 
+> Historical architecture: the active runtime is now the editorial 2D experience documented in [editorial-2d.md](editorial-2d.md). This document describes the retained Blender/Three.js source.
+
 ## Art and narrative
 
 The approved direction is an original creative studio, a red hinged Konnect portfolio, six chapters and roughly twelve desktop viewport heights. The palette is near-black/graphite, scarlet/action red and light/secondary grey. Bespoke Stencil headings and Manrope body text replace Montserrat/Inter. The homepage is one native scroll journey from studio entry through selected work, the four service beats, process, studio introduction and a working enquiry form. Main navigation jumps to those chapters; it does not take visitors into a row of separate marketing pages. Project detail, service detail, privacy and campaign URLs remain available when a visitor follows a deep link.

@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+<head><script id="aura-preview-performance-controller">
+(function() {
+if (window.__auraPreviewPerformanceController) return;
+const nativeRequestAnimationFrame = window.requestAnimationFrame
+? window.requestAnimationFrame.bind(window)
+: function(callback) { return window.setTimeout(function() { callback(Date.now()); }, 16); };
+const nativeCancelAnimationFrame = window.cancelAnimationFrame
+? window.cancelAnimationFrame.bind(window)
+: window.clearTimeout.bind(window);
+const nativeSetInterval = window.setInterval.bind(window);
+let paused = false;
+let nextFrameId = 1;
+const frameRecords = new Map();
+const pausedFrameCallbacks = new Map();
+const style = document.createElement('style');
+style.id = 'aura-preview-performance-style';
+style.textContent = [
+'html[data-aura-preview-paused="true"] *,',
+'html[data-aura-preview-paused="true"] *::before,',
+'html[data-aura-preview-paused="true"] *::after {',
+'  animation-play-state: paused !important;',
+'  transition-duration: 0s !important;',
+'  scroll-behavior: auto !important;',
+'}'
+].join('\n');
+document.head.appendChild(style);
+window.requestAnimationFrame = function(callback) {
+const frameId = nextFrameId++;
+if (paused) {
+pausedFrameCallbacks.set(frameId, callback);
+frameRecords.set(frameId, { paused: true });
+return frameId;
+}
+const nativeFrameId = nativeRequestAnimationFrame(function(timestamp) {
+frameRecords.delete(frameId);
+callback(timestamp);
+});
+frameRecords.set(frameId, { nativeFrameId: nativeFrameId });
+return frameId;
+};
+window.cancelAnimationFrame = function(frameId) {
+const record = frameRecords.get(frameId);
+pausedFrameCallbacks.delete(frameId);
+if (record && typeof record.nativeFrameId !== 'undefined') {
+nativeCancelAnimationFrame(record.nativeFrameId);
+}
+frameRecords.delete(frameId);
+};
+window.setInterval = function(callback, delay) {
+const args = Array.prototype.slice.call(arguments, 2);
+return nativeSetInterval(function() {
+if (paused) return;
+callback.apply(this, args);
+}, delay);
+};
+const flushPausedFrames = function() {
+const callbacks = Array.from(pausedFrameCallbacks.entries());
+pausedFrameCallbacks.clear();
+callbacks.forEach(function(entry) {
+const frameId = entry[0];
+const callback = entry[1];
+const nativeFrameId = nativeRequestAnimationFrame(function(timestamp) {
+frameRecords.delete(frameId);
+callback(timestamp);
+});
+frameRecords.set(frameId, { nativeFrameId: nativeFrameId });
+});
+};
+const setPaused = function(nextPaused) {
+const shouldPause = Boolean(nextPaused);
+if (paused === shouldPause) return;
+paused = shouldPause;
+document.documentElement.toggleAttribute('data-aura-preview-paused', paused);
+if (!paused) {
+flushPausedFrames();
+}
+};
+window.__auraPreviewPerformanceController = {
+setPaused: setPaused,
+get paused() {
+return paused;
+}
+};
+window.addEventListener('message', function(event) {
+if (event.source !== window.parent) return;
+if (!event.data || event.data.type !== 'aura-preview-performance-mode') return;
+setPaused(event.data.paused);
+});
+})();
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<meta name="description" content="Thirty seconds. Six heroes. One more round. Meet Pocket Quest, a bite-sized card-matching adventure coming to iOS for iPhone 17. Play the browser demo.">
+<title>Pocket Quest — Small game. Big adventure.</title>
+<link rel="icon" type="image/svg+xml" href="/landing-pages/aura-2026-10-20-assets/remote/d82644cac5674ea79341fc9c4d15d28f278d4712dca7c7c207a5294392b4c64a.svg">
+<style>html,body{margin:0;background:#000}#startup-error{color:#ead3f1;font:18px system-ui;padding:40px}</style>
+<script src="/landing-pages/aura-2026-10-20-assets/other/176e894661aa9cdc9a5cba6c.js"></script>
+<script>document.addEventListener('click', event => {
+const anchor = event.target.closest?.('a[href]');
+const href = anchor?.getAttribute('href');
+if (event.defaultPrevented || !href?.startsWith('#')) return;
+event.preventDefault();
+if (href === '#') { window.scrollTo({top: 0, behavior: 'smooth'}); return; }
+try {
+const id = decodeURIComponent(href.slice(1));
+const target = document.getElementById(id) || document.getElementsByName(id)[0];
+target?.scrollIntoView({behavior: 'smooth', block: 'start'});
+} catch { /* Invalid fragments remain in the saved document. */ }
+});</script>
+<script>document.addEventListener('click', event => {
+if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+const anchor = event.target.closest?.('a[href]');
+if (!anchor || anchor.hasAttribute('download')) return;
+const target = anchor.getAttribute('target')?.toLowerCase();
+if (target && target !== '_self' && target !== '_top') return;
+try {
+const destination = new URL(anchor.href, document.baseURI);
+const base = new URL(document.baseURI);
+if (!['http:', 'https:'].includes(destination.protocol) || destination.origin === base.origin) return;
+event.preventDefault();
+window.open(destination.href, '_blank', 'noopener,noreferrer');
+} catch { /* Leave invalid links to the browser. */ }
+}, true);</script></head>
+<body>
+<!-- Pocket Quest: a promotional game concept with a playable browser demo.
+     Built upon the requested Grail recreation. Image originals are hosted by Aura.
+     Fonts retain their verified original source; application code is embedded.
+     Original visual design and character artwork: Grail / Denormalized.
+     iOS app availability is presented as coming soon; no store listing is implied.
+     iPhone 17 responsive layout: 402 x 874 logical pixels.
+     Device reference: https://www.apple.com/iphone-17/specs/ -->
+<div id="root"></div>
+<dialog id="pq-game" class="pq-dialog" aria-labelledby="pq-game-title" aria-describedby="pq-game-instructions" data-lenis-prevent>
+  <button class="pq-close" type="button" aria-label="Close game">×</button>
+  <div class="pq-game-intro">
+    <img data-asset="/Logo.svg" alt="Pocket Quest">
+    <span class="pq-eyebrow">A LITTLE MATCH. A LITTLE MAGIC.</span>
+    <h2 id="pq-game-title">Relic <em>Rush.</em></h2>
+    <p id="pq-game-instructions">A quick look. A little focus.<br>Find six pairs before the magic runs out.</p>
+    <div class="pq-champion">
+      <span class="pq-champion-orbit" aria-hidden="true"></span>
+      <span class="pq-champion-star star-one" aria-hidden="true">✧</span>
+      <span class="pq-champion-star star-two" aria-hidden="true">✦</span>
+      <svg class="pq-selected-hero" viewBox="0 0 1024 1536" role="img" aria-label="Your champion: Knight"><image width="1024" height="1536"/></svg>
+      <span class="pq-champion-label">YOUR CHAMPION</span>
+      <h3 id="pq-champion-name">The Knight</h3>
+      <p id="pq-champion-line">A small sword. Unshakeable courage.</p>
+    </div>
+    <ol class="pq-rules"><li><b>01</b><span>Take a peek</span></li><li><b>02</b><span>Find the pairs</span></li><li><b>03</b><span>Beat your best</span></li></ol>
+    <small><span class="pq-live-dot"></span> Free to play · Made for little breaks</small>
+  </div>
+  <div class="pq-game">
+    <div class="pq-game-top"><span>01 / THE MEMORY CHALLENGE</span><span class="pq-phase" id="pq-phase">READY TO PLAY</span></div>
+    <div class="pq-hud">
+      <div class="pq-stat pq-stat-time"><small><span aria-hidden="true">◷</span> TIME LEFT</small><span class="pq-time" id="pq-time">00:30</span></div>
+      <div class="pq-stat pq-stat-score"><small><span aria-hidden="true">✧</span> SCORE</small><span id="pq-score">0</span></div>
+      <div class="pq-stat pq-stat-combo"><small><span aria-hidden="true">ϟ</span> COMBO</small><span id="pq-combo">×1</span><span class="pq-combo-dots" id="pq-combo-dots" aria-hidden="true"><i></i><i></i><i></i></span></div>
+    </div>
+    <div class="pq-timebar" aria-hidden="true"><span id="pq-time-fill"></span></div>
+    <div class="pq-board-caption"><span>FIND YOUR FAMILIAR FACES</span><span class="pq-pairs"><span id="pq-pair-count">0 / 6 pairs</span><span id="pq-pair-marks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span></span></div>
+    <div class="pq-board-wrap">
+      <div class="pq-board" id="pq-board" role="group" aria-label="Twelve hero cards"></div>
+      <div class="pq-result" id="pq-result" hidden aria-live="polite">
+        <span class="pq-eyebrow" id="pq-result-label">ROUND COMPLETE</span>
+        <h3 id="pq-result-title">A little<br>victory.</h3>
+        <div class="pq-result-score" id="pq-result-score">0</div>
+        <p id="pq-result-detail"></p>
+        <button type="button" class="pq-button" id="pq-again">One more round</button>
+      </div>
+    </div>
+    <p class="pq-game-note" id="pq-note" role="status" aria-live="polite">Pick your champion. Then put your memory to the test.</p>
+    <div class="pq-heroes" role="group" aria-label="Choose your champion">
+      <button type="button" class="pq-hero" data-hero="knight" aria-pressed="true">Knight</button>
+      <button type="button" class="pq-hero" data-hero="ranger" aria-pressed="false">Ranger</button>
+      <button type="button" class="pq-hero" data-hero="bard" aria-pressed="false">Bard</button>
+      <button type="button" class="pq-hero" data-hero="paladin" aria-pressed="false">Paladin</button>
+      <button type="button" class="pq-hero" data-hero="mage" aria-pressed="false">Mage</button>
+      <button type="button" class="pq-hero" data-hero="rogue" aria-pressed="false">Rogue</button>
+    </div>
+    <button class="pq-button pq-action" type="button" id="pq-start">Start 30-second round</button>
+    <p class="pq-game-best" id="pq-best">Personal best: 0 · Saved on this device</p>
+  </div>
+</dialog>
+
+<noscript><p style="color:white;padding:40px">Enable JavaScript to explore Pocket Quest.</p></noscript>
+
+<script>
+(async () => {
+  'use strict';
+  const pack = (await import('/landing-pages/aura-2026-10-20-assets/pocket/package.js')).default;
+  const originals = new Map();
+  const assets = pack.assets, aliases = pack.aliases;
+  for (const [key, url] of Object.entries(assets)) originals.set(url, key);
+  window.__grailAsset = path => {
+    if (originals.has(path)) return path;
+    const key = aliases[path] || path;
+    const url = assets[key];
+    if (!url) {
+      throw new Error('Missing Pocket Quest asset: ' + path);
+    }
+    return url;
+  };
+  window.__grailVariant = path => {
+    const key=originals.get(path) || path;
+    return window.__grailAsset(key.startsWith('/relics/') ? key : key.replace('.webp', '-160.webp'));
+  };
+  const style = document.createElement('style');
+  style.textContent = pack.css;
+  document.head.appendChild(style);
+  const imports = {};
+  for (const [name, code] of Object.entries(pack.modules)) {
+    imports[name] = code;
+  }
+  const map = document.createElement('script');
+  map.type = 'importmap'; map.textContent = JSON.stringify({imports});
+  document.head.appendChild(map);
+
+  await import('grail/pocket-game.js');
+  await import('grail/index-qyEp212_.js');
+})().catch(error => {
+    console.error(error);
+    const message = document.createElement('p');
+    message.id = 'startup-error';
+    message.textContent = 'Pocket Quest could not start. Please open this file in a current browser.';
+    document.getElementById('root').appendChild(message);
+});
+</script>
+</body>
+</html>

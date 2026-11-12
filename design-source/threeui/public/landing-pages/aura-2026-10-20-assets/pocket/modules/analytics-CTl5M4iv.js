@@ -1,0 +1,1 @@
+function noop(){} export {noop as n,noop as r,noop as t};

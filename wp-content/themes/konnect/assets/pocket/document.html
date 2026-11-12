@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<meta name="description" content="Thirty seconds. Six heroes. One more round. Meet Konnect, a bite-sized card-matching adventure coming to iOS for iPhone 17. Play the browser demo.">
+<title>Pocket Quest — Small game. Big adventure.</title>
+<link rel="icon" type="image/svg+xml" href="/wp-content/themes/konnect/assets/pocket/landing-pages/aura-2026-10-20-assets/remote/d82644cac5674ea79341fc9c4d15d28f278d4712dca7c7c207a5294392b4c64a.svg">
+<style>html,body{margin:0;background:#000}#startup-error{color:#ead3f1;font:18px system-ui;padding:40px}</style>
+<script src="/wp-content/themes/konnect/assets/pocket/landing-pages/aura-2026-10-20-assets/other/176e894661aa9cdc9a5cba6c.js"></script>
+
+<!-- KONNECT_HEAD --><link rel="stylesheet" href="/wp-content/themes/konnect/assets/pocket/brand.css"></head>
+<body>
+<!-- Konnect: a promotional game concept with a playable browser demo.
+     Built upon the requested Grail recreation. Image originals are hosted by Aura.
+     Fonts retain their verified original source; application code is embedded.
+     Original visual design and character artwork: Grail / Denormalized.
+     iOS app availability is presented as coming soon; no store listing is implied.
+     iPhone 17 responsive layout: 402 x 874 logical pixels.
+     Device reference: https://www.apple.com/iphone-17/specs/ -->
+<main id="root" tabindex="-1"></main>
+<!-- KONNECT_CONTACT -->
+
+<!-- KONNECT_FALLBACK -->
+
+<script>
+(async () => {
+  'use strict'; if(window.konnectStatic) return;
+  const pack = (await import('/wp-content/themes/konnect/assets/pocket/landing-pages/aura-2026-10-20-assets/pocket/package.js')).default;
+  const originals = new Map();
+  const assets = pack.assets, aliases = pack.aliases;
+  for (const [key, url] of Object.entries(assets)) originals.set(url, key);
+  window.__grailAsset = path => {
+    if (originals.has(path)) return path;
+    const key = aliases[path] || path;
+    const url = assets[key];
+    if (!url) {
+      throw new Error('Missing Konnect asset: ' + path);
+    }
+    return url;
+  };
+  window.__grailVariant = path => {
+    const key=originals.get(path) || path;
+    return window.__grailAsset(key.startsWith('/relics/') ? key : key.replace('.webp', '-160.webp'));
+  };
+  const style = document.createElement('style');
+  style.textContent = pack.css;
+  document.head.appendChild(style);
+  const imports = {};
+  for (const [name, code] of Object.entries(pack.modules)) {
+    imports[name] = code;
+  }
+  const map = document.createElement('script');
+  map.type = 'importmap'; map.textContent = JSON.stringify({imports});
+  document.head.appendChild(map);
+
+
+  if(!window.konnectStatic) await import('grail/index-qyEp212_.js');
+})().catch(error => {
+    console.error(error); document.documentElement.classList.remove('konnect-ready'); document.documentElement.classList.add('konnect-static'); document.getElementById('konnect-fallback').inert=false;
+    const message = document.createElement('p');
+    message.id = 'startup-error';
+    message.textContent = 'Pocket Quest could not start. Please open this file in a current browser.';
+    document.getElementById('root').appendChild(message);
+});
+</script>
+<script src="/wp-content/themes/konnect/assets/pocket/brand.js"></script><!-- KONNECT_FOOT --></body>
+</html>
