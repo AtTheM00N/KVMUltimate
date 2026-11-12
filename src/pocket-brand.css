@@ -95,6 +95,7 @@ html,body{background:#000000!important;color:#f7f7f2!important}
 .konnect-slideshow:not(.is-scroll-driven) .konnect-slide-track{padding:100px 6vw 40px}.konnect-slideshow:not(.is-scroll-driven) .konnect-slide{width:100%;height:auto;min-height:60svh;margin:0 0 32px;transform:none!important}
 @media(prefers-reduced-motion:reduce){.signal-pulse{animation:none;stroke-dasharray:none;opacity:.35}.pq-preview-card,.pq-preview-card img{transition:none!important}.konnect-slide{transform:none!important}}
 /* Shared ThreeUI atmosphere and an uninterrupted handoff into the black deck. */
+#root .pq-footer-hero{background:#000000!important}
 #root .pq-feature{background:radial-gradient(ellipse at center,#8f0000 0%,#000000 50%,#8f0000 100%)!important}
 .konnect-atmosphere{position:absolute;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}
 #root [class*='_acceptOverlay_'] p,#root [class*='_acceptOverlay_'] [class*='_sideLabel_'],#root [class*='_s4lead_'],#root [class*='_s4para_'],#root [class*='_s4mBody_'] p{color:#f7f7f2!important;opacity:1}
