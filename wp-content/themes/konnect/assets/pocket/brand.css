@@ -96,6 +96,14 @@ html,body{background:#000000!important;color:#f7f7f2!important}
 @media(prefers-reduced-motion:reduce){.signal-pulse{animation:none;stroke-dasharray:none;opacity:.35}.pq-preview-card,.pq-preview-card img{transition:none!important}.konnect-slide{transform:none!important}}
 /* Shared ThreeUI atmosphere and an uninterrupted handoff into the black deck. */
 #root .pq-footer-hero{background:#000000!important}
+.pq-world.pq-world-compact{min-height:0!important;padding:28px 40px 64px!important;border-radius:0!important}
+.pq-world-compact .pq-world-heading{margin-top:clamp(36px,6vw,88px);align-items:end}
+.pq-world-compact .pq-world-intro{padding-bottom:6px}
+.pq-world-cta{display:flex;align-items:center;gap:28px;max-width:1440px;margin:clamp(32px,5vw,72px) auto 0;padding-top:28px;border-top:1px solid #666370}
+.pq-world-cta>span{font:500 11px/1.4 'General Sans',sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#f7f7f2}
+.pq-world-compact .konnect-selected-work{max-width:1440px;margin:64px auto 0}
+#root [class*='_footWrap_']{margin-top:0!important}
+@media(max-width:650px){.pq-world.pq-world-compact{padding:24px 20px 56px!important}.pq-world-compact .pq-world-heading{display:block;margin-top:48px}.pq-world-compact .pq-world-intro{justify-self:auto;max-width:34ch;margin-top:28px}.pq-world-cta{align-items:flex-start;flex-direction:column;gap:18px;margin-top:40px;padding-top:24px}.pq-world-compact .konnect-selected-work{margin-top:48px}}
 #root .pq-feature{background:radial-gradient(ellipse at center,#8f0000 0%,#000000 50%,#8f0000 100%)!important}
 .konnect-atmosphere{position:absolute;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}
 #root [class*='_acceptOverlay_'] p,#root [class*='_acceptOverlay_'] [class*='_sideLabel_'],#root [class*='_s4lead_'],#root [class*='_s4para_'],#root [class*='_s4mBody_'] p{color:#f7f7f2!important;opacity:1}

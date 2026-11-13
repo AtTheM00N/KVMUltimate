@@ -73,46 +73,18 @@ const WORLD_LINES=[
   "Different skills, one connected creative studio."
 ];
 export function PocketWorld(){
-  const [selected,setSelected]=useState(0),root=useRef(null),gallery=useRef(null),items=useRef([]);
-  const hero=GAME_CARDS[selected];
-  useEffect(()=>{const el=root.current;if(!el)return;const io=new IntersectionObserver(([entry])=>el.classList.toggle('is-visible',entry.isIntersecting),{threshold:.1});io.observe(el);return()=>io.disconnect();},[]);
-  function choose(index){
-    const next=(index+GAME_CARDS.length)%GAME_CARDS.length;
-    setSelected(next);window.dispatchEvent(new CustomEvent('pocket-hero',{detail:GAME_CARDS[next].hero}));
-    const row=gallery.current,item=items.current[next];
-    if(row&&item&&row.scrollWidth>row.clientWidth+10)row.scrollTo({left:item.offsetLeft-row.offsetLeft-(row.clientWidth-item.offsetWidth)/2,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
-  }
-  function playHero(){window.dispatchEvent(new CustomEvent('pocket-hero',{detail:hero.hero}));play();}
-  return hs('section',{ref:root,id:'pocket-world',className:'_guilds_194d4_3 pq-world','aria-labelledby':'pq-world-title',children:[
+  const projects=window.konnectContent?.work?.projects||[];
+  return hs('section',{id:'pocket-world',className:'_guilds_194d4_3 pq-world pq-world-compact','aria-labelledby':'pq-world-title',children:[
     hs('div',{className:'pq-world-top',children:[hs('span',{children:[h('img',{src:asset('/grail-mark.svg'),alt:''}),"A WORLD BUILT AROUND YOUR BRAND"]}),h('span',{children:''})]}),
     hs('div',{className:'pq-world-heading',children:[
       h('div',{'data-guild-title':true,children:hs('h2',{id:'pq-world-title',children:[window.konnectContent?.work?.heading||'Made to connect',h('br',{}),hs('span',{children:['Big ',h('em',{children:"connections."})]})]})}),
-      hs('div',{className:'pq-world-intro',children:[h('span',{className:'pq-world-kicker',children:"ORIGINAL KONNECT DESIGN STUDIES."}),h('p',{children:"Explore our original visual studies. These compositions illustrate Konnect’s creative direction and are not client commissions."}),h('span',{className:'pq-world-invitation',children:"Explore a creative direction."})]})
+      hs('div',{className:'pq-world-intro',children:[h('span',{className:'pq-world-kicker',children:"ORIGINAL KONNECT DESIGN STUDIES."}),h('p',{children:"Creative direction for brands ready to make a connection."})]})
     ]}),
-    h('div',{className:'konnect-selected-work',children:(window.konnectContent?.work?.projects||[]).map(p=>h('a',{href:p.url,children:[h('img',{src:p.image,alt:'',loading:'lazy'}),h('h3',{children:p.title}),p.study?h('p',{children:'Konnect design study · Not client work'}):null]},p.url))}),hs('div',{className:'pq-world-stage',children:[
-      h('div',{className:'pq-world-orbit','aria-hidden':true}),
-      h('div',{ref:gallery,className:'pq-world-gallery',role:'group','aria-label':"Choose a Konnect study",children:GAME_CARDS.map((d,i)=>hs('button',{
-        type:'button',ref:el=>items.current[i]=el,className:'pq-world-hero'+(selected===i?' is-selected':''),
-        style:{'--hero-color':d.accent,'--hero-ink':d.ink,'--hero-angle':[-6,-3,-1,1,3,6][i]+'deg','--hero-delay':(-i*1.2)+'s'},
-        'aria-label':'Choose '+d.role.toLowerCase(),'aria-pressed':selected===i,onClick:()=>choose(i),
-        children:[
-          hs('div',{className:'pq-world-portrait',children:[
-            h('span',{className:'pq-world-index',children:String(i+1).padStart(2,'0')}),
-            h('span',{className:'pq-world-spark','aria-hidden':true,children:'✦'}),
-            h('div',{className:'pq-world-halo','aria-hidden':true}),
-            h('div',{className:'pq-world-shadow','aria-hidden':true}),
-            h('svg',{className:'pq-world-creature',viewBox:d.crop[0]+' '+d.crop[1]+' '+d.crop[2]+' '+d.crop[3],'aria-hidden':true,children:h('image',{href:asset('/heroes/'+d.hero+'.webp'),width:1024,height:1024})}),
-            h('span',{className:'pq-world-pick',children:selected===i?"YOUR DIRECTION":"EXPLORE STUDY"})
-          ]}),
-          h('span',{className:'pq-world-role',children:d.role.toLowerCase().replace(/\b\w/g,c=>c.toUpperCase())}),
-          h('span',{className:'pq-world-species',children:"DESIGN STUDY · "+String(d.id).padStart(2,'0')})
-        ]},d.id))})
+    hs('div',{className:'pq-world-cta',children:[
+      h(RoundButton,{className:'pq-world-launch',label:'Start a project'}),
+      h('span',{children:"Social · Design · Search · Campaigns"})
     ]}),
-    hs('div',{className:'pq-world-controls',children:[h('button',{type:'button','aria-label':"Previous study",onClick:()=>choose(selected-1),children:'←'}),h('span',{'aria-live':'polite',children:String(selected+1).padStart(2,'0')+' / 06'}),h('button',{type:'button','aria-label':"Next study",onClick:()=>choose(selected+1),children:'→'})]}),
-    hs('div',{className:'pq-world-bottom',children:[
-      hs('div',{className:'pq-world-story','aria-live':'polite',children:[h('span',{className:'pq-world-story-name',children:hero.role}),h('p',{children:WORLD_LINES[selected]})]}),
-      hs('div',{className:'pq-world-action',children:[h(RoundButton,{className:'pq-world-launch',label:'Start a project',onClick:playHero}),h('span',{children:"Original studies. Different points of view."})]})
-    ]})
+    projects.length?h('div',{className:'konnect-selected-work',children:projects.map(p=>h('a',{href:p.url,children:[h('img',{src:p.image,alt:'',loading:'lazy'}),h('h3',{children:p.title}),p.study?h('p',{children:'Konnect design study · Not client work'}):null]},p.url))}):null
   ]});
 }
 

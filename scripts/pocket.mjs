@@ -145,7 +145,10 @@ for(const f of bundle.files){
  code=code.replace("children:hero.role","children:hero.role");
  }
  if(f.path.endsWith('/pocket-content.js')){
- code=code.replace("hs('div',{className:'pq-world-stage'", "h('div',{className:'konnect-selected-work',children:(window.konnectContent?.work?.projects||[]).map(p=>h('a',{href:p.url,children:[h('img',{src:p.image,alt:'',loading:'lazy'}),h('h3',{children:p.title}),p.study?h('p',{children:'Konnect design study · Not client work'}):null]},p.url))}),hs('div',{className:'pq-world-stage'");
+ const compactWorld=await fs.readFile('src/pocket-world-adapted.js','utf8');
+ const worldSource=/export function PocketWorld\(\)\{[\s\S]*?\n\}\n\nconst MAGIC=/;
+ if(!worldSource.test(code))throw Error('ThreeUI work gallery source boundary changed');
+ code=code.replace(worldSource,compactWorld.trimEnd()+'\n\nconst MAGIC=');
  }
  if(f.path.endsWith('/HomePage-SelUD7Yz.js')){
  code=code.replace('text:"Different skills."','text:window.konnectContent?.studio?.heading||"Different skills. One studio."').replace('text:"One studio."','text:""');
