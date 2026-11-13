@@ -108,11 +108,30 @@ html,body{background:#000000!important;color:#f7f7f2!important}
 #root [class*='_acceptOverlay_'] p,#root [class*='_acceptOverlay_'] [class*='_sideLabel_'],#root [class*='_s4lead_'],#root [class*='_s4para_'],#root [class*='_s4mBody_'] p{color:#f7f7f2!important;opacity:1}
 #root [class*='_s4divider_']{background:#f7f7f240!important}
 #root [class*='_forgeFixed_']{display:none!important}
-/* Cards share a single origin. Scrolling deals the top card to the left. */
-.konnect-slideshow.is-scroll-driven .konnect-slide-track{position:relative;display:block;height:100svh;padding:0;perspective:1400px;transform:none!important}
-.konnect-slideshow.is-scroll-driven .konnect-slide{position:absolute;left:calc(50% - min(36vw,480px));top:152px;width:min(72vw,960px);height:calc(100svh - 240px);min-height:0;max-height:660px;display:grid;grid-template-columns:1fr 1fr;gap:48px;padding:48px;transform-origin:50% 85%;box-shadow:0 12px 40px #00000080;border:1px solid #666370;backface-visibility:hidden}
-.konnect-slideshow.is-scroll-driven .konnect-slide:nth-child(odd){border-color:#666370}
-.konnect-slideshow.is-scroll-driven .konnect-slide-symbol{width:100%;max-width:340px}
-.konnect-slideshow.is-scroll-driven .konnect-slide-copy h3{font-size:clamp(36px,4.6vw,68px)!important}
-@media(max-width:900px){.konnect-slideshow.is-scroll-driven .konnect-slide{left:12%;width:72%;grid-template-columns:1fr;align-content:center;gap:24px;padding:28px;top:144px;height:calc(100svh - 272px)}.konnect-slideshow.is-scroll-driven .konnect-slide-symbol{width:min(34vw,240px);justify-self:center}.konnect-slideshow.is-scroll-driven .konnect-slide-copy{text-align:center}.konnect-slideshow.is-scroll-driven .konnect-slide-copy p{margin:auto}.konnect-slideshow.is-scroll-driven .konnect-slide-copy h3{font-size:clamp(30px,5vw,48px)!important}}
-@media(max-width:600px){.konnect-slideshow.is-scroll-driven .konnect-slide{left:5%;width:82%;top:136px;height:calc(100svh - 264px);padding:20px;gap:16px}.konnect-slideshow.is-scroll-driven .konnect-slide-symbol{width:min(38vw,180px)}.konnect-slideshow.is-scroll-driven .konnect-slide-copy p{font-size:14px}.konnect-slideshow.is-scroll-driven .konnect-slide-copy h3{font-size:30px!important}}
+/* Flex Carousel artwork sits above the original HTML captions. */
+.konnect-flex-stage{display:none}
+.konnect-slideshow.is-scroll-driven{
+ display:grid;grid-template-rows:auto minmax(145px,1fr) auto;height:100svh;
+ padding:clamp(68px,11svh,92px) 0 clamp(24px,5svh,54px);
+ perspective:none;
+}
+.konnect-slideshow.is-scroll-driven .konnect-slide-header{
+ position:relative;inset:auto;margin:0 4vw;padding-bottom:16px;
+}
+.is-scroll-driven .konnect-flex-stage{display:block;position:relative;min-height:0;overflow:hidden;pointer-events:none}
+.konnect-flex-stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.konnect-slideshow.is-scroll-driven .konnect-slide-track{
+ display:grid;padding:0 6vw;gap:0;perspective:none;align-items:start;
+}
+.konnect-slideshow.is-scroll-driven .konnect-slide{
+ grid-area:1/1;display:block;width:100%;height:auto;min-height:0;max-height:none;
+ padding:0;border:0;background:transparent;box-shadow:none;text-align:center;
+ opacity:0;transition:opacity 160ms ease;pointer-events:none;
+}
+.konnect-slideshow.is-scroll-driven .konnect-slide.is-current{opacity:1}
+.konnect-slideshow.is-scroll-driven .konnect-slide-symbol{display:none}
+.konnect-slideshow.is-scroll-driven .konnect-slide-copy h3{font-size:clamp(26px,4.4vw,54px)!important;margin:0 0 8px!important}
+.konnect-slideshow.is-scroll-driven .konnect-slide-copy p{max-width:52ch;margin:auto}
+@media(max-width:900px){
+ .konnect-slideshow.is-scroll-driven{padding:28px 0 calc(66px + env(safe-area-inset-bottom,0px))}
+}

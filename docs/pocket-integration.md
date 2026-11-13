@@ -28,6 +28,8 @@ Navigation moves to the bottom below 900px, and a persistent project enquiry act
 
 The old click-driven full-screen service selector is replaced by `src/pocket-slides.js`: one symbol, one heading and one sentence per slide. `src/pocket-motion.js` uses GSAP ScrollTrigger to pin six slides, translate their track through native vertical scrolling, and release into the following vertical section. No wheel or touch event is intercepted. If this motion entry fails, the six slides remain vertically readable; reduced-motion/Save-Data visitors continue to receive the static WordPress chapters. The authored totem wrapper's transform and will-change are disabled so fixed pinning uses the viewport.
 
+The current carousel uses the supplied Flex Carousel card and lens shaders in `src/flex-carousel-shaders.js`, with a small OGL renderer in `src/flex-carousel.js`. ScrollTrigger supplies a bounded card position so the page scrolls through all six symbols once and releases after Studio. Captions are HTML; the original article layout remains available if the renderer cannot start.
+
 The decorative timer is replaced with two square junctions joined by a simple repeating line animation. The mobile phone overlay's inherited game copy is hidden and replaced by the process mark; the underlying phone frame has no text, timer or game menu. A crisp square pointer with a red center is enabled only for fine pointers; text inputs retain the native text cursor, and keyboard focus outlines remain available.
 
 The pre-change snapshot was pushed to GitHub master as `192d37b` before this update. Browser review covers pinned track movement, release back to vertical content, mobile fitting, phone cleanup and palette dominance. PHP/HTTP/production privacy and enquiry checks passed.

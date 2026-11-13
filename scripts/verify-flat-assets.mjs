@@ -23,6 +23,7 @@ pass('Self-hosted fonts and Gutenberg typography agree');
 const build=JSON.parse(await readFile(`${base}/dist/.vite/manifest.json`,'utf8'));
 assert.ok(build['src/main.js'].dynamicImports.includes('src/scroll.js'));
 assert.ok(build['src/pocket-motion.js']?.isEntry,'Homepage GSAP slideshow entry exists');
+assert.ok(build['src/pocket-motion.js'].dynamicImports.includes('src/flex-carousel.js'),'Flex Carousel renderer loads on demand');
 let total=0;
 for(const entry of Object.values(build)){
  const bytes=await readFile(`${base}/dist/${entry.file}`); total+=gzipSync(bytes).length;
@@ -30,6 +31,6 @@ for(const entry of Object.values(build)){
 }
 assert.ok(total<65000);
 assert.ok(!manifest.files.some(({file})=>/\.glb$|\.ktx2$|shots\.json/.test(file)));
-pass(`Supporting Vite bundle: no WebGL, model or decoder; ${total} bytes combined gzip`);
+pass(`Vite bundles: isolated Flex Carousel renderer, no Three.js models or decoders; ${total} bytes combined gzip`);
 await mkdir('artifacts',{recursive:true});
 await writeFile('artifacts/asset-verification.txt',report.join('\n')+'\n');

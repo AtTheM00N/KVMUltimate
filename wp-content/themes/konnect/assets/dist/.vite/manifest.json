@@ -1,27 +1,36 @@
 {
-  "_ScrollTrigger-BZVPcu9T.js": {
-    "file": "ScrollTrigger-BZVPcu9T.js",
-    "name": "ScrollTrigger"
+  "_preload-helper-xYE32eJc.js": {
+    "file": "preload-helper-xYE32eJc.js",
+    "name": "preload-helper"
+  },
+  "src/flex-carousel.js": {
+    "file": "flex-carousel-Bh5ik7lE.js",
+    "name": "flex-carousel",
+    "src": "src/flex-carousel.js",
+    "isDynamicEntry": true
   },
   "src/main.js": {
-    "file": "main-CA22qc4Q.js",
+    "file": "main-Vp88yeEy.js",
     "name": "main",
     "src": "src/main.js",
     "isEntry": true,
     "imports": [
-      "_ScrollTrigger-BZVPcu9T.js"
+      "_preload-helper-xYE32eJc.js"
     ],
     "dynamicImports": [
       "src/scroll.js"
     ]
   },
   "src/pocket-motion.js": {
-    "file": "pocket-motion-I6pcYpUl.js",
+    "file": "pocket-motion-rPTKs4KP.js",
     "name": "pocket-motion",
     "src": "src/pocket-motion.js",
     "isEntry": true,
     "imports": [
-      "_ScrollTrigger-BZVPcu9T.js"
+      "_preload-helper-xYE32eJc.js"
+    ],
+    "dynamicImports": [
+      "src/flex-carousel.js"
     ]
   },
   "src/scroll.js": {
