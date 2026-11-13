@@ -32,7 +32,7 @@ export function PocketFooter(){
  useEffect(()=>{const el=root.current;const observer=new IntersectionObserver(([v])=>el.classList.toggle('is-visible',v.isIntersecting),{threshold:.1});observer.observe(el);return()=>observer.disconnect();},[]);
  const cast=[{hero:'mage',name:"Search",role:"Search strategy",number:'II'},{hero:'knight',name:"Social",role:"Social direction",number:'I'},{hero:'bard',name:"Campaigns",role:"Campaign creative",number:'III'}];
  return hs('footer',{ref:root,id:'pocket-footer',className:'_footer_jyv7u_1 pq-footer','aria-labelledby':'pq-footer-title',children:[
-  hs('div',{className:'pq-footer-topline',children:[hs('span',{children:[h('img',{src:asset('/grail-mark.svg'),alt:''}),"YOUR NEXT CREATIVE CONNECTION"]}),h('span',{children:''})]}),
+  hs('div',{className:'pq-footer-topline',children:[hs('span',{children:[h('img',{src:asset('/grail-mark.svg'),alt:''}),"YOUR NEXT CREATIVE CONNECTION"]}),h('span',{children:'CHAPTER 08'})]}),
   hs('div',{className:'pq-footer-main',children:[
    hs('div',{className:'pq-footer-copy',children:[
     h('p',{className:'pq-footer-eyebrow',children:"HAVE SOMETHING IN MIND?"}),
@@ -73,34 +73,74 @@ const WORLD_LINES=[
   "Different skills, one connected creative studio."
 ];
 export function PocketWorld(){
-  const projects=window.konnectContent?.work?.projects||[];
   return hs('section',{id:'pocket-world',className:'_guilds_194d4_3 pq-world pq-world-compact','aria-labelledby':'pq-world-title',children:[
     hs('div',{className:'pq-world-heading',children:[
       h('div',{'data-guild-title':true,children:hs('h2',{id:'pq-world-title',children:[window.konnectContent?.work?.heading||'Made to connect',h('br',{}),hs('span',{children:['Big ',h('em',{children:"connections."})]})]})})
-    ]}),
-    projects.length?h('div',{className:'konnect-selected-work',children:projects.map(p=>h('a',{href:p.url,children:[h('img',{src:p.image,alt:'',loading:'lazy'}),h('h3',{children:p.title}),p.study?h('p',{children:'Konnect design study · Not client work'}):null]},p.url))}):null
+    ]})
   ]});
 }
 
-const MAGIC=[
- {label:'Social',value:'S',unit:'SOCIAL MEDIA',hero:'knight',symbol:'✧',color:'#8f0000',line:'Find your voice.',body:'Social strategy and content with a point of view.'},
- {label:'Design',value:'D',unit:'GRAPHIC DESIGN',hero:'ranger',symbol:'ϟ',color:'#eff2f1',line:'Make a mark.',body:'Identities and visual worlds built around your brand.'},
- {label:'Search',value:'S',unit:'SEARCH STRATEGY',hero:'mage',symbol:'◎',color:'#eff2f1',line:'Be found.',body:'Help the right people find your brand.'},
- {label:'Campaigns',value:'C',unit:'LEAD GENERATION',hero:'bard',symbol:'✦',color:'#8f0000',line:'Start a conversation.',body:'Campaign messaging, creative and landing pages.'}];
-MAGIC.forEach((m,i)=>{const a=window.konnectContent?.services?.serviceCopy||{};m.line=a[i+'_heading']||m.line;m.body=a[i+'_copy']||m.body});
-export function PocketMagic(){
- const root=useRef(null);
- useEffect(()=>{const el=root.current;if(!el)return;const io=new IntersectionObserver(([v])=>el.classList.toggle('is-visible',v.isIntersecting),{threshold:.15});io.observe(el);return()=>io.disconnect();},[]);
- const playAs=slug=>{window.dispatchEvent(new CustomEvent('pocket-hero',{detail:slug}));play();};
- return hs('section',{id:'pocket-magic',ref:root,className:'pq-magic','aria-labelledby':'pq-magic-title',children:[
-  
-  hs('header',{className:'pq-magic-heading',children:[hs('h2',{id:'pq-magic-title',children:window.konnectContent?.services?.heading||'What we do'}),]}),
-  h('div',{className:'pq-magic-grid',children:MAGIC.map((m,i)=>hs('article',{className:'pq-magic-card',style:{'--magic-color':m.color,'--magic-delay':(-i*1.2)+'s'},children:[
-   hs('div',{className:'pq-magic-card-top',children:[h('span',{className:'pq-magic-trait',children:[m.label]}),h('span',{'aria-hidden':true,children:m.symbol})]}),
-   hs('div',{className:'pq-magic-metric',children:[h('strong',{children:m.value}),h('span',{children:m.unit})]}),
-   hs('div',{className:'pq-magic-art',children:[h('div',{className:'pq-magic-halo','aria-hidden':true}),h('img',{src:asset('/heroes/'+m.hero+'.webp'),alt:'Konnect illustrative study: '+m.label,decoding:'async'}),h('span',{className:'pq-magic-art-spark','aria-hidden':true,children:'✦'})]}),
-   hs('div',{className:'pq-magic-card-copy',children:[h('h3',{children:m.line}),h('p',{children:m.body}),hs('button',{onClick:()=>playAs(m.hero),'aria-label':'Enquire about '+m.label,children:['Enquire about '+m.label,h('span',{'aria-hidden':true,children:'↗'})]})]})
-  ]},m.hero))}),
-  
- ]});
+const SERVICES = [
+  { label: 'Social', hero: 'knight', poster: 'GOOD COMPANY', heading: 'Find your voice.', copy: 'Social strategy and content with a point of view.' },
+  { label: 'Design', hero: 'ranger', poster: 'Layered Konnect K', heading: 'Make a mark.', copy: 'Identities and visual worlds built around your brand.' },
+  { label: 'Search', hero: 'mage', poster: 'BE FOUND.', heading: 'Be found.', copy: 'Help the right people find your brand.' },
+  { label: 'Campaigns', hero: 'bard', poster: 'LET’S TALK.', heading: 'Start a conversation.', copy: 'Campaign messaging, creative and landing pages.' },
+];
+
+// Adapted from React Bits SpotlightCard (David Haz, MIT + Commons Clause).
+// https://reactbits.dev/r/SpotlightCard-JS-CSS.json
+// License: docs/react-bits-smoke.md. The existing homepage supplies the React runtime.
+function moveServiceSpotlight(event) {
+  if (event.pointerType !== 'mouse' || !window.matchMedia('(prefers-reduced-motion: no-preference)').matches) return;
+  const card = event.currentTarget;
+  const bounds = card.getBoundingClientRect();
+  card.style.setProperty('--spotlight-x', `${event.clientX - bounds.left}px`);
+  card.style.setProperty('--spotlight-y', `${event.clientY - bounds.top}px`);
+}
+
+export function PocketMagic() {
+  const chapter = window.konnectContent?.services;
+  const serviceCopy = chapter?.serviceCopy || {};
+
+  return hs('section', {
+    id: 'pocket-magic',
+    className: 'pq-magic konnect-services',
+    'aria-labelledby': 'pq-magic-title',
+    children: [
+      h('h2', { id: 'pq-magic-title', children: chapter?.heading || 'What we do' }),
+      h('div', {
+        className: 'konnect-services-grid',
+        children: SERVICES.map(({label, hero, poster, heading, copy}, index) =>
+          hs('article', {
+            className: 'konnect-service',
+            onPointerMove: moveServiceSpotlight,
+            children: [
+              h('img', {
+                className: 'konnect-service-poster',
+                src: asset('/heroes/' + hero + '.webp'),
+                alt: `Konnect poster study: ${poster}`,
+                width: 1024,
+                height: 1024,
+                loading: 'lazy',
+                decoding: 'async',
+              }),
+              hs('div', {
+                className: 'konnect-service-copy',
+                children: [
+                  h('h3', { children: label }),
+                  h('p', { className: 'konnect-service-heading', children: serviceCopy[index + '_heading'] || heading }),
+                  h('p', { children: serviceCopy[index + '_copy'] || copy }),
+                  h('button', {
+                    className: 'konnect-service-enquiry',
+                    type: 'button',
+                    onClick: play,
+                    children: `Enquire about ${label}`,
+                  }),
+                ],
+              }),
+            ],
+          }, hero)),
+      }),
+    ],
+  });
 }

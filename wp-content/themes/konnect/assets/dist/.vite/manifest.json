@@ -4,10 +4,13 @@
     "name": "preload-helper"
   },
   "src/flex-carousel.js": {
-    "file": "flex-carousel-Bh5ik7lE.js",
+    "file": "flex-carousel-Ccxgc5Wx.js",
     "name": "flex-carousel",
     "src": "src/flex-carousel.js",
-    "isDynamicEntry": true
+    "isDynamicEntry": true,
+    "imports": [
+      "src/pocket-motion.js"
+    ]
   },
   "src/main.js": {
     "file": "main-Vp88yeEy.js",
@@ -22,7 +25,7 @@
     ]
   },
   "src/pocket-motion.js": {
-    "file": "pocket-motion-rPTKs4KP.js",
+    "file": "pocket-motion-D1MPYsaD.js",
     "name": "pocket-motion",
     "src": "src/pocket-motion.js",
     "isEntry": true,

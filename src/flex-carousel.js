@@ -30,7 +30,7 @@ export function createFlexCarousel(stage, images) {
   const lens = uniforms({
     tScene: target.texture, uResolution: [1, 1], uDpr: 1, uCenter: [0, 0],
     uHalf: [1, 1], uAngle: 0, uExponent: 2, uInner: 60, uOuter: 80,
-    uFlow: 0, uCurl: 1, uDispersion: 0.018, uStrength: 1, uSceneAlpha: 1,
+    uFlow: 0, uCurl: 0, uDispersion: 0, uStrength: 1, uSceneAlpha: 1,
   });
   const cardProgram = new Program(gl, {
     vertex: cardVertex, fragment: cardFragment, uniforms: card, transparent: true, depthTest: false, depthWrite: false,
@@ -92,15 +92,16 @@ export function createFlexCarousel(stage, images) {
     target.texture.bind();
     gl.generateMipmap(gl.TEXTURE_2D);
 
-    // The snippet's arch preset, scaled to the available stage height.
-    const spanW = Math.min(width * .40, height * 1.4);
-    const spanH = height * .34;
-    const reach = Math.max(4, .36 * (spanW + spanH) * .5);
+    // React Bits liquid preset, with a restrained bend for readable posters.
+    const spanW = width * .37;
+    const spanH = height * .59;
+    const reach = Math.max(4, .38 * (spanW + spanH) * .5);
     lens.uCenter.value = [center, y];
     lens.uHalf.value = [spanW, spanH];
+    lens.uAngle.value = 62 * Math.PI / 180;
     lens.uInner.value = reach;
     lens.uOuter.value = reach * 1.6;
-    lens.uFlow.value = Math.min(height * .14, .30 * (spanW + spanH) * .45);
+    lens.uFlow.value = Math.min(height * .09, .22 * (spanW + spanH) * .45);
     renderer.render({ scene: lensMesh, frustumCull: false });
   }
 

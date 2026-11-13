@@ -7,11 +7,11 @@ const base='wp-content/themes/konnect/assets';
 const report=[];
 const pass=message=>{report.push(`PASS ${message}`);console.log(report.at(-1));};
 const manifest=JSON.parse(await readFile(`${base}/studio/manifest.json`,'utf8'));
-assert.equal(manifest.kind,'2d-artwork'); assert.equal(manifest.symbolCount,6);
+assert.equal(manifest.kind,'2d-artwork'); assert.equal(manifest.posterCount,6);
 for(const file of manifest.files){
   const bytes=await readFile(`${base}/studio/${file.file}`);
   assert.equal(bytes.length,file.bytes); assert.equal(createHash('sha256').update(bytes).digest('hex'),file.sha256);
-  if(file.file.endsWith('.webp')){const meta=await sharp(bytes).metadata();assert.ok(meta.width>=960 && meta.height>=1024);}
+  if(file.file.endsWith('.webp')){const meta=await sharp(bytes).metadata();assert.equal(meta.width,1024);assert.equal(meta.height,1024);}
   if(file.file.endsWith('.svg'))assert.ok(!/<script|onload=|https?:\/\//.test(bytes.toString().replace('http://www.w3.org/2000/svg','')));
 }
 assert.ok(manifest.totalBytes<500000);
@@ -29,7 +29,8 @@ for(const entry of Object.values(build)){
  const bytes=await readFile(`${base}/dist/${entry.file}`); total+=gzipSync(bytes).length;
  assert.ok(!/WebGLRenderer|GLTFLoader|KTX2Loader|three\/addons|studio\.glb|\.wasm/.test(bytes.toString()));
 }
-assert.ok(total<65000);
+// Includes the shared React Bits smoke field and liquid carousel renderer.
+assert.ok(total<80000);
 assert.ok(!manifest.files.some(({file})=>/\.glb$|\.ktx2$|shots\.json/.test(file)));
 pass(`Vite bundles: isolated Flex Carousel renderer, no Three.js models or decoders; ${total} bytes combined gzip`);
 await mkdir('artifacts',{recursive:true});

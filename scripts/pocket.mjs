@@ -96,16 +96,6 @@ for(const f of bundle.files){
  code=code.replace('Zn="Creative direction. Digital presence."','Zn=window.konnectContent?.intro?.heading||"KONNECT"');
  code=code.replace(/chapter:`Chapter \d+`/g,'chapter:``');
  }
- if(f.path.endsWith('/pocket-content.js')){
- code=code.replace(/'CHAPTER \d+'/g,"''").replace(/children:'Play as the '\+m.hero/g,"children:'Start a project'").replace(/'Play as '\+hero.role.replace\([^;]+?\),onClick:playHero/,"'Start a project',onClick:playHero");
- code=code.replace("const play=()=>window.dispatchEvent(new Event('pocket-play'));","const play=()=>window.dispatchEvent(new Event('pocket-play'));");
- // Service disciplines are labels, never performance claims.
- code=code.replace(/const MAGIC=\[[\s\S]*?\];/,`const MAGIC=[
- {label:'Social',value:'S',unit:'SOCIAL MEDIA',hero:'knight',symbol:'✧',color:'#e9101b',line:'Find your voice.',body:'Social strategy and content with a point of view.'},
- {label:'Design',value:'D',unit:'GRAPHIC DESIGN',hero:'ranger',symbol:'ϟ',color:'#d6d6d8',line:'Make a mark.',body:'Identities and visual worlds built around your brand.'},
- {label:'Search',value:'S',unit:'SEARCH STRATEGY',hero:'mage',symbol:'◎',color:'#a3a3ab',line:'Be found.',body:'Help the right people find your brand.'},
- {label:'Campaigns',value:'C',unit:'LEAD GENERATION',hero:'bard',symbol:'✦',color:'#e9101b',line:'Start a conversation.',body:'Campaign messaging, creative and landing pages.'}];`);
- }
  if(f.path.endsWith('/HomePage-SelUD7Yz.js')){
  code=code.replace(JSON.stringify('Konnect Vision Media is a creative and digital marketing partner for Indian businesses. We connect social media, design, search and campaigns around a clear idea, giving your brand a voice and a consistent digital presence.'),'(window.konnectContent?.studio?.copy||'+JSON.stringify('A creative and digital marketing partner for Indian businesses.')+')');
  code=code.replace(JSON.stringify('Creative direction. Digital presence.'),'(window.konnectContent?.intro?.copy||'+JSON.stringify('Creative direction. Digital presence.')+')');
@@ -131,28 +121,19 @@ for(const f of bundle.files){
  code=code.replace(/rr=\[\{t:[\s\S]*?\],ir=/,'rr=(window.konnectContent?.process?.heading||"Understand. Create. Connect.").split(/(?<=[.!?])\\s+/).filter(Boolean).map((t,i)=>({t,ml:["42.4vw","25.1vw","17vw","42.4vw"][i%4]})),ir=');
  }
  if(f.path.endsWith('/pocket-content.js')){
- code=code.replace("h('span',{children:'Clear ideas.'})","h('span',{children:window.konnectContent?.work?.heading||'Made to connect'})");
- code=code.replace("children:[\"Clear ideas.\",h('br',{}),hs('span'","children:[window.konnectContent?.work?.heading||'Made to connect',h('br',{}),hs('span'");
- code=code.replaceAll("'Enquire about '+m.hero","'Enquire about '+m.label").replaceAll("'Konnect illustrative study: '+m.hero","'Konnect illustrative study: '+m.label").replaceAll("+' — '+d.hero","");
- code=code.replace("const MAGIC=[","const MAGIC=[").replace("export function PocketMagic(){", "MAGIC.forEach((m,i)=>{const a=window.konnectContent?.services?.serviceCopy||{};m.line=a[i+'_heading']||m.line;m.body=a[i+'_copy']||m.body});\nexport function PocketMagic(){");
+ code=code.replaceAll("+' — '+d.hero", "");
  }
  if(f.path.endsWith('/pocket-card-art.js'))code=await fs.readFile('src/pocket-card-art.js','utf8');
  if(f.path.endsWith('/pocket-content.js')){
  code=code.replaceAll('width:1024,height:1536','width:1024,height:1024').replaceAll("h('small',{children:'RELIC RUSH'})","h('small',{children:''})");
  }
  if(f.path.endsWith('/pocket-content.js')){
- code=code.replace("children:[\"Every idea.\",h('br',{}),\"A new \",h('em',{children:\"connection.\"})]","children:window.konnectContent?.services?.heading||'What we do'");
- code=code.replace("children:hero.role","children:hero.role");
- }
- if(f.path.endsWith('/pocket-content.js')){
  const compactWorld=await fs.readFile('src/pocket-world-adapted.js','utf8');
- const worldSource=/export function PocketWorld\(\)\{[\s\S]*?\n\}\n\nconst MAGIC=/;
- if(!worldSource.test(code))throw Error('ThreeUI work gallery source boundary changed');
- code=code.replace(worldSource,compactWorld.trimEnd()+'\n\nconst MAGIC=');
+ const services=await fs.readFile('src/pocket-services-adapted.js','utf8');
+ const sectionSource=/export function PocketWorld\(\)\{[\s\S]*?\n\}\n\nconst MAGIC=[\s\S]*?export function PocketMagic\(\)\{[\s\S]*?\n\}/;
+ if(!sectionSource.test(code))throw Error('ThreeUI work and services source boundary changed');
+ code=code.replace(sectionSource,()=>compactWorld.trimEnd()+'\n\n'+services.trimEnd());
  const strip=(source)=>{if(!code.includes(source))throw Error('ThreeUI content source boundary changed: '+source.slice(0,48));code=code.replace(source,'');};
- strip('hs(\'div\',{className:\'pq-magic-top\',children:[hs(\'span\',{children:[h(\'img\',{src:asset(\'/grail-mark.svg\'),alt:\'\'}),"CREATIVE AND DIGITAL, CONNECTED"]}),h(\'span\',{children:\'\'})]}),');
- strip('hs(\'div\',{className:\'pq-magic-intro\',children:[h(\'span\',{children:"YOUR BRAND. A SHARED DIRECTION."}),h(\'p\',{children:"Social media, design, search and campaigns. We bring the right disciplines together around your brand."})]})');
- strip('hs(\'footer\',{className:\'pq-magic-bottom\',children:[hs(\'span\',{children:[h(\'i\',{\'aria-hidden\':true}),"DIFFERENT SKILLS. ONE CONNECTED STUDIO."]}),h(\'span\',{children:"Understand. Create. Connect."})]})');
  strip('h(\'p\',{className:\'pq-footer-note\',children:"Social · Design · Search · Campaigns"})');
  }
  if(f.path.endsWith('/HomePage-SelUD7Yz.js')){

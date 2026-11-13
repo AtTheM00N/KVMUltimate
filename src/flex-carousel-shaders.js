@@ -1,6 +1,6 @@
-// Flex Carousel shader passes from the supplied component.
+// React Bits FlexCarousel-JS-CSS, retrieved through shadcn MCP, 2026-11-13.
+// Copyright David Haz. MIT + Commons Clause; license in docs/react-bits-smoke.md.
 const TAPS = 12;
-
 export const cardVertex = `#version 300 es
 in vec3 position;
 in vec2 uv;
@@ -47,8 +47,8 @@ void main() {
   vec2 uv = vec2(local.x, 1.0 - local.y);
   uv = (uv - 0.5) * scale + 0.5;
   uv.x += uShift * (1.0 - scale.x) * 0.5;
-  vec4 image = texture(tMap, uv);
-  vec3 color = mix(uPlaceholder, image.rgb, uReady * image.a);
+  vec3 image = texture(tMap, uv).rgb;
+  vec3 color = mix(uPlaceholder, image, uReady);
   float alpha = mask * uAlpha;
   fragColor = vec4(color * alpha, alpha);
 }
