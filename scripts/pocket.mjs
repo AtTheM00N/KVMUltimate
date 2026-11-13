@@ -149,10 +149,19 @@ for(const f of bundle.files){
  const worldSource=/export function PocketWorld\(\)\{[\s\S]*?\n\}\n\nconst MAGIC=/;
  if(!worldSource.test(code))throw Error('ThreeUI work gallery source boundary changed');
  code=code.replace(worldSource,compactWorld.trimEnd()+'\n\nconst MAGIC=');
+ const strip=(source)=>{if(!code.includes(source))throw Error('ThreeUI content source boundary changed: '+source.slice(0,48));code=code.replace(source,'');};
+ strip('hs(\'div\',{className:\'pq-magic-top\',children:[hs(\'span\',{children:[h(\'img\',{src:asset(\'/grail-mark.svg\'),alt:\'\'}),"CREATIVE AND DIGITAL, CONNECTED"]}),h(\'span\',{children:\'\'})]}),');
+ strip('hs(\'div\',{className:\'pq-magic-intro\',children:[h(\'span\',{children:"YOUR BRAND. A SHARED DIRECTION."}),h(\'p\',{children:"Social media, design, search and campaigns. We bring the right disciplines together around your brand."})]})');
+ strip('hs(\'footer\',{className:\'pq-magic-bottom\',children:[hs(\'span\',{children:[h(\'i\',{\'aria-hidden\':true}),"DIFFERENT SKILLS. ONE CONNECTED STUDIO."]}),h(\'span\',{children:"Understand. Create. Connect."})]})');
+ strip('h(\'p\',{className:\'pq-footer-note\',children:"Social · Design · Search · Campaigns"})');
  }
  if(f.path.endsWith('/HomePage-SelUD7Yz.js')){
  code=code.replace('text:"Different skills."','text:window.konnectContent?.studio?.heading||"Different skills. One studio."').replace('text:"One studio."','text:""');
  code=code.replace(JSON.stringify('KONNECT VISION MEDIA\nCreative direction. Digital presence.'),'("KONNECT VISION MEDIA\\n"+(window.konnectContent?.intro?.copy||"Creative direction. Digital presence."))');
+ const strip=(source)=>{if(!code.includes(source))throw Error('ThreeUI homepage source boundary changed: '+source.slice(0,48));code=code.replace(source,'');};
+ strip('(0,W.jsx)(`p`,{className:Q.tagline,children:("KONNECT VISION MEDIA\\n"+(window.konnectContent?.intro?.copy||"Creative direction. Digital presence."))}),');
+ strip('D&&(0,W.jsx)(ft,{label:"From idea to identity",chapter:``,tone:`light`,className:Q.s4colontitle}),');
+ strip('V&&(0,W.jsx)(ft,{label:"From idea to identity",chapter:``,tone:`light`}),');
  }
  code=darkModule(code,f.path);
  const p=path.join(out,f.path.replace(/^public\//,''));await fs.mkdir(path.dirname(p),{recursive:true});await fs.writeFile(p,code);

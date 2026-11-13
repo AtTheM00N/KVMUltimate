@@ -39,7 +39,7 @@ export function PocketFooter(){
     hs('h2',{id:'pq-footer-title',children:["Let’s make",h('br',{}),h('em',{children:"contact."})]}),
     h('p',{className:'pq-footer-pitch',children:"Bring us your next idea. Let’s give it a clear creative direction."}),
     h(RoundButton,{label:"Start a project",className:'pq-footer-play'}),
-    h('p',{className:'pq-footer-note',children:"Social · Design · Search · Campaigns"})
+    
    ]}),
    hs('div',{className:'pq-footer-art',children:[
     h('div',{className:'pq-footer-deck','aria-hidden':true,children:cast.map((c,i)=>hs('div',{className:'pq-footer-hero pq-footer-hero-'+i,children:[
@@ -75,14 +75,8 @@ const WORLD_LINES=[
 export function PocketWorld(){
   const projects=window.konnectContent?.work?.projects||[];
   return hs('section',{id:'pocket-world',className:'_guilds_194d4_3 pq-world pq-world-compact','aria-labelledby':'pq-world-title',children:[
-    hs('div',{className:'pq-world-top',children:[hs('span',{children:[h('img',{src:asset('/grail-mark.svg'),alt:''}),"A WORLD BUILT AROUND YOUR BRAND"]}),h('span',{children:''})]}),
     hs('div',{className:'pq-world-heading',children:[
-      h('div',{'data-guild-title':true,children:hs('h2',{id:'pq-world-title',children:[window.konnectContent?.work?.heading||'Made to connect',h('br',{}),hs('span',{children:['Big ',h('em',{children:"connections."})]})]})}),
-      hs('div',{className:'pq-world-intro',children:[h('span',{className:'pq-world-kicker',children:"ORIGINAL KONNECT DESIGN STUDIES."}),h('p',{children:"Creative direction for brands ready to make a connection."})]})
-    ]}),
-    hs('div',{className:'pq-world-cta',children:[
-      h(RoundButton,{className:'pq-world-launch',label:'Start a project'}),
-      h('span',{children:"Social · Design · Search · Campaigns"})
+      h('div',{'data-guild-title':true,children:hs('h2',{id:'pq-world-title',children:[window.konnectContent?.work?.heading||'Made to connect',h('br',{}),hs('span',{children:['Big ',h('em',{children:"connections."})]})]})})
     ]}),
     projects.length?h('div',{className:'konnect-selected-work',children:projects.map(p=>h('a',{href:p.url,children:[h('img',{src:p.image,alt:'',loading:'lazy'}),h('h3',{children:p.title}),p.study?h('p',{children:'Konnect design study · Not client work'}):null]},p.url))}):null
   ]});
@@ -99,14 +93,14 @@ export function PocketMagic(){
  useEffect(()=>{const el=root.current;if(!el)return;const io=new IntersectionObserver(([v])=>el.classList.toggle('is-visible',v.isIntersecting),{threshold:.15});io.observe(el);return()=>io.disconnect();},[]);
  const playAs=slug=>{window.dispatchEvent(new CustomEvent('pocket-hero',{detail:slug}));play();};
  return hs('section',{id:'pocket-magic',ref:root,className:'pq-magic','aria-labelledby':'pq-magic-title',children:[
-  hs('div',{className:'pq-magic-top',children:[hs('span',{children:[h('img',{src:asset('/grail-mark.svg'),alt:''}),"CREATIVE AND DIGITAL, CONNECTED"]}),h('span',{children:''})]}),
-  hs('header',{className:'pq-magic-heading',children:[hs('h2',{id:'pq-magic-title',children:window.konnectContent?.services?.heading||'What we do'}),hs('div',{className:'pq-magic-intro',children:[h('span',{children:"YOUR BRAND. A SHARED DIRECTION."}),h('p',{children:"Social media, design, search and campaigns. We bring the right disciplines together around your brand."})]})]}),
+  
+  hs('header',{className:'pq-magic-heading',children:[hs('h2',{id:'pq-magic-title',children:window.konnectContent?.services?.heading||'What we do'}),]}),
   h('div',{className:'pq-magic-grid',children:MAGIC.map((m,i)=>hs('article',{className:'pq-magic-card',style:{'--magic-color':m.color,'--magic-delay':(-i*1.2)+'s'},children:[
    hs('div',{className:'pq-magic-card-top',children:[h('span',{className:'pq-magic-trait',children:[m.label]}),h('span',{'aria-hidden':true,children:m.symbol})]}),
    hs('div',{className:'pq-magic-metric',children:[h('strong',{children:m.value}),h('span',{children:m.unit})]}),
    hs('div',{className:'pq-magic-art',children:[h('div',{className:'pq-magic-halo','aria-hidden':true}),h('img',{src:asset('/heroes/'+m.hero+'.webp'),alt:'Konnect illustrative study: '+m.label,decoding:'async'}),h('span',{className:'pq-magic-art-spark','aria-hidden':true,children:'✦'})]}),
    hs('div',{className:'pq-magic-card-copy',children:[h('h3',{children:m.line}),h('p',{children:m.body}),hs('button',{onClick:()=>playAs(m.hero),'aria-label':'Enquire about '+m.label,children:['Enquire about '+m.label,h('span',{'aria-hidden':true,children:'↗'})]})]})
   ]},m.hero))}),
-  hs('footer',{className:'pq-magic-bottom',children:[hs('span',{children:[h('i',{'aria-hidden':true}),"DIFFERENT SKILLS. ONE CONNECTED STUDIO."]}),h('span',{children:"Understand. Create. Connect."})]})
+  
  ]});
 }
