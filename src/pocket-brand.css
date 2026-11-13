@@ -97,6 +97,7 @@ html,body{background:#000000!important;color:#f7f7f2!important}
 /* Shared ThreeUI atmosphere and an uninterrupted handoff into the black deck. */
 #root .pq-footer-hero{background:#000000!important}
 #root [class*='_nav_bwga5_']{grid-template-columns:1fr auto!important}
+@media(min-width:901px){.konnect-links{top:24px;left:50%;right:auto;transform:translateX(-50%)}}
 .pq-world.pq-world-compact{min-height:0!important;padding:28px 40px 64px!important;border-radius:0!important}
 .pq-world-compact .pq-world-heading{display:block;margin-top:clamp(24px,4vw,64px)}
 .pq-world-compact .konnect-selected-work{max-width:1440px;margin:48px auto 0}
