@@ -19,6 +19,12 @@ Artwork framing and layout are theme-owned. Desktop and mobile posters can be se
 
 Use Projects → Add project. Add a title, service classifications, featured image, brief, scope and approach. Gallery controls accept WordPress image attachments. Optional empty sections disappear. Results require both actual supporting text and the verified/approved switch. Do not use that switch for speculative outcomes.
 
+### Featured SEO case study
+
+Keep the project in Draft while confirming the reporting dates, documenting the work KVM performed and getting approval for the copy. Use a short Excerpt for the Work feature. In Results, put the main figures in the first paragraph, followed by the date range, source and what the figures measure. Preview the draft from the editor to see its results layout.
+
+Assign the SEO service, turn on **Results verified and approved**, then publish. Work and the SEO section on Services link to the latest public SEO project with approved results. The static Vercel export starts with a fresh WordPress database, so publishing in the local editor does not publish the case study to Vercel.
+
 Preview placeholders can publish only in local/development environments. They remain hidden from production listings, scene selections and direct project URLs. Until approved work exists, the homepage uses original Konnect studio materials and an honest portfolio availability message.
 
 ## Enquiries and campaigns

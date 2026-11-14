@@ -1,12 +1,12 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { mountSmoke } from './pocket-smoke.js';
+import { watchPhoneNavigation } from './phone-navigation.js';
 
 gsap.registerPlugin(ScrollTrigger);
+watchPhoneNavigation();
 let cleanup = () => {};
 let observer;
 let generation = 0;
-let stopSmoke = mountSmoke();
 
 function watch() {
   if (matchMedia('(prefers-reduced-motion: reduce)').matches || window.konnectStatic) return;
@@ -85,10 +85,9 @@ function watch() {
 }
 
 window.addEventListener('pagehide', () => {
-  stopSmoke();
   ++generation;
   observer?.disconnect();
   cleanup();
 });
-window.addEventListener('pageshow', event => { if (event.persisted) { stopSmoke = mountSmoke(); watch(); } });
+window.addEventListener('pageshow', event => { if (event.persisted) watch(); });
 watch();

@@ -24,7 +24,7 @@ Navigation moves to the bottom below 900px, and a persistent project enquiry act
 
 ## Dark palette and scroll slideshow — 13 November 2026
 
-`design-source/palette.json` is the palette authority: blood red #8F0000, dim grey #666370, black #000000, porcelain #F7F7F2 and platinum #EFF2F1. Large surfaces use black and blood red; the two light colors carry text and symbols. The source adaptation normalizes template colors, darkens the reveal shader, and ships a clean original phone frame with no game UI. Theme-owned artwork has light paths, blood-red junctions and alternate black junctions for red panels.
+`design-source/palette.json` defines the palette sampled from the Konnect Vision Media emblem: scarlet #E51141, graphite #58595B, dark graphite #3F3F41 and white #FFFFFF. Black frames the work, with deep red #A40C2E for large surfaces and action red #D5103C for buttons. The source adaptation applies these colours to the template, reveal shader, phone frame and original poster art.
 
 The old click-driven full-screen service selector is replaced by `src/pocket-slides.js`: one symbol, one heading and one sentence per slide. `src/pocket-motion.js` uses GSAP ScrollTrigger to pin six slides, translate their track through native vertical scrolling, and release into the following vertical section. No wheel or touch event is intercepted. If this motion entry fails, the six slides remain vertically readable; reduced-motion/Save-Data visitors continue to receive the static WordPress chapters. The authored totem wrapper's transform and will-change are disabled so fixed pinning uses the viewport.
 
@@ -40,7 +40,9 @@ The service sequence now uses inset cards with adjacent edges, alternating red/b
 
 The ink shader now settles into blood red instead of fading back to black. An additional desktop viewport of scroll runway holds this composition before the black idea sheet arrives. The Clear Ideas phone keeps the red surface; its exit wipe is anchored to the end of the enclosing peel section. Timing remains proportional to the visitor's native scrolling speed rather than forcing a timed pause.
 
-Phone study tiles are labelled buttons with hover lift, keyboard focus, and reversible click/Enter turning feedback. Browser checks verified activation, opposing signal animation, desktop pinning, and no horizontal overflow at 320px, 768px and 1440px. No new library was required; the implementation uses the existing React, Three.js and GSAP stack.
+The Clear Ideas phone now contains the site's Work, Services, Studio and Contact navigation. `src/pocket-phone-adapted.js` replaces the original screen markup during generation. `src/phone-navigation.js` uses GSAP to position the same four real links in the phone when its menu area is visible and unobscured, and returns them to the floating bar as it leaves. Desktop interpolates position, row dimensions and font size without scaling text; mobile changes layout during a brief fade. Focus and native link behavior are preserved because the anchors are never cloned or replaced.
+
+The global `src/page-transitions.css` opts the WordPress documents into a 280ms native cross-document cross-fade. `src/page-transitions.js` warms the four destinations on hover/focus using browser prefetch hints; no custom response cache or client router is involved. Reduced motion disables the transition; unsupported browsers navigate normally. The current document stays visible while the next document loads, so slow networks can still delay arrival. These assets are copied by `scripts/assets.mjs` and enqueued globally by the theme.
 
 ### Atmosphere and deck correction
 

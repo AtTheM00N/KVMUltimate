@@ -3,12 +3,21 @@ if (!defined('ABSPATH')) exit;
 add_action('after_setup_theme', function () {
     add_theme_support('post-thumbnails');
     add_theme_support('editor-styles');
+    add_editor_style('assets/palette.css');
     add_editor_style('assets/studio.css');
     add_editor_style('assets/scroll.css');
 });
+add_filter('body_class', function ($classes) {
+    if (is_page('services')) $classes[] = 'services-page';
+    if (is_page('work')) $classes[] = 'work-page';
+    return $classes;
+});
 add_action('wp_enqueue_scripts', function () {
     $url = get_template_directory_uri();
-    wp_enqueue_style('konnect-pointer', $url . '/assets/brutalist-pointer.css', [], filemtime(__DIR__ . '/assets/brutalist-pointer.css'));
+    wp_enqueue_style('konnect-palette', $url . '/assets/palette.css', [], filemtime(__DIR__ . '/assets/palette.css'));
+    wp_enqueue_style('konnect-page-transitions', $url . '/assets/page-transitions.css', ['konnect-palette'], filemtime(__DIR__ . '/assets/page-transitions.css'));
+    wp_enqueue_script('konnect-page-transitions', $url . '/assets/page-transitions.js', [], filemtime(__DIR__ . '/assets/page-transitions.js'), true);
+    wp_enqueue_style('konnect-pointer', $url . '/assets/brutalist-pointer.css', ['konnect-palette'], filemtime(__DIR__ . '/assets/brutalist-pointer.css'));
     wp_enqueue_script('konnect-pointer', $url . '/assets/brutalist-pointer.js', [], filemtime(__DIR__ . '/assets/brutalist-pointer.js'), true);
     if (is_front_page()) {
         $motion_manifest = json_decode(file_get_contents(__DIR__ . '/assets/dist/.vite/manifest.json'), true);
@@ -17,7 +26,7 @@ add_action('wp_enqueue_scripts', function () {
         wp_add_inline_script('konnect-site', 'window.kvmConfig=' . wp_json_encode(function_exists('kvm_integration_config') ? kvm_integration_config() : []) . ';', 'before');
         return;
     }
-    wp_enqueue_style('konnect-site', $url . '/assets/studio.css', [], filemtime(__DIR__ . '/assets/studio.css'));
+    wp_enqueue_style('konnect-site', $url . '/assets/studio.css', ['konnect-palette'], filemtime(__DIR__ . '/assets/studio.css'));
     wp_enqueue_style('konnect-experience', $url . '/assets/scroll.css', ['konnect-site'], filemtime(__DIR__ . '/assets/scroll.css'));
     wp_enqueue_script('konnect-site', $url . '/assets/site.js', [], filemtime(__DIR__ . '/assets/site.js'), true);
     wp_add_inline_script('konnect-site', 'window.kvmConfig=' . wp_json_encode(function_exists('kvm_integration_config') ? kvm_integration_config() : []) . ';', 'before');

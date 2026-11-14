@@ -1,14 +1,17 @@
 import {n as makeReact,t as makeJSX} from 'grail/jsx-runtime-B4RpOl0S.js';
 import {t as createWarp} from 'grail/warpFill-CfnOsA5y.js';
+import palette from 'grail/konnect-palette.js';
 const React=makeReact();
 const {jsx:h,jsxs:hs}=makeJSX();
+const black = [0, 0, 0];
+const deepRed = palette.deepRed.slice(1).match(/../g).map(channel => parseInt(channel, 16) / 255);
 // Reuse the registered ThreeUI shader with the same settled colors as the phone scene.
 export function KonnectAtmosphere(){
  const ref=React.useRef(null);
  React.useEffect(()=>{
   const canvas=ref.current;let renderer;
   try{renderer=createWarp(canvas,{transparent:true});}catch{return;}
-  const draw=()=>{const ratio=Math.min(devicePixelRatio||1,1.5);canvas.width=Math.round(canvas.clientWidth*ratio);canvas.height=Math.round(canvas.clientHeight*ratio);renderer.draw({origin:[.5,.5],progress:1,noiseAmp:.82,noiseScale:8.5,edge:.01,time:0,bright:[143/255,0,0],base:[0,0,0],deep:[143/255,0,0],backdrop:[0,0,0]});};
+  const draw=()=>{const ratio=Math.min(devicePixelRatio||1,1.5);canvas.width=Math.round(canvas.clientWidth*ratio);canvas.height=Math.round(canvas.clientHeight*ratio);renderer.draw({origin:[.5,.5],progress:1,noiseAmp:.82,noiseScale:8.5,edge:.01,time:0,bright:deepRed,base:black,deep:deepRed,backdrop:black});};
   const resize=new ResizeObserver(draw);resize.observe(canvas);draw();
   return()=>{resize.disconnect();renderer.dispose();};
  },[]);

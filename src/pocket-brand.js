@@ -10,7 +10,7 @@
   if (location.hash==='#studio-contact' || new URLSearchParams(location.search).has('enquiry_state') || new URLSearchParams(location.search).has('enquiry_sent')) open();
   const nav=document.createElement('nav');nav.className='konnect-links';nav.setAttribute('aria-label','Main navigation');
   for (const [label,url] of [['Work','/work/'],['Services','/services/'],['Studio','/about/'],['Contact','/contact/']]) {const a=document.createElement('a');a.href=url;a.textContent=label;nav.append(a)}
-  document.body.append(nav);
+  document.body.prepend(nav);
   const skip=document.createElement('a');skip.className='konnect-skip';skip.href='#konnect-contact-title';skip.textContent='Skip to enquiry';skip.addEventListener('click',event=>{event.preventDefault();open()});document.body.prepend(skip);
   matchMedia('(max-width:768px)').addEventListener('change',()=>location.reload());
   matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change',()=>location.reload());

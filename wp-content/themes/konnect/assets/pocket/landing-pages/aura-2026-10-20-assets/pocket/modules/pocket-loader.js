@@ -7,7 +7,7 @@ const CAST=[
  {hero:'knight',name:"Social",role:"Social direction",number:'I'},
  {hero:'bard',name:"Campaigns",role:"Campaign creative",number:'III'}
 ];
-function Mark(){return hs('svg',{viewBox:'0 0 64 64',fill:'none','aria-hidden':true,children:[h('path',{fill:'currentColor',d:'M32 3 58 20 49 49 32 61 15 49 6 20Z'}),h('path',{fill:'#f7f7f2',d:'m32 12 8 15 14 3-14 5-8 16-8-16-14-5 14-3Z'}),h('path',{fill:'currentColor',d:'m32 24 5 7-5 9-5-9Z'})]})}
+function Mark(){return hs('svg',{viewBox:'0 0 64 64',fill:'none','aria-hidden':true,children:[h('path',{fill:'currentColor',d:'M32 3 58 20 49 49 32 61 15 49 6 20Z'}),h('path',{fill:'#ffffff',d:'m32 12 8 15 14 3-14 5-8 16-8-16-14-5 14-3Z'}),h('path',{fill:'currentColor',d:'m32 24 5 7-5 9-5-9Z'})]})}
 export function PocketLoader({getProgress,onTick,onDone,params={}}){
  const root=useRef(null),callbacks=useRef({getProgress,onTick,onDone,params});
  callbacks.current={getProgress,onTick,onDone,params};

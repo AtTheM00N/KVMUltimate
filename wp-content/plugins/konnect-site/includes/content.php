@@ -35,6 +35,14 @@ add_action('pre_get_posts', function ($query) {
     $meta[] = ['relation' => 'OR', ['key' => '_kvm_placeholder', 'compare' => 'NOT EXISTS'], ['key' => '_kvm_placeholder', 'value' => '1', 'compare' => '!=']];
     $query->set('meta_query', $meta);
 });
+add_filter('rest_prepare_kvm_project', function ($response, $post, $request) {
+    if ($request['context'] === 'edit' && current_user_can('edit_post', $post->ID)) return $response;
+    if ($post->post_status === 'publish' && $post->post_password === '' && get_post_meta($post->ID, '_kvm_results_verified', true)) return $response;
+    $data = $response->get_data();
+    unset($data['meta']['_kvm_results']);
+    $response->set_data($data);
+    return $response;
+}, 10, 3);
 add_filter('manage_kvm_enquiry_posts_columns', function ($columns) { $columns['notification'] = 'Email notification'; return $columns; });
 add_action('manage_kvm_enquiry_posts_custom_column', function ($column, $id) {
     if ($column === 'notification') echo esc_html(get_post_meta($id, '_kvm_notification', true) ?: 'Pending');

@@ -1,0 +1,10 @@
+:root {
+  --kvm-black: #000000;
+  --kvm-white: #ffffff;
+  --kvm-soft-grey: #c9cacc;
+  --kvm-graphite: #58595b;
+  --kvm-dark-graphite: #3f3f41;
+  --kvm-scarlet: #e51141;
+  --kvm-action-red: #d5103c;
+  --kvm-deep-red: #a40c2e;
+}

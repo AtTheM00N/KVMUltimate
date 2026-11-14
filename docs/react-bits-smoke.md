@@ -1,21 +1,6 @@
-# Konnect smoke atmosphere
+# React Bits license
 
-Adapted from React Bits `DarkVeil-JS-CSS`, retrieved through its shadcn MCP registry on 2026-11-13. Source: https://reactbits.dev/r/DarkVeil-JS-CSS.json
-
-The original CPPN field is retained in `src/smoke-field.js`. Konnect replaces the purple composite with dim-grey smoke, reduces speed and resolution, and shares one OGL renderer across visible chapter backgrounds. GSAP ScrollTrigger fades the existing red feature atmosphere into black before the Flex Carousel. Existing ThreeUI geometry and content remain in place.
-
-Reduced motion and data saving use the existing static presentation. WebGL failures retain the original black backgrounds. Animation stops when hidden; page teardown releases resources.
-
-## Verification
-
-- Vite build and JavaScript syntax checks passed.
-- Local Edge browser checks at 320, 390, 768, 1024 and 1440 pixels; no horizontal overflow at the measured mobile/tablet widths.
-- Reduced motion: zero smoke canvases mounted.
-- No JavaScript exceptions in the desktop/mobile browser run. Four existing remote template SVG paths return 404; these are outside this background change.
-- `node scripts/verify.mjs`: PHP, HTTP and production checks passed.
-- Local visual evidence: `artifacts/smoke/` (not deployment assets).
-
-## Upstream license
+This notice applies to the React Bits code used by the carousel and services.
 
 MIT + Commons Clause License Condition v1.0
 

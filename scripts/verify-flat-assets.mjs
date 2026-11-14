@@ -29,7 +29,7 @@ for(const entry of Object.values(build)){
  const bytes=await readFile(`${base}/dist/${entry.file}`); total+=gzipSync(bytes).length;
  assert.ok(!/WebGLRenderer|GLTFLoader|KTX2Loader|three\/addons|studio\.glb|\.wasm/.test(bytes.toString()));
 }
-// Includes the shared React Bits smoke field and liquid carousel renderer.
+// Includes the React Bits liquid carousel renderer.
 assert.ok(total<80000);
 assert.ok(!manifest.files.some(({file})=>/\.glb$|\.ktx2$|shots\.json/.test(file)));
 pass(`Vite bundles: isolated Flex Carousel renderer, no Three.js models or decoders; ${total} bytes combined gzip`);

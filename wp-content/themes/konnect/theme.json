@@ -12,33 +12,43 @@
       "palette": [
         {
           "slug": "ink",
-          "name": "Near black",
+          "name": "Black",
           "color": "#000000"
         },
         {
           "slug": "surface",
-          "name": "Graphite",
-          "color": "#000000"
+          "name": "Dark graphite",
+          "color": "#3f3f41"
         },
         {
           "slug": "scarlet",
-          "name": "Scarlet",
-          "color": "#8f0000"
+          "name": "Logo scarlet",
+          "color": "#e51141"
         },
         {
           "slug": "action",
           "name": "Action red",
-          "color": "#8f0000"
+          "color": "#d5103c"
         },
         {
           "slug": "paper",
-          "name": "Light grey",
-          "color": "#f7f7f2"
+          "name": "White",
+          "color": "#ffffff"
         },
         {
           "slug": "muted",
-          "name": "Secondary grey",
-          "color": "#666370"
+          "name": "Graphite",
+          "color": "#58595b"
+        },
+        {
+          "slug": "deep-red",
+          "name": "Deep red",
+          "color": "#a40c2e"
+        },
+        {
+          "slug": "soft-grey",
+          "name": "Soft grey",
+          "color": "#c9cacc"
         }
       ]
     },

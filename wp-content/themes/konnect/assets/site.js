@@ -16,6 +16,69 @@
   });
   menu?.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
   if (toggle && typeof menu?.showModal === 'function') document.documentElement.classList.add('menu-ready');
+
+  for (const serviceMenu of document.querySelectorAll('.services-menu')) {
+    const list = serviceMenu.querySelector('.services-menu-list');
+    const choices = [...list.querySelectorAll('.services-menu-choice')];
+    const panels = choices.map(choice => serviceMenu.querySelector(choice.hash));
+    if (!choices.length || panels.some(panel => !panel)) continue;
+
+    list.setAttribute('role', 'tablist');
+    list.setAttribute('aria-label', 'Choose a service');
+    list.setAttribute('aria-orientation', 'vertical');
+
+    function selectService(choice, updateAddress = false) {
+      choices.forEach((option, index) => {
+        const selected = option === choice;
+        option.setAttribute('aria-selected', String(selected));
+        option.tabIndex = selected ? 0 : -1;
+        panels[index].hidden = !selected;
+      });
+      if (updateAddress && location.hash !== choice.hash) {
+        history.replaceState(history.state, '', choice.hash);
+      }
+    }
+
+    const choiceFromHash = () => choices.find(choice => choice.hash === location.hash);
+    choices.forEach((choice, index) => {
+      const panel = panels[index];
+      choice.setAttribute('role', 'tab');
+      choice.setAttribute('aria-controls', panel.id);
+      panel.setAttribute('role', 'tabpanel');
+      panel.setAttribute('aria-labelledby', choice.id);
+      panel.tabIndex = 0;
+
+      choice.addEventListener('click', event => {
+        if (event.button !== 0 || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+        event.preventDefault();
+        selectService(choice, true);
+      });
+
+      choice.addEventListener('keydown', event => {
+        if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+        let next;
+        switch (event.key) {
+          case 'ArrowUp': next = choices[(index - 1 + choices.length) % choices.length]; break;
+          case 'ArrowDown': next = choices[(index + 1) % choices.length]; break;
+          case 'Home': next = choices[0]; break;
+          case 'End': next = choices.at(-1); break;
+          case ' ': next = choice; break;
+          default: return;
+        }
+        event.preventDefault();
+        selectService(next, true);
+        next.focus();
+      });
+    });
+
+    selectService(choiceFromHash() ?? choices[0]);
+    serviceMenu.classList.add('is-interactive');
+    window.addEventListener('hashchange', () => {
+      const choice = choiceFromHash();
+      if (choice || !location.hash) selectService(choice ?? choices[0]);
+    });
+  }
+
   let consent = null;
   try { consent = JSON.parse(localStorage.getItem('kvm-consent-v1')); } catch {}
   if (!consent || consent.version !== 1 || Date.now() - consent.savedAt > 180 * 86400000) consent = null;

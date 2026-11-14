@@ -2,10 +2,12 @@ import {darkModule,darkPack} from './pocket-dark.mjs';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import crypto from 'node:crypto';
+import palette from '../design-source/palette.json' with { type: 'json' };
 const bundle=JSON.parse(await fs.readFile('design-source/threeui/source.json','utf8'));
 const out='wp-content/themes/konnect/assets/pocket';
 await fs.mkdir(out,{recursive:true});
 const root='/wp-content/themes/konnect/assets/pocket';
+const phoneMenuSource=await fs.readFile('src/pocket-phone-adapted.js','utf8');
 const local=s=>s.replaceAll('/landing-pages/',root+'/landing-pages/');
 const replacements={
  'Small game. Big adventure.':'Creative direction. Digital presence.',
@@ -108,7 +110,6 @@ for(const f of bundle.files){
  pack.css=pack.css.replaceAll('/landing-pages/aura-2026-10-20-assets/other/d1bf801ffb1a6096def70a7c.woff2','/wp-content/themes/konnect/assets/fonts/general-sans.woff2').replaceAll('/landing-pages/aura-2026-10-20-assets/other/4e40a135ca1cf92ac998da69.woff2','/wp-content/themes/konnect/assets/fonts/clash-grotesk.woff2');
  for(const [k,v] of Object.entries(pack.assets))pack.assets[k]=local(v);
  for(const [k,v] of Object.entries(pack.modules))pack.modules[k]=local(v);
- pack.css=pack.css.replace(/#[0-9a-fA-F]{6}\b/g,hex=>{let rgb=[1,3,5].map(i=>parseInt(hex.slice(i,i+2),16));let hi=Math.max(...rgb),lo=Math.min(...rgb);if(hi-lo<18)return hex;return hi<140?'#242429':hi>210?'#d6d6d8':'#a3a3ab'});
  const art={knight:'social',ranger:'identity',bard:'lead',paladin:'process',mage:'search',rogue:'studio'};
  for(const [hero,poster] of Object.entries(art)){pack.assets['/heroes/'+hero+'.webp']='/wp-content/themes/konnect/assets/studio/'+poster+'.webp';pack.assets['/relics/'+hero+'.webp']=pack.assets['/heroes/'+hero+'.webp'];}
  pack.assets['/Logo.svg']=root+'/konnect-logo.svg';pack.assets['/Fav.svg']='/wp-content/themes/konnect/assets/studio/mark.svg';
@@ -118,7 +119,7 @@ for(const f of bundle.files){
  code='export default '+JSON.stringify(pack)+';';
  }else code=local(code);
  if(f.path.endsWith('/HomePage-SelUD7Yz.js')){
- code=code.replace(/rr=\[\{t:[\s\S]*?\],ir=/,'rr=(window.konnectContent?.process?.heading||"Understand. Create. Connect.").split(/(?<=[.!?])\\s+/).filter(Boolean).map((t,i)=>({t,ml:["42.4vw","25.1vw","17vw","42.4vw"][i%4]})),ir=');
+ code=code.replace(/rr=\[\{t:[\s\S]*?\],ir=/,'rr=(window.konnectContent?.process?.heading||"Understand. Create. Connect.").split(/(?<=[.!?])\\s+/).filter(Boolean).map((t,i)=>({t,ml:["42.4vw","33vw","17vw","42.4vw"][i%4]})),ir=');
  }
  if(f.path.endsWith('/pocket-content.js')){
  code=code.replaceAll("+' — '+d.hero", "");
@@ -145,10 +146,15 @@ for(const f of bundle.files){
  strip('V&&(0,W.jsx)(ft,{label:"From idea to identity",chapter:``,tone:`light`}),');
  }
  code=darkModule(code,f.path);
+ if(f.path.endsWith('/pocket-content.js')){
+  const phoneSource=/function Phone\(\)\{[\s\S]*?\nexport function PocketFeature/;
+  if(!phoneSource.test(code))throw Error('ThreeUI phone source boundary changed');
+  code=code.replace(phoneSource,()=>phoneMenuSource.trim()+'\nexport function PocketFeature');
+ }
  const p=path.join(out,f.path.replace(/^public\//,''));await fs.mkdir(path.dirname(p),{recursive:true});await fs.writeFile(p,code);
 }
 for(const a of bundle.assets){const b=await fs.readFile('design-source/threeui/'+a.path);if(crypto.createHash('sha256').update(b).digest('hex')!==a.sha256)throw Error(a.path);const p=path.join(out,a.path.replace(/^public\//,''));await fs.mkdir(path.dirname(p),{recursive:true});await fs.writeFile(p,b)}
-await fs.writeFile(out+'/konnect-logo.svg','<svg xmlns="http://www.w3.org/2000/svg" width="330" height="60" viewBox="0 0 330 60"><text x="0" y="43" fill="#f7f7f2" font-family="Arial,sans-serif" font-weight="700" font-size="43" letter-spacing="-2">KONNECT</text><path d="M238 13V47" stroke="#666370"/><text x="250" y="27" fill="#f7f7f2" font-family="Arial,sans-serif" font-weight="500" font-size="15" letter-spacing="1">VISION</text><text x="250" y="45" fill="#f7f7f2" font-family="Arial,sans-serif" font-weight="500" font-size="15" letter-spacing="1">MEDIA</text></svg>');
+await fs.writeFile(out+'/konnect-logo.svg',`<svg xmlns="http://www.w3.org/2000/svg" width="330" height="60" viewBox="0 0 330 60" fill="${palette.white}"><text x="0" y="43" font-family="Arial,sans-serif" font-weight="700" font-size="43" letter-spacing="-2">KONNECT</text><path d="M238 13V47" stroke="${palette.graphite}"/><text x="250" y="27" font-family="Arial,sans-serif" font-weight="500" font-size="15" letter-spacing="1">VISION</text><text x="250" y="45" font-family="Arial,sans-serif" font-weight="500" font-size="15" letter-spacing="1">MEDIA</text></svg>`);
 let html=await fs.readFile(out+'/landing-pages/pocket-quest.html','utf8');
 html=html.replace(/<head>[\s\S]*?<meta charset/, '<head><meta charset');
 html=html.replace(/<script>document.addEventListener\('click',[\s\S]*?<\/script>/g,'');
@@ -169,4 +175,5 @@ await fs.copyFile('src/pocket-brand.css',out+'/brand.css');
 await fs.copyFile('src/pocket-brand.js',out+'/brand.js');
 
 await fs.copyFile('src/pocket-slides.js',out+'/konnect-slides.js');
+await fs.writeFile(out+'/konnect-palette.js',`export default ${JSON.stringify(palette, null, 2)};\n`);
 await fs.copyFile('src/konnect-phone.svg',out+'/konnect-phone.svg');

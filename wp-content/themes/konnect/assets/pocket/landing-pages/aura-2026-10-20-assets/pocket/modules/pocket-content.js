@@ -13,14 +13,10 @@ function RoundButton({label,onClick=play,className=''}){return hs('button',{type
  hs('span',{className:'pq-round-label',children:[h('small',{children:''}),h('strong',{children:label})]}),
  h('span',{className:'pq-round-time','aria-hidden':true,children:"2D"})
 ]})}
-function Phone(){return hs('div',{className:'pq-phone','aria-label':"Konnect design studies on a phone",children:[
+function Phone(){return hs('div',{className:'pq-phone konnect-menu-phone',children:[
   h('div',{className:'pq-island','aria-hidden':true}),
-  hs('div',{className:'pq-phone-heading',children:[h('span',{children:"KONNECT"}),h('span',{children:'✧'})]}),
-  h('p',{className:'pq-phone-title',children:"Konnect studies"}),
-  hs('div',{className:'pq-phone-hud',children:[hs('span',{children:[h('small',{children:"FORMAT"}),'00:30']}),hs('span',{children:[h('small',{children:'SCORE'}),'1,250']}),hs('span',{children:[h('small',{children:"STUDIO"}),"K"]})]}),
-  h('div',{className:'pq-preview-grid','aria-label':'Interactive Konnect studies',children:[0,1,2,3,4,5,4,2,1,0,5,3].map((id,i)=>h('button',{type:'button','aria-label':'Turn Konnect study '+(i+1),'aria-pressed':false,onClick:e=>{const b=e.currentTarget;b.classList.toggle('is-turned');b.setAttribute('aria-pressed',String(b.classList.contains('is-turned')))},className:'pq-preview-card '+([0,4,8,10].includes(i)?'is-back':''),children:[0,4,8,10].includes(i)?h('img',{src:asset('/grail-mark.svg'),alt:''}):h('img',{src:asset('/heroes/'+heroes[id]+'.webp'),alt:''})},i))}),
-  h('p',{className:'pq-phone-tip',children:'Your next match is a little bit of magic.'}),
-  h(Button,{label:"Explore our work"}),h('div',{className:'pq-home-bar','aria-hidden':true})
+  h('div',{className:'konnect-phone-menu-slot','aria-hidden':true}),
+  h('div',{className:'pq-home-bar','aria-hidden':true})
 ]})}
 export function PocketFeature(){return hs('section',{className:'_voice_bknov_3 pq-feature',children:[h(KonnectAtmosphere,{}),
   hs('div',{className:'pq-chapter',children:[h('span',{children:"Made for your brand"}),h('span',{children:""})]}),
